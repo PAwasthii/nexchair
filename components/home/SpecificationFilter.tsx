@@ -32,8 +32,8 @@ export default function SpecificationFilter() {
   }
 
   return (
-    <section className="bg-[#171717] px-6 py-14 text-white">
-      <div className="mx-auto max-w-7xl">
+    <section className="px-4 py-3 md:px-6 md:py-4">
+      <div className="mx-auto max-w-7xl rounded-3xl bg-[#171717] p-8 text-white md:p-14">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
           Choose by specification
         </p>

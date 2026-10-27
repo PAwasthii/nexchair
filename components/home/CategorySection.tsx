@@ -13,8 +13,8 @@ export default async function CategorySection() {
   });
 
   return (
-    <section className="px-6 py-20">
-      <div className="mx-auto max-w-7xl">
+    <section className="px-4 py-3 md:px-6 md:py-4">
+      <div className="mx-auto max-w-7xl rounded-3xl bg-[#f5f1ea] p-8 md:p-14">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
           Find your category
         </p>
@@ -37,7 +37,7 @@ export default async function CategorySection() {
             <a
               key={category.id}
               href={`/product-range?category=${category.slug}`}
-              className="group overflow-hidden rounded-3xl bg-white transition hover:-translate-y-1"
+              className="group overflow-hidden rounded-2xl bg-white transition hover:-translate-y-1"
             >
               <div className="aspect-[4/3] overflow-hidden bg-[#e9e3d8]">
                 {category.imageKey && (
@@ -51,10 +51,7 @@ export default async function CategorySection() {
               </div>
 
               <div className="p-5">
-                <h3 className="text-lg font-semibold">
-                  {category.name}
-                </h3>
-
+                <h3 className="text-lg font-semibold">{category.name}</h3>
                 <p className="mt-1 text-sm text-black/50 transition group-hover:text-black/70">
                   Explore →
                 </p>

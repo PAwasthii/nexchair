@@ -56,8 +56,8 @@ export default async function SpecsHighlights() {
   });
 
   return (
-    <section className="bg-white px-6 py-20">
-      <div className="mx-auto max-w-7xl">
+    <section className="px-4 py-3 md:px-6 md:py-4">
+      <div className="mx-auto max-w-7xl rounded-3xl bg-[#f5f1ea] p-8 md:p-14">
         <div className="flex items-end justify-between gap-6">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
@@ -97,9 +97,7 @@ export default async function SpecsHighlights() {
           </div>
         ) : (
           <div className="mt-10 rounded-2xl border border-dashed border-black/20 p-12 text-center">
-            <p className="text-sm text-black/50">
-              No products available.
-            </p>
+            <p className="text-sm text-black/50">No products available.</p>
           </div>
         )}
       </div>
