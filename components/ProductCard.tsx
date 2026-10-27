@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { whatsappHref } from "@/lib/site";
 import type { Product } from "@/types/product";
 
 type ProductCardProps = {
@@ -99,18 +100,18 @@ export default function ProductCard({
           </Link>
 
           <Link
-            href={productLink}
+            href={`${productLink}/order`}
             className="rounded-full bg-black px-4 py-2 text-sm font-semibold text-white"
           >
-            View product
+            Enquire
           </Link>
 
-          <Link
-            href={`${productLink}/order`}
+          <a
+            href={whatsappHref}
             className="rounded-full border border-black/15 px-4 py-2 text-sm font-semibold"
           >
-            Add to enquiry
-          </Link>
+            WhatsApp
+          </a>
         </div>
       </div>
     </article>

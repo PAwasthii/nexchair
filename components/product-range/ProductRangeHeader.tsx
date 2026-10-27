@@ -12,11 +12,7 @@ export default function ProductRangeHeader() {
 
         <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
-              02 Product Range
-            </p>
-
-            <h1 className="mt-3 text-5xl font-bold tracking-tight md:text-6xl">
+            <h1 className="text-5xl font-bold tracking-tight md:text-6xl">
               The range
             </h1>
           </div>

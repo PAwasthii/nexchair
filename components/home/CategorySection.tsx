@@ -28,7 +28,7 @@ export default async function CategorySection() {
             href="/product-range"
             className="hidden text-sm font-semibold underline underline-offset-4 md:block"
           >
-            View all
+            View all chairs
           </a>
         </div>
 
@@ -67,7 +67,7 @@ export default async function CategorySection() {
           href="/product-range"
           className="mt-6 block text-sm font-semibold underline underline-offset-4 md:hidden"
         >
-          View all products →
+          View all chairs →
         </a>
       </div>
     </section>

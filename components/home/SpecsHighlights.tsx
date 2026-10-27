@@ -61,7 +61,7 @@ export default async function SpecsHighlights() {
         <div className="flex items-end justify-between gap-6">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
-              Best specs first
+              Bestsellers
             </p>
 
             <h2 className="mt-4 text-4xl font-bold tracking-tight md:text-5xl">

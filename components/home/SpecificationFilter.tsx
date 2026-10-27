@@ -3,30 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-type FilterState = {
-  budget: string[];
-  weight: string[];
-  back: string[];
-};
-
-const filters = [
-  {
-    key: "budget" as const,
-    label: "Budget",
-    options: ["Under ₹10,000", "₹10,000–₹20,000", "₹20,000+"],
-  },
-  {
-    key: "weight" as const,
-    label: "User weight",
-    options: ["Up to 100 kg", "101–120 kg", "121 kg and above"],
-  },
-  {
-    key: "back" as const,
-    label: "Back type",
-    options: ["Mesh", "Fabric", "Leatherette"],
-  },
-];
-
 const budgetRanges: Record<string, [number, number]> = {
   "Under ₹10,000": [0, 10000],
   "₹10,000–₹20,000": [10000, 20000],
@@ -35,94 +11,79 @@ const budgetRanges: Record<string, [number, number]> = {
 
 export default function SpecificationFilter() {
   const router = useRouter();
-  const [selected, setSelected] = useState<FilterState>({
-    budget: [],
-    weight: [],
-    back: [],
-  });
+  const [budget, setBudget] = useState("");
+  const [weight, setWeight] = useState("");
+  const [back, setBack] = useState("");
 
-  function toggle(group: keyof FilterState, value: string) {
-    setSelected((prev) => ({
-      ...prev,
-      [group]: prev[group].includes(value)
-        ? prev[group].filter((v) => v !== value)
-        : [...prev[group], value],
-    }));
-  }
-
-  function handleViewChairs() {
+  function handleShowChairs() {
     const params = new URLSearchParams();
 
-    if (selected.budget.length > 0 && selected.budget.length < 3) {
-      let lower = Infinity;
-      let upper = 0;
-
-      for (const b of selected.budget) {
-        const [lo, hi] = budgetRanges[b] ?? [0, Infinity];
-        lower = Math.min(lower, lo);
-        upper = Math.max(upper, hi);
-      }
-
-      if (lower > 0) params.set("minPrice", String(lower));
-      if (upper < Infinity) params.set("maxPrice", String(upper));
+    if (budget) {
+      const [lo, hi] = budgetRanges[budget] ?? [0, Infinity];
+      if (lo > 0) params.set("minPrice", String(lo));
+      if (hi < Infinity) params.set("maxPrice", String(hi));
     }
 
-    for (const w of selected.weight) params.append("weight", w);
-    for (const b of selected.back) params.append("back", b);
+    if (weight) params.set("weight", weight);
+    if (back) params.set("back", back);
 
     const search = params.toString();
     router.push(search ? `/product-range?${search}` : "/product-range");
   }
 
   return (
-    <section className="bg-[#171717] px-6 py-20 text-white">
+    <section className="bg-[#171717] px-6 py-14 text-white">
       <div className="mx-auto max-w-7xl">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
           Choose by specification
         </p>
 
         <h2 className="mt-4 max-w-2xl text-4xl font-bold tracking-tight md:text-5xl">
-          Find the right chair by the specs that matter.
+          Find the right chair by the numbers that matter.
         </h2>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {filters.map((filter) => (
-            <div
-              key={filter.label}
-              className="rounded-3xl border border-white/10 bg-white/5 p-6"
-            >
-              <h3 className="text-lg font-semibold">
-                {filter.label}
-              </h3>
+        <div className="mt-10 flex flex-wrap items-center gap-3">
+          <select
+            value={budget}
+            onChange={(e) => setBudget(e.target.value)}
+            className="rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50"
+          >
+            <option value="">Any budget</option>
+            <option>Under ₹10,000</option>
+            <option>₹10,000–₹20,000</option>
+            <option>₹20,000+</option>
+          </select>
 
-              <div className="mt-5 space-y-3">
-                {filter.options.map((option) => (
-                  <label
-                    key={option}
-                    className="flex cursor-pointer items-center gap-3 text-sm text-white/70"
-                  >
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 accent-[#c44e18]"
-                      checked={selected[filter.key].includes(option)}
-                      onChange={() => toggle(filter.key, option)}
-                    />
+          <select
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            className="rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50"
+          >
+            <option value="">Any rating</option>
+            <option>Up to 100 kg</option>
+            <option>101–120 kg</option>
+            <option>121 kg and above</option>
+          </select>
 
-                    <span>{option}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          ))}
+          <select
+            value={back}
+            onChange={(e) => setBack(e.target.value)}
+            className="rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50"
+          >
+            <option value="">Mesh, foam or leat…</option>
+            <option>Mesh</option>
+            <option>Fabric</option>
+            <option>Leatherette</option>
+          </select>
+
+          <button
+            type="button"
+            onClick={handleShowChairs}
+            className="rounded-full bg-[#c44e18] px-6 py-3 text-sm font-semibold text-white"
+          >
+            Show matching chairs
+          </button>
         </div>
-
-        <button
-          type="button"
-          onClick={handleViewChairs}
-          className="mt-8 rounded-full bg-[#c44e18] px-6 py-3 text-sm font-semibold text-white"
-        >
-          View matching chairs
-        </button>
       </div>
     </section>
   );

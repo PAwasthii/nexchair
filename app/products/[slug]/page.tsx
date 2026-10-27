@@ -4,19 +4,6 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { whatsappHref } from "@/lib/site";
 
-const COLOUR_HEX: Record<string, string> = {
-  Graphite: "#4a4543",
-  Black: "#171717",
-  Grey: "#b7b0a5",
-  Brown: "#9d431b",
-  Navy: "#2c3e6b",
-  White: "#f5f1ea",
-};
-
-function colourHex(name: string): string {
-  return COLOUR_HEX[name] ?? "#888888";
-}
-
 import ProductComparison from "@/components/product-detail/ProductComparison";
 import ProductGallery from "@/components/product-detail/ProductGallery";
 
@@ -101,120 +88,99 @@ export default async function ProductPage({
                 )}
               </div>
 
-              <p className="mt-5 text-xs uppercase tracking-widest text-black/40">
-                {product.code}
-              </p>
-
-              <h1 className="mt-2 text-5xl font-bold tracking-tight">
+              <h1 className="mt-5 text-5xl font-bold tracking-tight">
                 {product.name}
               </h1>
 
-              <p className="mt-4 max-w-lg text-sm leading-6 text-black/55">
-                {product.description}
-              </p>
-
-              <p className="mt-8 text-3xl font-bold">
+              <p className="mt-4 text-3xl font-bold">
                 {product.price}
               </p>
 
               <p className="mt-1 text-xs text-black/40">
-                incl. GST · ask for pricing on bulk orders
+                incl. GST · GST invoice available for businesses
               </p>
 
-              <div className="mt-6">
-                <p className="text-xs font-semibold uppercase tracking-widest">
-                  Colour
-                </p>
-
-                <div className="mt-3 flex items-center gap-3">
-                  <div
-                    className="h-8 w-8 rounded-full border-2 border-white ring-1 ring-black/20"
-                    style={{
-                      backgroundColor: colourHex(
-                        product.colour ?? "Graphite",
-                      ),
-                    }}
-                  />
-                  <span className="text-sm text-black/70">
-                    {product.colour ?? "Graphite"}
+              {/* Inline spec tags */}
+              <div className="mt-6 flex flex-wrap gap-2">
+                {product.maxUserWeight && product.maxUserWeight !== "-" && (
+                  <span className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs">
+                    Max user weight: {product.maxUserWeight}
                   </span>
-                </div>
+                )}
+                {product.armrests && product.armrests !== "-" && (
+                  <span className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs">
+                    {product.armrests}
+                  </span>
+                )}
+                {getSpec(product.specs, "back") !== "-" && (
+                  <span className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs">
+                    {getSpec(product.specs, "back")}
+                  </span>
+                )}
+                {product.warranty && product.warranty !== "-" && (
+                  <span className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs">
+                    {product.warranty} warranty
+                  </span>
+                )}
               </div>
 
-              <div className="mt-8 grid grid-cols-2 gap-3">
-                <div className="rounded-2xl bg-white p-4">
-                  <p className="text-xs text-black/40">
-                    Seat weight
-                  </p>
-
-                  <p className="mt-1 text-sm font-semibold">
-                    {product.seatWeight ?? "-"}
-                  </p>
-                </div>
-
-                <div className="rounded-2xl bg-white p-4">
-                  <p className="text-xs text-black/40">
-                    Max user weight
-                  </p>
-
-                  <p className="mt-1 text-sm font-semibold">
-                    {product.maxUserWeight ?? "-"}
-                  </p>
-                </div>
-
-                <div className="rounded-2xl bg-white p-4">
-                  <p className="text-xs text-black/40">
-                    Armrests
-                  </p>
-
-                  <p className="mt-1 text-sm font-semibold">
-                    {product.armrests ?? "-"}
-                  </p>
-                </div>
-
-                <div className="rounded-2xl bg-white p-4">
-                  <p className="text-xs text-black/40">
-                    Warranty
-                  </p>
-
-                  <p className="mt-1 text-sm font-semibold">
-                    {product.warranty ?? "-"}
-                  </p>
-                </div>
-              </div>
-
+              {/* Action buttons */}
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   href={`/products/${product.slug}/order`}
                   className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white"
                 >
-                  Add to order enquiry
+                  Enquire
                 </Link>
 
                 <a
                   href={whatsappHref}
-                  className="rounded-full border border-black px-6 py-3 text-sm font-semibold"
+                  className="flex items-center gap-2 rounded-full bg-[#1f7650] px-6 py-3 text-sm font-semibold text-white"
                 >
-                  Ask on WhatsApp
+                  <svg
+                    className="h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                  </svg>
+                  WhatsApp
                 </a>
+              </div>
 
+              {/* Spec sheet link */}
+              <div className="mt-4">
                 {product.specSheetKey ? (
                   <a
                     href={product.specSheetKey}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-full border border-black px-6 py-3 text-sm font-semibold"
+                    className="text-sm font-semibold underline underline-offset-4"
                   >
-                    Spec sheet (PDF)
+                    Download spec sheet (PDF)
                   </a>
                 ) : (
-                  <span
-                    title="Spec sheet not yet available"
-                    className="cursor-not-allowed rounded-full border border-black/20 px-6 py-3 text-sm text-black/30"
-                  >
-                    Spec sheet (PDF)
+                  <span className="cursor-not-allowed text-sm text-black/30">
+                    Download spec sheet (PDF)
                   </span>
                 )}
+              </div>
+
+              {/* Trust indicators */}
+              <div className="mt-6 space-y-1.5">
+                {[
+                  "[Certification] tested",
+                  "Delivery & assembly",
+                  "Bulk pricing",
+                ].map((item) => (
+                  <p key={item} className="flex items-center gap-2 text-xs text-black/60">
+                    <svg className="h-3.5 w-3.5 shrink-0 text-[#c44e18]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
+                    </svg>
+                    {item}
+                  </p>
+                ))}
               </div>
             </div>
           </div>
@@ -239,10 +205,10 @@ export default async function ProductPage({
           </a>
 
           <a
-            href="#compare"
+            href="#mechanism"
             className="shrink-0 py-5 text-sm text-black/50 transition hover:text-black/80"
           >
-            Compare
+            Mechanism
           </a>
 
           <a
@@ -250,6 +216,13 @@ export default async function ProductPage({
             className="shrink-0 py-5 text-sm text-black/50 transition hover:text-black/80"
           >
             Warranty & care
+          </a>
+
+          <a
+            href="#compare"
+            className="shrink-0 py-5 text-sm text-black/50 transition hover:text-black/80"
+          >
+            Compare
           </a>
         </div>
       </section>
@@ -260,42 +233,70 @@ export default async function ProductPage({
         className="scroll-mt-20 px-6 py-16"
       >
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-10 lg:grid-cols-2">
-            {/* Dimensions */}
-            <div id="dimensions" className="scroll-mt-20">
-              <h2 className="text-4xl font-bold">
-                Dimensions
-              </h2>
+          <h2 className="text-4xl font-bold">Specifications</h2>
 
-              <div className="mt-8 flex min-h-[400px] items-center justify-center rounded-3xl bg-[#e9e3d8]">
-                <p className="text-sm text-black/40">
-                  Dimension diagram
-                </p>
-              </div>
+          <div className="mt-10 grid gap-10 lg:grid-cols-2">
+            {/* Spec table */}
+            <div className="divide-y divide-black/10 border-y border-black/10">
+              {(
+                [
+                  ["Model code", product.code],
+                  ["Category", product.category.name],
+                  ["Back", getSpec(product.specs, "back")],
+                  ["Seat", getDim(product.dimensions, "seat")],
+                  ["Armrests", product.armrests ?? "-"],
+                  ["Base", getDim(product.dimensions, "base")],
+                  ["Casters", getDim(product.dimensions, "casters")],
+                  ["Gas lift", getDim(product.dimensions, "gasLift")],
+                  ["Max user weight", product.maxUserWeight ?? "-"],
+                ] as [string, string][]
+              )
+                .filter(([, value]) => value !== "-")
+                .map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="grid grid-cols-2 gap-4 py-3 text-sm"
+                  >
+                    <span className="text-black/50">{label}</span>
+                    <span>{value}</span>
+                  </div>
+                ))}
             </div>
 
-            {/* Full specification */}
+            {/* Mechanism & adjustments */}
             <div>
-              <h2 className="text-4xl font-bold">
-                Full specification
-              </h2>
+              <h3 className="text-xl font-semibold">Mechanism &amp; adjustments</h3>
 
-              <div className="mt-8 divide-y divide-black/10 border-y border-black/10">
+              <div className="mt-6 divide-y divide-black/10 border-y border-black/10">
                 {(
                   [
-                    ["Overall height", getDim(product.dimensions, "overallHeight")],
-                    ["Seat width × depth", getDim(product.dimensions, "seatWidthDepth")],
-                    ["Seat height range", getDim(product.dimensions, "seatHeightRange")],
-                    ["Product weight", product.seatWeight ?? "-"],
                     ["Tilt mechanism", getDim(product.dimensions, "tiltMechanism")],
-                    ["Recline range & lock", getDim(product.dimensions, "reclineRange")],
-                    ["Armrests", product.armrests ?? "-"],
-                    ["Lumbar", getSpec(product.specs, "lumbar")],
-                    ["Back", getSpec(product.specs, "back")],
-                    ["Seat", getDim(product.dimensions, "seat")],
-                    ["Gas lift", getDim(product.dimensions, "gasLift")],
-                    ["Maximum user weight", product.maxUserWeight ?? "-"],
-                    ["Warranty", product.warranty ?? "-"],
+                    ["Recline range", getDim(product.dimensions, "reclineRange")],
+                    ["Tilt lock", getDim(product.dimensions, "tiltLock")],
+                    ["Seat slider", getDim(product.dimensions, "seatSlider")],
+                    ["Headrest", getDim(product.dimensions, "headrest")],
+                  ] as [string, string][]
+                )
+                  .filter(([, value]) => value !== "-")
+                  .map(([label, value]) => (
+                    <div
+                      key={label}
+                      className="grid grid-cols-2 gap-4 py-3 text-sm"
+                    >
+                      <span className="text-black/50">{label}</span>
+                      <span>{value}</span>
+                    </div>
+                  ))}
+              </div>
+
+              <h3 className="mt-8 text-xl font-semibold">Warranty &amp; care</h3>
+
+              <div className="mt-6 divide-y divide-black/10 border-y border-black/10">
+                {(
+                  [
+                    ["Frame & mechanism", getDim(product.dimensions, "warrantyFrame")],
+                    ["Upholstery", getDim(product.dimensions, "warrantyUpholstery")],
+                    ["Service", getDim(product.dimensions, "warrantyService")],
                   ] as [string, string][]
                 )
                   .filter(([, value]) => value !== "-")
@@ -314,29 +315,104 @@ export default async function ProductPage({
         </div>
       </section>
 
-      {/* Compare */}
-      <ProductComparison
-        currentProduct={{
-          name: product.name,
-          category: product.category.name,
-          price: product.price,
-          maxUserWeight: product.maxUserWeight ?? "-",
-          armrests: product.armrests ?? "-",
-          warranty: product.warranty ?? "-",
-          lumbar: getSpec(product.specs, "lumbar"),
-          back: getSpec(product.specs, "back"),
-        }}
-        products={similarProducts.map((item) => ({
-          name: item.name,
-          category: item.category.name,
-          price: item.price,
-          maxUserWeight: item.maxUserWeight ?? "-",
-          armrests: item.armrests ?? "-",
-          warranty: item.warranty ?? "-",
-          lumbar: getSpec(item.specs, "lumbar"),
-          back: getSpec(item.specs, "back"),
-        }))}
-      />
+      {/* Dimensions */}
+      <section
+        id="dimensions"
+        className="scroll-mt-20 border-t border-black/10 px-6 py-16"
+      >
+        <div className="mx-auto max-w-7xl">
+          <h2 className="text-4xl font-bold">Dimensions</h2>
+
+          <div className="mt-10 grid gap-10 lg:grid-cols-2">
+            <div className="flex min-h-[400px] items-center justify-center rounded-3xl bg-[#e9e3d8]">
+              <p className="text-sm text-black/40">
+                Dimension diagram
+              </p>
+            </div>
+
+            <div className="divide-y divide-black/10 border-y border-black/10">
+              {(
+                [
+                  ["Overall height", getDim(product.dimensions, "overallHeight")],
+                  ["Overall width", getDim(product.dimensions, "overallWidth")],
+                  ["Overall depth", getDim(product.dimensions, "overallDepth")],
+                  ["Seat height", getDim(product.dimensions, "seatHeight")],
+                  ["Seat width × depth", getDim(product.dimensions, "seatWidthDepth")],
+                  ["Backrest height", getDim(product.dimensions, "backrestHeight")],
+                  ["Armrest height", getDim(product.dimensions, "armrestHeight")],
+                  ["Net weight", product.seatWeight ?? "-"],
+                ] as [string, string][]
+              )
+                .filter(([, value]) => value !== "-")
+                .map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="grid grid-cols-2 gap-4 py-3 text-sm"
+                  >
+                    <span className="text-black/50">{label}</span>
+                    <span>{value}</span>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mechanism */}
+      <section
+        id="mechanism"
+        className="scroll-mt-20 border-t border-black/10 px-6 py-16"
+      >
+        <div className="mx-auto max-w-7xl">
+          <h2 className="text-4xl font-bold">Mechanism</h2>
+
+          <div className="mt-10 grid gap-6 lg:grid-cols-2">
+            <div className="rounded-3xl bg-white p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/40">
+                Tilt mechanism
+              </p>
+              <p className="mt-3 text-sm text-black/70">
+                {getDim(product.dimensions, "tiltMechanism") !== "-"
+                  ? getDim(product.dimensions, "tiltMechanism")
+                  : "[Synchro / knee-tilt]"}
+              </p>
+            </div>
+
+            <div className="rounded-3xl bg-white p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/40">
+                Recline range
+              </p>
+              <p className="mt-3 text-sm text-black/70">
+                {getDim(product.dimensions, "reclineRange") !== "-"
+                  ? getDim(product.dimensions, "reclineRange")
+                  : "[–]° – [–]°"}
+              </p>
+            </div>
+
+            <div className="rounded-3xl bg-white p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/40">
+                Seat slider
+              </p>
+              <p className="mt-3 text-sm text-black/70">
+                {getDim(product.dimensions, "seatSlider") !== "-"
+                  ? getDim(product.dimensions, "seatSlider")
+                  : "[–] mm travel"}
+              </p>
+            </div>
+
+            <div className="rounded-3xl bg-white p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/40">
+                Headrest
+              </p>
+              <p className="mt-3 text-sm text-black/70">
+                {getDim(product.dimensions, "headrest") !== "-"
+                  ? getDim(product.dimensions, "headrest")
+                  : "[Height / angle]"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Warranty & Care */}
       <section
@@ -431,6 +507,30 @@ export default async function ProductPage({
           </div>
         </div>
       </section>
+
+      {/* Compare */}
+      <ProductComparison
+        currentProduct={{
+          name: product.name,
+          category: product.category.name,
+          price: product.price,
+          maxUserWeight: product.maxUserWeight ?? "-",
+          armrests: product.armrests ?? "-",
+          warranty: product.warranty ?? "-",
+          lumbar: getSpec(product.specs, "lumbar"),
+          back: getSpec(product.specs, "back"),
+        }}
+        products={similarProducts.map((item) => ({
+          name: item.name,
+          category: item.category.name,
+          price: item.price,
+          maxUserWeight: item.maxUserWeight ?? "-",
+          armrests: item.armrests ?? "-",
+          warranty: item.warranty ?? "-",
+          lumbar: getSpec(item.specs, "lumbar"),
+          back: getSpec(item.specs, "back"),
+        }))}
+      />
     </main>
   );
 }

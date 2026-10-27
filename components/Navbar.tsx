@@ -9,6 +9,7 @@ import { whatsappHref } from "@/lib/site";
 const navigation = [
   { label: "Home", href: "/" },
   { label: "Product Range", href: "/product-range" },
+  { label: "Specifications", href: "/product-range" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
