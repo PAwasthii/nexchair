@@ -1,18 +1,17 @@
-type CategoryItem = {
-  name: string;
-  imageUrl?: string;
-};
+import { prisma } from "@/lib/prisma";
 
-const categories: CategoryItem[] = [
-  { name: "Ergonomic task" },
-  { name: "Executive" },
-  { name: "Gaming & streaming" },
-  { name: "Visitor & training" },
-  { name: "Drafting & lab stools" },
-  { name: "Work-from-home" },
-];
+export default async function CategorySection() {
+  const categories = await prisma.category.findMany({
+    where: { isActive: true },
+    orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      imageKey: true,
+    },
+  });
 
-export default function CategorySection() {
   return (
     <section className="px-6 py-20">
       <div className="mx-auto max-w-7xl">
@@ -36,14 +35,15 @@ export default function CategorySection() {
         <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-3">
           {categories.map((category) => (
             <a
-              key={category.name}
-              href="/product-range"
+              key={category.id}
+              href={`/product-range?category=${category.slug}`}
               className="group overflow-hidden rounded-3xl bg-white transition hover:-translate-y-1"
             >
               <div className="aspect-[4/3] overflow-hidden bg-[#e9e3d8]">
-                {category.imageUrl && (
+                {category.imageKey && (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={category.imageUrl}
+                    src={category.imageKey}
                     alt={category.name}
                     className="h-full w-full object-cover"
                   />

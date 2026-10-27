@@ -1,6 +1,12 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { sendEnquiryEmails } from "@/lib/email";
+import { checkEnquiryRateLimit } from "@/lib/ratelimit";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^[+\d\s\-()\[\]]{7,20}$/;
+const VALID_TYPES = new Set(["CONTACT", "QUOTE", "ORDER"]);
 
 export type CreateEnquiryInput = {
   type: "CONTACT" | "QUOTE" | "ORDER";
@@ -24,18 +30,47 @@ export type CreateEnquiryInput = {
 };
 
 export async function createEnquiry(input: CreateEnquiryInput) {
-  if (!input.name.trim()) {
+  // Rate-limit check runs before all validation to prevent throttled callers
+  // from distinguishing error types through repeated probing.
+  const rl = await checkEnquiryRateLimit();
+  if (!rl.allowed) {
+    const retry = rl.retryAfterSeconds ?? 60;
     return {
       success: false,
-      message: "Name is required.",
+      message: `Too many submissions. Please try again in ${retry} seconds.`,
     };
   }
 
-  if (!input.email?.trim() && !input.phone?.trim()) {
-    return {
-      success: false,
-      message: "Email or mobile number is required.",
-    };
+  if (!VALID_TYPES.has(input.type)) {
+    return { success: false, message: "Invalid enquiry type." };
+  }
+
+  const name = input.name?.trim() ?? "";
+  if (!name) return { success: false, message: "Name is required." };
+  if (name.length > 200) return { success: false, message: "Name is too long." };
+
+  const email = input.email?.trim() ?? "";
+  const phone = input.phone?.trim() ?? "";
+
+  if (!email && !phone) {
+    return { success: false, message: "Email or mobile number is required." };
+  }
+
+  if (email && !EMAIL_RE.test(email)) {
+    return { success: false, message: "Please enter a valid email address." };
+  }
+
+  if (phone && !PHONE_RE.test(phone)) {
+    return { success: false, message: "Please enter a valid phone number." };
+  }
+
+  const message = input.message?.trim() ?? "";
+  if (message.length > 2000) {
+    return { success: false, message: "Message must be 2000 characters or fewer." };
+  }
+
+  if (input.items && input.items.length > 50) {
+    return { success: false, message: "Too many items in a single enquiry." };
   }
 
   if (input.items?.some((item) => !Number.isInteger(item.quantity) || item.quantity < 1)) {
@@ -102,6 +137,34 @@ export async function createEnquiry(input: CreateEnquiryInput) {
             }
           : undefined,
       },
+      // Include product names so we can populate the notification email
+      // without a second DB round-trip.
+      include: {
+        items: {
+          include: {
+            product: { select: { name: true, code: true } },
+          },
+        },
+      },
+    });
+
+    // DB write succeeded — attempt email notifications. Any failure is caught
+    // inside sendEnquiryEmails and logged; it will not affect the return value.
+    await sendEnquiryEmails({
+      enquiryId: enquiry.id,
+      type: enquiry.type,
+      name: enquiry.name,
+      email: enquiry.email,
+      phone: enquiry.phone,
+      company: enquiry.company,
+      city: enquiry.city,
+      message: enquiry.message,
+      items: enquiry.items.map((item) => ({
+        productName: item.product.name,
+        productCode: item.product.code,
+        colour: item.colour,
+        quantity: item.quantity,
+      })),
     });
 
     return {

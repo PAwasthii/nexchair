@@ -9,6 +9,15 @@ export default async function Bestsellers() {
     },
     include: {
       category: true,
+      images: {
+        where: {
+          isPrimary: true,
+        },
+        orderBy: {
+          sortOrder: "asc",
+        },
+        take: 1,
+      },
     },
     orderBy: [
       {
@@ -46,6 +55,7 @@ export default async function Bestsellers() {
       armrests: product.armrests ?? "-",
       warranty: product.warranty ?? "-",
       isBestseller: product.isBestseller,
+      imageUrl: product.images[0]?.storageKey,
       features: Array.isArray(product.features)
         ? product.features.filter(
             (feature): feature is string =>

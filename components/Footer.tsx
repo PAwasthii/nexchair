@@ -36,18 +36,6 @@ export default function Footer() {
 
         <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-gray-500 sm:flex-row sm:items-center sm:justify-between">
           <span>© 2026 NexChair. All rights reserved.</span>
-
-          <div className="flex gap-5">
-            <a href="#" className="transition hover:text-white">
-              Privacy
-            </a>
-            <a href="#" className="transition hover:text-white">
-              Terms
-            </a>
-            <a href="#" className="transition hover:text-white">
-              Sitemap
-            </a>
-          </div>
         </div>
       </div>
     </footer>

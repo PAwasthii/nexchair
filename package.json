@@ -7,15 +7,22 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
+    "create-admin": "tsx --tsconfig tsconfig.json scripts/create-admin.ts",
     "postinstall": "prisma skills sync || exit 0"
   },
   "dependencies": {
     "@prisma/adapter-neon": "^7.10.0",
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
+    "@upstash/ratelimit": "^2.2.0",
+    "@upstash/redis": "^1.39.0",
+    "@vercel/blob": "^2.8.2",
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.11.0",
     "jose": "^6.2.12",
     "next": "16.3.8",
+    "nodemailer": "^10.2.1",
     "pg": "^8.23.1",
     "prisma": "^7.10.0",
     "react": "19.2.8",
@@ -24,6 +31,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/nodemailer": "^8.0.2",
     "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -31,6 +39,8 @@
     "eslint-config-next": "16.3.8",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   }
 }

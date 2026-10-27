@@ -281,35 +281,33 @@ export default async function ProductPage({
               </h2>
 
               <div className="mt-8 divide-y divide-black/10 border-y border-black/10">
-                {[
-                  ["Overall height", "[—] cm"],
-                  ["Seat width × depth", "[—] × [—] cm"],
-                  ["Seat height range", "[—] cm"],
-                  ["Product weight", product.seatWeight ?? "-"],
-                  ["Tilt mechanism", "Synchro / knee-tilt"],
-                  ["Recline range & lock", "[—] positions"],
-                  ["Armrests", product.armrests ?? "-"],
-                  ["Lumbar", getSpec(product.specs, "lumbar")],
-                  ["Back", getSpec(product.specs, "back")],
-                  ["Seat", "Foam / fabric"],
-                  ["Gas lift", "Class [—]"],
+                {(
                   [
-                    "Maximum user weight",
-                    product.maxUserWeight ?? "-",
-                  ],
-                  ["Warranty", product.warranty ?? "-"],
-                ].map(([label, value]) => (
-                  <div
-                    key={label}
-                    className="grid grid-cols-2 gap-4 py-3 text-sm"
-                  >
-                    <span className="text-black/50">
-                      {label}
-                    </span>
-
-                    <span>{value}</span>
-                  </div>
-                ))}
+                    ["Overall height", getDim(product.dimensions, "overallHeight")],
+                    ["Seat width × depth", getDim(product.dimensions, "seatWidthDepth")],
+                    ["Seat height range", getDim(product.dimensions, "seatHeightRange")],
+                    ["Product weight", product.seatWeight ?? "-"],
+                    ["Tilt mechanism", getDim(product.dimensions, "tiltMechanism")],
+                    ["Recline range & lock", getDim(product.dimensions, "reclineRange")],
+                    ["Armrests", product.armrests ?? "-"],
+                    ["Lumbar", getSpec(product.specs, "lumbar")],
+                    ["Back", getSpec(product.specs, "back")],
+                    ["Seat", getDim(product.dimensions, "seat")],
+                    ["Gas lift", getDim(product.dimensions, "gasLift")],
+                    ["Maximum user weight", product.maxUserWeight ?? "-"],
+                    ["Warranty", product.warranty ?? "-"],
+                  ] as [string, string][]
+                )
+                  .filter(([, value]) => value !== "-")
+                  .map(([label, value]) => (
+                    <div
+                      key={label}
+                      className="grid grid-cols-2 gap-4 py-3 text-sm"
+                    >
+                      <span className="text-black/50">{label}</span>
+                      <span>{value}</span>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
@@ -437,21 +435,14 @@ export default async function ProductPage({
   );
 }
 
-function getSpec(
-  specs: unknown,
-  key: string,
-) {
-  if (
-    typeof specs === "object" &&
-    specs !== null &&
-    key in specs
-  ) {
+function getSpec(specs: unknown, key: string): string {
+  if (typeof specs === "object" && specs !== null && key in specs) {
     const value = (specs as Record<string, unknown>)[key];
-
-    if (typeof value === "string") {
-      return value;
-    }
+    if (typeof value === "string" && value.trim()) return value;
   }
-
   return "-";
+}
+
+function getDim(dimensions: unknown, key: string): string {
+  return getSpec(dimensions, key);
 }

@@ -5,15 +5,6 @@ import { useSearchParams } from "next/navigation";
 import ProductGrid from "@/components/product-range/ProductGrid";
 import type { Product } from "@/types/product";
 
-const categories = [
-  "All",
-  "Ergonomic task",
-  "Executive",
-  "Gaming",
-  "Visitor & training",
-  "Drafting tools",
-];
-
 const backTypes = ["Mesh", "Fabric", "Leatherette"];
 
 const armrestOptions = [
@@ -45,14 +36,20 @@ const colourOptions = [
 
 type ProductFiltersProps = {
   products: Product[];
+  categories: { name: string; slug: string }[];
 };
 
 export default function ProductFilters({
   products,
+  categories,
 }: ProductFiltersProps) {
   const searchParams = useSearchParams();
 
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    const slug = searchParams.get("category");
+    if (!slug) return "All";
+    return categories.find((c) => c.slug === slug)?.name ?? "All";
+  });
   const [selectedBackTypes, setSelectedBackTypes] = useState<string[]>(() =>
     searchParams.getAll("back").filter((v) => backTypes.includes(v)),
   );
@@ -238,7 +235,7 @@ export default function ProductFilters({
       <div className="mx-auto max-w-7xl">
         {/* Categories */}
         <div className="flex gap-2 overflow-x-auto pb-2">
-          {categories.map((category) => {
+          {["All", ...categories.map((c) => c.name)].map((category) => {
             const active = selectedCategory === category;
 
             return (

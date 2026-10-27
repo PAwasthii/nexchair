@@ -1,7 +1,8 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { SignJWT, jwtVerify } from "jose";
 
-const COOKIE_NAME = "nexchair_admin_session";
+export const COOKIE_NAME = "nexchair_admin_session";
 
 const secret = process.env.ADMIN_SESSION_SECRET;
 
@@ -73,4 +74,15 @@ export async function clearAdminSession() {
   const cookieStore = await cookies();
 
   cookieStore.delete(COOKIE_NAME);
+}
+
+// Secure server-side guard for Server Components and Server Actions.
+// Call this at the top of any admin page or sensitive action instead of
+// relying solely on the proxy, which only performs an optimistic check.
+export async function requireAdminSession(): Promise<AdminSession> {
+  const session = await getAdminSession();
+  if (!session) {
+    redirect("/admin/login");
+  }
+  return session;
 }

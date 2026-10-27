@@ -8,6 +8,7 @@ import {
   clearAdminSession,
   createAdminSession,
 } from "@/lib/auth/admin";
+import { checkLoginRateLimit } from "@/lib/ratelimit";
 
 export async function signInAdmin(formData: FormData) {
   const email = String(formData.get("email") ?? "")
@@ -15,6 +16,17 @@ export async function signInAdmin(formData: FormData) {
     .toLowerCase();
 
   const password = String(formData.get("password") ?? "");
+
+  // Rate-limit check runs before any validation or DB query so that throttled
+  // callers cannot distinguish error types from successful probing.
+  const rl = await checkLoginRateLimit(email);
+  if (!rl.allowed) {
+    const retry = rl.retryAfterSeconds ?? 60;
+    return {
+      success: false,
+      message: `Too many login attempts. Please try again in ${retry} seconds.`,
+    };
+  }
 
   if (!email || !password) {
     return {

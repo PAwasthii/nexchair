@@ -29,6 +29,12 @@ export default async function ProductRange() {
     },
   });
 
+  const dbCategories = await prisma.category.findMany({
+    where: { isActive: true },
+    orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+    select: { name: true, slug: true },
+  });
+
   const products: Product[] = dbProducts.map((product) => {
     const specs =
       typeof product.specs === "object" && product.specs !== null
@@ -72,7 +78,7 @@ export default async function ProductRange() {
     <main>
       <ProductRangeHeader />
       <Suspense>
-        <ProductFilters products={products} />
+        <ProductFilters products={products} categories={dbCategories} />
       </Suspense>
       <ProductRangeCTA />
     </main>

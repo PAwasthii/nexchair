@@ -43,44 +43,13 @@ export default function Contact() {
             <div>
               <h2 className="text-lg font-semibold">WhatsApp</h2>
               <p className="mt-1 text-sm text-white/70">
-                Fastest reply · [NUMBER]
+                Fastest reply
               </p>
             </div>
           </a>
 
-          {/* Call */}
-          <a
-            href="tel:"
-            className="flex flex-col gap-4 rounded-3xl bg-white p-6"
-          >
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/5">
-              <svg
-                className="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .14h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8a16 16 0 007.91 7.91l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2z" />
-              </svg>
-            </div>
-
-            <div>
-              <h2 className="text-lg font-semibold">Call</h2>
-              <p className="mt-1 text-sm text-black/50">
-                [NUMBER] · [Days, hours]
-              </p>
-            </div>
-          </a>
-
-          {/* Email */}
-          <a
-            href="mailto:"
-            className="flex flex-col gap-4 rounded-3xl bg-white p-6"
-          >
+          {/* Send an enquiry */}
+          <div className="flex flex-col gap-4 rounded-3xl bg-white p-6">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/5">
               <svg
                 className="h-5 w-5"
@@ -98,10 +67,12 @@ export default function Contact() {
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold">Email</h2>
-              <p className="mt-1 text-sm text-black/50">[EMAIL]</p>
+              <h2 className="text-lg font-semibold">Enquiry form</h2>
+              <p className="mt-1 text-sm text-black/50">
+                Use the form below — we respond within one business day.
+              </p>
             </div>
-          </a>
+          </div>
         </div>
       </section>
 
@@ -121,7 +92,7 @@ export default function Contact() {
           <div>
             <div className="flex min-h-[240px] items-center justify-center rounded-3xl bg-[#e9e3d8]">
               <p className="text-sm text-black/40">
-                Google map / location image
+                Location map coming soon
               </p>
             </div>
 
@@ -130,35 +101,9 @@ export default function Contact() {
                 Experience Centre
               </p>
 
-              <p className="mt-3 text-black/70">[Address line 1]</p>
-              <p className="text-black/70">[City, State, Pincode]</p>
-              <p className="mt-1 text-black/50">[Days] · [Opening hours]</p>
-
-              <a
-                href="#"
-                className="mt-3 inline-block font-semibold underline underline-offset-4"
-              >
-                Get directions →
-              </a>
-            </div>
-
-            <div className="mt-8 rounded-2xl bg-[#f5f1ea] p-5">
-              <p className="text-sm font-semibold">Find a dealer near you</p>
-
-              <div className="mt-3 flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Enter pincode"
-                  className="flex-1 rounded-lg border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black"
-                />
-
-                <button
-                  type="button"
-                  className="rounded-lg bg-[#c44e18] px-4 py-2 text-sm font-semibold text-white"
-                >
-                  Search
-                </button>
-              </div>
+              <p className="mt-3 text-black/50">
+                Address details will be displayed here once confirmed.
+              </p>
             </div>
           </div>
         </div>
