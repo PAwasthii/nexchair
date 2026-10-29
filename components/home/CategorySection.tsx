@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { prisma } from "@/lib/prisma";
 
 export default async function CategorySection() {
@@ -39,13 +41,14 @@ export default async function CategorySection() {
               href={`/product-range?category=${category.slug}`}
               className="group overflow-hidden rounded-2xl bg-white transition hover:-translate-y-1"
             >
-              <div className="aspect-[4/3] overflow-hidden bg-[#e9e3d8]">
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#e9e3d8]">
                 {category.imageKey && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={category.imageKey}
                     alt={category.name}
-                    className="h-full w-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 767px) calc((100vw - 112px) / 2), (max-width: 1023px) calc((100vw - 176px) / 2), (max-width: 1279px) calc((100vw - 192px) / 3), 379px"
                   />
                 )}
               </div>

@@ -35,7 +35,7 @@ const UPLOAD_CONFIG: Record<UploadCategory, CategoryConfig> = {
   "category-image": {
     allowedMime: new Set(["image/jpeg", "image/png", "image/webp"]),
     allowedExt: new Set([".jpg", ".jpeg", ".png", ".webp"]),
-    maxBytes: 2 * 1024 * 1024, // 2 MB
+    maxBytes: 5 * 1024 * 1024, // 5 MB
     storage: "cloudinary",
     cloudinaryFolder: "nexchair/categories",
   },

@@ -220,7 +220,7 @@ export default function CategoryForm({ category, onClose }: Props) {
       <div>
         <p className="text-sm font-medium text-black">Image</p>
         <p className="mt-0.5 text-xs text-black/40">
-          JPEG, PNG, or WebP · max 2 MB
+          JPEG, PNG, or WebP · 4:3 ratio · 1200 × 900 px recommended · max 5 MB
         </p>
 
         {/* Edit: show existing image with replace/remove controls */}

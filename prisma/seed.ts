@@ -70,17 +70,18 @@ const productFeatures: Record<string, string[]> = {
 async function main() {
   console.log("Starting NexChair seed...");
 
-  const categoryNames = [
-    "Ergonomic task",
-    "Executive",
-    "Gaming",
-    "Visitor & training",
-    "Drafting tools",
+  const categoryDefs = [
+    { name: "Executive Chair", sortOrder: 1 },
+    { name: "Ergonomic Chair", sortOrder: 2 },
+    { name: "Lounge Chair",    sortOrder: 3 },
+    { name: "Canteen Chair",   sortOrder: 4 },
+    { name: "Visitor Chair",   sortOrder: 5 },
+    { name: "Staff Chair",     sortOrder: 6 },
   ];
 
   const categoryMap = new Map<string, string>();
 
-  for (const name of categoryNames) {
+  for (const { name, sortOrder } of categoryDefs) {
     const slug = name
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-");
@@ -91,17 +92,28 @@ async function main() {
       },
       update: {
         name,
+        sortOrder,
         isActive: true,
       },
       create: {
         name,
         slug,
+        sortOrder,
         isActive: true,
       },
     });
 
     categoryMap.set(name, category.id);
   }
+
+  // Deactivate any categories that are no longer part of the current set
+  const activeSlugs = categoryDefs.map(({ name }) =>
+    name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+  );
+  await prisma.category.updateMany({
+    where: { slug: { notIn: activeSlugs } },
+    data: { isActive: false },
+  });
 
   for (const product of products) {
     const categoryId = categoryMap.get(product.category);
@@ -157,7 +169,7 @@ async function main() {
   }
 
   console.log(`Seeded ${products.length} products.`);
-  console.log(`Seeded ${categoryNames.length} categories.`);
+  console.log(`Seeded ${categoryDefs.length} categories.`);
 }
 
 main()

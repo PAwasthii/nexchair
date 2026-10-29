@@ -5,7 +5,7 @@ export const products: Product[] = [
     name: "NX Task Mesh",
     slug: "nx-task-mesh",
     code: "NX-T1",
-    category: "Ergonomic task",
+    category: "Ergonomic Chair",
     price: "₹ [PRICE]",
     description:
       "A practical ergonomic chair designed for long working hours.",
@@ -30,7 +30,7 @@ export const products: Product[] = [
     name: "NX Pro Mesh",
     slug: "nx-pro-mesh",
     code: "NX-P2",
-    category: "Ergonomic task",
+    category: "Ergonomic Chair",
     price: "₹ [PRICE]",
     description:
       "A practical ergonomic chair designed for long working hours.",
@@ -56,7 +56,7 @@ export const products: Product[] = [
     name: "NX Home Compact",
     slug: "nx-home-compact",
     code: "NX-H1",
-    category: "Ergonomic task",
+    category: "Ergonomic Chair",
     price: "₹ [PRICE]",
     description:
       "A compact ergonomic chair designed for home working spaces.",
@@ -80,7 +80,7 @@ export const products: Product[] = [
     name: "NX Executive",
     slug: "nx-executive",
     code: "NX-E1",
-    category: "Executive",
+    category: "Executive Chair",
     price: "₹ [PRICE]",
     description:
       "A comfortable executive chair designed for offices and boardrooms.",
@@ -106,7 +106,7 @@ export const products: Product[] = [
     name: "NX Board",
     slug: "nx-board",
     code: "NX-B1",
-    category: "Executive",
+    category: "Executive Chair",
     price: "₹ [PRICE]",
     description:
       "A clean executive seating option for meeting rooms and boardrooms.",
@@ -130,7 +130,7 @@ export const products: Product[] = [
     name: "NX Studio",
     slug: "nx-studio",
     code: "NX-S1",
-    category: "Gaming",
+    category: "Staff Chair",
     price: "₹ [PRICE]",
     description:
       "A versatile chair built for focused work and long sessions.",
@@ -156,7 +156,7 @@ export const products: Product[] = [
     name: "NX Nest",
     slug: "nx-nest",
     code: "NX-N1",
-    category: "Visitor & training",
+    category: "Visitor Chair",
     price: "₹ [PRICE]",
     description:
       "A practical visitor chair designed for flexible workplace seating.",
@@ -177,7 +177,7 @@ export const products: Product[] = [
     name: "NX Stack",
     slug: "nx-stack",
     code: "NX-V2",
-    category: "Visitor & training",
+    category: "Canteen Chair",
     price: "₹ [PRICE]",
     description:
       "A stackable chair for training rooms, reception areas and flexible spaces.",
@@ -198,7 +198,7 @@ export const products: Product[] = [
     name: "NX Draft Stool",
     slug: "nx-draft-stool",
     code: "NX-D1",
-    category: "Drafting tools",
+    category: "Staff Chair",
     price: "₹ [PRICE]",
     description:
       "A practical drafting stool designed for higher work surfaces.",
