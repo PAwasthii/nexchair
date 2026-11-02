@@ -164,6 +164,7 @@ function revalidateAll(slug: string): void {
   revalidatePath("/admin/products");
   revalidatePath("/product-range");
   revalidatePath(`/products/${slug}`);
+  revalidatePath("/specifications");
   revalidatePath("/");
 }
 

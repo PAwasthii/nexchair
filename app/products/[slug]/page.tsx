@@ -93,7 +93,7 @@ export default async function ProductPage({
               </h1>
 
               <p className="mt-4 text-3xl font-bold">
-                {product.price}
+                {normalisedProductPrice(product.price)}
               </p>
 
               <p className="mt-1 text-xs text-black/40">
@@ -513,7 +513,7 @@ export default async function ProductPage({
         currentProduct={{
           name: product.name,
           category: product.category.name,
-          price: product.price,
+          price: normalisedProductPrice(product.price),
           maxUserWeight: product.maxUserWeight ?? "-",
           armrests: product.armrests ?? "-",
           warranty: product.warranty ?? "-",
@@ -523,7 +523,7 @@ export default async function ProductPage({
         products={similarProducts.map((item) => ({
           name: item.name,
           category: item.category.name,
-          price: item.price,
+          price: normalisedProductPrice(item.price),
           maxUserWeight: item.maxUserWeight ?? "-",
           armrests: item.armrests ?? "-",
           warranty: item.warranty ?? "-",
@@ -533,6 +533,14 @@ export default async function ProductPage({
       />
     </main>
   );
+}
+
+function normalisedProductPrice(raw: string): string {
+  const trimmed = raw.trim();
+  if (!trimmed || trimmed.includes("[") || trimmed === "Price on request") {
+    return "Price on request";
+  }
+  return trimmed;
 }
 
 function getSpec(specs: unknown, key: string): string {

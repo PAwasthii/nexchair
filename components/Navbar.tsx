@@ -9,7 +9,7 @@ import { whatsappHref } from "@/lib/site";
 const navigation = [
   { label: "Home", href: "/" },
   { label: "Product Range", href: "/product-range" },
-  { label: "Specifications", href: "/product-range" },
+  { label: "Specifications", href: "/specifications" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
@@ -22,7 +22,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="border-b border-black/10 bg-[#f5f1ea]">
+    <header className="sticky top-0 z-50 border-b border-black/10 bg-[#f5f1ea]">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/" onClick={closeMenu}>

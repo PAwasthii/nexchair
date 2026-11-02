@@ -50,18 +50,28 @@ export default function ProductFilters({
     if (!slug) return "All";
     return categories.find((c) => c.slug === slug)?.name ?? "All";
   });
-  const [selectedBackTypes, setSelectedBackTypes] = useState<string[]>(() =>
-    searchParams.getAll("back").filter((v) => backTypes.includes(v)),
+  const [selectedBackType, setSelectedBackType] = useState<string | null>(() => {
+    const value = searchParams.get("back");
+    return value && backTypes.includes(value) ? value : null;
+  });
+  const [selectedArmrest, setSelectedArmrest] = useState<string | null>(null);
+  const [selectedWeight, setSelectedWeight] = useState<string | null>(() => {
+    const value = searchParams.get("weight");
+    return value && weightOptions.includes(value) ? value : null;
+  });
+  const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
+  const [selectedColour, setSelectedColour] = useState<string | null>(null);
+  const [minPrice, setMinPrice] = useState(
+    () => searchParams.get("minPrice") ?? "",
   );
-  const [selectedArmrests, setSelectedArmrests] = useState<string[]>([]);
-  const [selectedWeights, setSelectedWeights] = useState<string[]>(() =>
-    searchParams.getAll("weight").filter((v) => weightOptions.includes(v)),
+  const [maxPrice, setMaxPrice] = useState(
+    () => searchParams.get("maxPrice") ?? "",
   );
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
-  const [selectedColours, setSelectedColours] = useState<string[]>([]);
-  const [minPrice, setMinPrice] = useState(() => searchParams.get("minPrice") ?? "");
-  const [maxPrice, setMaxPrice] = useState(() => searchParams.get("maxPrice") ?? "");
   const [sortBy, setSortBy] = useState("Recommended");
+
+  const minVal = parsePrice(minPrice);
+  const maxVal = parsePrice(maxPrice);
+  const budgetError = minVal !== null && maxVal !== null && minVal > maxVal;
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
@@ -74,97 +84,69 @@ export default function ProductFilters({
     }
 
     // Back type
-    if (selectedBackTypes.length > 0) {
-      result = result.filter((product) =>
-        selectedBackTypes.some(
-          (type) =>
-            product.specs.back.toLowerCase() === type.toLowerCase(),
-        ),
+    if (selectedBackType !== null) {
+      result = result.filter(
+        (product) =>
+          product.specs.back.toLowerCase() === selectedBackType.toLowerCase(),
       );
     }
 
     // Armrests
-    if (selectedArmrests.length > 0) {
-      result = result.filter((product) =>
-        selectedArmrests.some((option) => {
-          const value = product.armrests.toLowerCase();
+    if (selectedArmrest !== null) {
+      result = result.filter((product) => {
+        const value = product.armrests.toLowerCase();
 
-          if (option === "2D / 3D") {
-            return value.includes("2d") || value.includes("3d");
-          }
+        if (selectedArmrest === "2D / 3D") {
+          return value.includes("2d") || value.includes("3d");
+        }
 
-          if (option === "4D") {
-            return value.includes("4d");
-          }
+        if (selectedArmrest === "4D") {
+          return value.includes("4d");
+        }
 
-          return value.includes(option.toLowerCase());
-        }),
-      );
+        return value.includes(selectedArmrest.toLowerCase());
+      });
     }
 
     // Maximum user weight
-    if (selectedWeights.length > 0) {
+    if (selectedWeight !== null) {
       result = result.filter((product) => {
         const weight = parseWeight(product.maxUserWeight);
 
-        return selectedWeights.some((range) => {
-          if (weight === null) {
-            return false;
-          }
+        if (weight === null) return false;
 
-          if (range === "Up to 100 kg") {
-            return weight <= 100;
-          }
-
-          if (range === "101–120 kg") {
-            return weight >= 101 && weight <= 120;
-          }
-
-          return weight >= 121;
-        });
+        if (selectedWeight === "Up to 100 kg") return weight <= 100;
+        if (selectedWeight === "101–120 kg") return weight >= 101 && weight <= 120;
+        return weight >= 121;
       });
     }
 
     // Features
-    if (selectedFeatures.length > 0) {
+    if (selectedFeature !== null) {
       result = result.filter((product) =>
-        selectedFeatures.every((feature) =>
-          product.features.includes(feature),
-        ),
+        product.features.includes(selectedFeature),
       );
     }
 
     // Colour
-    if (selectedColours.length > 0) {
-      result = result.filter((product) => {
-        const colour = product.colour.toLowerCase();
-
-        return selectedColours.some(
-          (selected) =>
-            colour.includes(selected.toLowerCase()),
-        );
-      });
+    if (selectedColour !== null) {
+      result = result.filter((product) =>
+        product.colour.toLowerCase().includes(selectedColour.toLowerCase()),
+      );
     }
 
-    // Budget
-    const minimum = parsePrice(minPrice);
-    const maximum = parsePrice(maxPrice);
+    // Budget — skip if min > max (invalid state)
+    const min = parsePrice(minPrice);
+    const max = parsePrice(maxPrice);
+    const invalidBudget = min !== null && max !== null && min > max;
 
-    if (minimum !== null || maximum !== null) {
+    if (!invalidBudget && (min !== null || max !== null)) {
       result = result.filter((product) => {
         const price = parsePrice(product.price);
 
-        if (price === null) {
-          return false;
-        }
-
-        if (minimum !== null && price < minimum) {
-          return false;
-        }
-
-        if (maximum !== null && price > maximum) {
-          return false;
-        }
+        if (price === null) return false;
+        if (min !== null && price < min) return false;
+        if (max !== null && price > max) return false;
 
         return true;
       });
@@ -174,16 +156,14 @@ export default function ProductFilters({
     if (sortBy === "Price: Low to high") {
       result.sort(
         (a, b) =>
-          (parsePrice(a.price) ?? 0) -
-          (parsePrice(b.price) ?? 0),
+          (parsePrice(a.price) ?? 0) - (parsePrice(b.price) ?? 0),
       );
     }
 
     if (sortBy === "Price: High to low") {
       result.sort(
         (a, b) =>
-          (parsePrice(b.price) ?? 0) -
-          (parsePrice(a.price) ?? 0),
+          (parsePrice(b.price) ?? 0) - (parsePrice(a.price) ?? 0),
       );
     }
 
@@ -191,11 +171,11 @@ export default function ProductFilters({
   }, [
     products,
     selectedCategory,
-    selectedBackTypes,
-    selectedArmrests,
-    selectedWeights,
-    selectedFeatures,
-    selectedColours,
+    selectedBackType,
+    selectedArmrest,
+    selectedWeight,
+    selectedFeature,
+    selectedColour,
     minPrice,
     maxPrice,
     sortBy,
@@ -208,26 +188,22 @@ export default function ProductFilters({
 
   function clearFilters() {
     setSelectedCategory("All");
-    setSelectedBackTypes([]);
-    setSelectedArmrests([]);
-    setSelectedWeights([]);
-    setSelectedFeatures([]);
-    setSelectedColours([]);
+    setSelectedBackType(null);
+    setSelectedArmrest(null);
+    setSelectedWeight(null);
+    setSelectedFeature(null);
+    setSelectedColour(null);
     setMinPrice("");
     setMaxPrice("");
     setSortBy("Recommended");
   }
 
-  function toggleValue(
+  function selectSingle(
     value: string,
-    currentValues: string[],
-    setValues: React.Dispatch<React.SetStateAction<string[]>>,
+    current: string | null,
+    set: React.Dispatch<React.SetStateAction<string | null>>,
   ) {
-    setValues((current) =>
-      current.includes(value)
-        ? current.filter((item) => item !== value)
-        : [...current, value],
-    );
+    set(current === value ? null : value);
   }
 
   return (
@@ -272,97 +248,81 @@ export default function ProductFilters({
 
             {/* Budget */}
             <div className="mt-8 border-t border-black/10 pt-5">
-              <h3 className="text-sm font-semibold">
-                Budget
-              </h3>
+              <h3 className="text-sm font-semibold">Budget</h3>
 
               <div className="mt-4 grid grid-cols-2 gap-2">
                 <input
                   type="number"
                   min="0"
                   value={minPrice}
-                  onChange={(event) =>
-                    setMinPrice(event.target.value)
-                  }
+                  onChange={(event) => setMinPrice(event.target.value)}
                   placeholder="Min"
-                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-xs outline-none focus:border-black"
+                  className={`w-full rounded-lg border px-3 py-2 text-xs outline-none focus:border-black ${
+                    budgetError ? "border-red-400" : "border-black/10"
+                  }`}
                 />
 
                 <input
                   type="number"
                   min="0"
                   value={maxPrice}
-                  onChange={(event) =>
-                    setMaxPrice(event.target.value)
-                  }
+                  onChange={(event) => setMaxPrice(event.target.value)}
                   placeholder="Max"
-                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-xs outline-none focus:border-black"
+                  className={`w-full rounded-lg border px-3 py-2 text-xs outline-none focus:border-black ${
+                    budgetError ? "border-red-400" : "border-black/10"
+                  }`}
                 />
               </div>
+
+              {budgetError && (
+                <p className="mt-1.5 text-xs text-red-500">
+                  Min must not exceed max
+                </p>
+              )}
             </div>
 
-            <FilterGroup
+            <RadioFilterGroup
               title="Back type"
               options={backTypes}
-              selected={selectedBackTypes}
+              selected={selectedBackType}
               onChange={(value) =>
-                toggleValue(
-                  value,
-                  selectedBackTypes,
-                  setSelectedBackTypes,
-                )
+                selectSingle(value, selectedBackType, setSelectedBackType)
               }
             />
 
-            <FilterGroup
+            <RadioFilterGroup
               title="Armrests"
               options={armrestOptions}
-              selected={selectedArmrests}
+              selected={selectedArmrest}
               onChange={(value) =>
-                toggleValue(
-                  value,
-                  selectedArmrests,
-                  setSelectedArmrests,
-                )
+                selectSingle(value, selectedArmrest, setSelectedArmrest)
               }
             />
 
-            <FilterGroup
+            <RadioFilterGroup
               title="Max user weight"
               options={weightOptions}
-              selected={selectedWeights}
+              selected={selectedWeight}
               onChange={(value) =>
-                toggleValue(
-                  value,
-                  selectedWeights,
-                  setSelectedWeights,
-                )
+                selectSingle(value, selectedWeight, setSelectedWeight)
               }
             />
 
-            <FilterGroup
+            <RadioFilterGroup
               title="Features"
               options={featureOptions}
-              selected={selectedFeatures}
+              selected={selectedFeature}
               onChange={(value) =>
-                toggleValue(
-                  value,
-                  selectedFeatures,
-                  setSelectedFeatures,
-                )
+                selectSingle(value, selectedFeature, setSelectedFeature)
               }
             />
 
-            <FilterGroup
+            <RadioFilterGroup
               title="Colour"
               options={colourOptions}
-              selected={selectedColours}
+              selected={selectedColour}
               onChange={(value) =>
-                toggleValue(
-                  value,
-                  selectedColours,
-                  setSelectedColours,
-                )
+                selectSingle(value, selectedColour, setSelectedColour)
               }
             />
           </aside>
@@ -372,16 +332,12 @@ export default function ProductFilters({
             <div className="flex items-center justify-between gap-4">
               <p className="text-sm text-black/50">
                 {filteredProducts.length}{" "}
-                {filteredProducts.length === 1
-                  ? "chair"
-                  : "chairs"}
+                {filteredProducts.length === 1 ? "chair" : "chairs"}
               </p>
 
               <select
                 value={sortBy}
-                onChange={(event) =>
-                  setSortBy(event.target.value)
-                }
+                onChange={(event) => setSortBy(event.target.value)}
                 className="rounded-lg border border-black/10 bg-white px-3 py-2 text-xs"
               >
                 <option>Recommended</option>
@@ -401,41 +357,52 @@ export default function ProductFilters({
   );
 }
 
-type FilterGroupProps = {
+type RadioFilterGroupProps = {
   title: string;
   options: string[];
-  selected: string[];
+  selected: string | null;
   onChange: (value: string) => void;
 };
 
-function FilterGroup({
+function RadioFilterGroup({
   title,
   options,
   selected,
   onChange,
-}: FilterGroupProps) {
+}: RadioFilterGroupProps) {
   return (
     <div className="mt-7 border-t border-black/10 pt-5">
-      <h3 className="text-sm font-semibold">
-        {title}
-      </h3>
+      <h3 className="text-sm font-semibold">{title}</h3>
 
-      <div className="mt-3 space-y-3">
-        {options.map((option) => (
-          <label
-            key={option}
-            className="flex cursor-pointer items-center gap-3 text-xs text-black/60"
-          >
-            <input
-              type="checkbox"
-              checked={selected.includes(option)}
-              onChange={() => onChange(option)}
-              className="h-4 w-4"
-            />
+      <div className="mt-3 space-y-3" role="radiogroup" aria-label={title}>
+        {options.map((option) => {
+          const isSelected = selected === option;
 
-            <span>{option}</span>
-          </label>
-        ))}
+          return (
+            <button
+              key={option}
+              type="button"
+              role="radio"
+              aria-checked={isSelected}
+              onClick={() => onChange(option)}
+              className="flex w-full cursor-pointer items-center gap-3 text-left text-xs text-black/60"
+            >
+              <span
+                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition ${
+                  isSelected
+                    ? "border-black bg-black"
+                    : "border-black/30 bg-white"
+                }`}
+              >
+                {isSelected && (
+                  <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                )}
+              </span>
+
+              <span>{option}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -444,9 +411,7 @@ function FilterGroup({
 function parsePrice(value: string): number | null {
   const number = Number(value.replace(/[^\d.]/g, ""));
 
-  return Number.isNaN(number) || number === 0
-    ? null
-    : number;
+  return Number.isNaN(number) || number === 0 ? null : number;
 }
 
 function parseWeight(value: string): number | null {

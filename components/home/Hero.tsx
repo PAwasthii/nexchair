@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { whatsappHref } from "@/lib/site";
 
 export default function Hero() {
@@ -5,7 +6,6 @@ export default function Hero() {
     <section className="px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4">
       <div className="mx-auto max-w-7xl rounded-3xl bg-[#f5f1ea] p-8 md:p-14">
         <div className="grid items-center gap-10 md:grid-cols-2">
-
           {/* Left */}
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
@@ -61,18 +61,22 @@ export default function Hero() {
 
               <div>
                 <p className="text-lg font-bold">[Coverage]</p>
-                <p className="mt-1 text-xs text-black/50">Delivery &amp; service</p>
+                <p className="mt-1 text-xs text-black/50">Delivery & service</p>
               </div>
             </div>
           </div>
 
-          {/* Right — image placeholder */}
-          <div className="min-h-[300px] rounded-2xl bg-white/60 p-6 md:min-h-[420px]">
-            <div className="flex h-full min-h-[248px] items-center justify-center rounded-xl border border-black/10 md:min-h-[370px]">
-              <p className="text-sm text-black/40">Hero chair image</p>
-            </div>
+          {/* Right — hero image */}
+          <div className="relative min-h-[300px] overflow-hidden rounded-2xl bg-white/60 md:min-h-[420px]">
+            <Image
+              src="/images/hero-image.png"
+              alt="NexChair office chair"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-contain p-4 md:p-6"
+            />
           </div>
-
         </div>
       </div>
     </section>

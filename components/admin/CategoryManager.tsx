@@ -107,169 +107,128 @@ export default function CategoryManager({ categories }: Props) {
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-black/10 bg-white">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-black/10 bg-black/[0.02]">
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-black/40">
-                    Category
-                  </th>
-                  <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-black/40 sm:table-cell">
-                    Slug
-                  </th>
-                  <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-black/40">
-                    Products
-                  </th>
-                  <th className="hidden px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-black/40 md:table-cell">
-                    Order
-                  </th>
-                  <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-black/40">
-                    Active
-                  </th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-black/40">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-black/5">
-                {categories.map((cat) => {
-                  const isConfirming = confirmDeleteId === cat.id;
-                  return (
-                    <tr
-                      key={cat.id}
-                      className="hover:bg-black/[0.015] transition-colors"
+        <div className="space-y-2">
+          {categories.map((cat) => {
+            const isConfirming = confirmDeleteId === cat.id;
+            return (
+              <div
+                key={cat.id}
+                className="flex items-center gap-3 rounded-2xl border border-black/10 bg-white px-4 py-3"
+              >
+                {/* Thumbnail */}
+                {cat.imageKey ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={cat.imageKey}
+                    alt={cat.name}
+                    className="h-12 w-12 flex-shrink-0 rounded-xl object-cover"
+                  />
+                ) : (
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-[#f5f1ea] text-xs text-black/25">
+                    —
+                  </div>
+                )}
+
+                {/* Category info */}
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                    <span className="truncate font-semibold text-black">
+                      {cat.name}
+                    </span>
+                    <span className="font-mono text-xs text-black/40">
+                      {cat.slug}
+                    </span>
+                  </div>
+                  <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                    <span className="text-xs text-black/50">
+                      {cat.productCount}{" "}
+                      {cat.productCount === 1 ? "product" : "products"}
+                    </span>
+                    <span className="text-xs text-black/30">
+                      Order: {cat.sortOrder}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Status toggle */}
+                <button
+                  type="button"
+                  onClick={() => handleToggle(cat.id, cat.isActive)}
+                  disabled={togglePending}
+                  title={
+                    cat.isActive
+                      ? "Active — click to deactivate"
+                      : "Inactive — click to activate"
+                  }
+                  className={[
+                    "flex-shrink-0 rounded-full px-3 py-1 text-xs font-semibold transition hover:opacity-75 disabled:cursor-not-allowed disabled:opacity-50",
+                    cat.isActive
+                      ? "bg-green-100 text-green-700"
+                      : "bg-black/10 text-black/40",
+                  ].join(" ")}
+                >
+                  {cat.isActive ? "Active" : "Inactive"}
+                </button>
+
+                {/* Products / Edit / Delete */}
+                {!isConfirming ? (
+                  <div className="flex flex-shrink-0 items-center gap-2">
+                    <Link
+                      href={`/admin/products?category=${cat.slug}`}
+                      className="rounded-lg border border-[#c44e18]/30 px-3 py-1.5 text-xs font-semibold text-[#c44e18] transition hover:bg-[#f5dfd4]"
                     >
-                      {/* Image + Name */}
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          {cat.imageKey ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={cat.imageKey}
-                              alt={cat.name}
-                              className="h-9 w-9 flex-shrink-0 rounded-lg object-cover"
-                            />
-                          ) : (
-                            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[#f5f1ea] text-xs text-black/25">
-                              —
-                            </div>
-                          )}
-                          <span className="font-medium text-black">
-                            {cat.name}
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Slug */}
-                      <td className="hidden px-4 py-3 sm:table-cell">
-                        <span className="font-mono text-xs text-black/50">
-                          {cat.slug}
-                        </span>
-                      </td>
-
-                      {/* Product count */}
-                      <td className="px-4 py-3 text-center">
-                        <span className="text-sm text-black/60">
-                          {cat.productCount}
-                        </span>
-                      </td>
-
-                      {/* Sort order */}
-                      <td className="hidden px-4 py-3 text-center md:table-cell">
-                        <span className="text-sm text-black/40">
-                          {cat.sortOrder}
-                        </span>
-                      </td>
-
-                      {/* Active toggle */}
-                      <td className="px-4 py-3 text-center">
-                        <button
-                          type="button"
-                          onClick={() => handleToggle(cat.id, cat.isActive)}
-                          disabled={togglePending}
-                          title={
-                            cat.isActive
-                              ? "Active — click to deactivate"
-                              : "Inactive — click to activate"
-                          }
-                          className={[
-                            "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50",
-                            cat.isActive
-                              ? "bg-green-100 text-green-700"
-                              : "bg-black/10 text-black/40",
-                          ].join(" ")}
-                        >
-                          {cat.isActive ? "Active" : "Inactive"}
-                        </button>
-                      </td>
-
-                      {/* Row actions */}
-                      <td className="px-4 py-3">
-                        <div className="flex items-center justify-end gap-1.5">
-                          {!isConfirming ? (
-                            <>
-                              <Link
-                                href={`/admin/products?category=${cat.slug}`}
-                                className="rounded-lg px-2.5 py-1 text-xs font-medium text-[#c44e18] transition hover:bg-[#f5dfd4]"
-                              >
-                                Products
-                              </Link>
-                              <button
-                                type="button"
-                                onClick={() => openEdit(cat)}
-                                className="rounded-lg px-2.5 py-1 text-xs font-medium text-black/50 transition hover:bg-black/5 hover:text-black"
-                              >
-                                Edit
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setDeleteError(null);
-                                  setConfirmDeleteId(cat.id);
-                                }}
-                                disabled={deletePending}
-                                className="rounded-lg px-2.5 py-1 text-xs font-medium text-red-400 transition hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
-                              >
-                                Delete
-                              </button>
-                            </>
-                          ) : (
-                            <div className="flex flex-wrap items-center justify-end gap-1.5">
-                              {deleteError && (
-                                <p className="w-full text-right text-xs text-red-600">
-                                  {deleteError}
-                                </p>
-                              )}
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setConfirmDeleteId(null);
-                                  setDeleteError(null);
-                                }}
-                                disabled={deletePending}
-                                className="rounded-lg px-2 py-1 text-xs text-black/40 transition hover:text-black disabled:opacity-50"
-                              >
-                                Cancel
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => handleDelete(cat.id)}
-                                disabled={deletePending}
-                                className="rounded-lg bg-red-600 px-2.5 py-1 text-xs font-semibold text-white transition hover:bg-red-700 disabled:opacity-50"
-                              >
-                                {deletePending ? "Deleting…" : "Confirm delete"}
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                      Products
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => openEdit(cat)}
+                      className="rounded-lg border border-black/20 bg-white px-3 py-1.5 text-xs font-semibold text-black/70 transition hover:border-black/40 hover:text-black"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setDeleteError(null);
+                        setConfirmDeleteId(cat.id);
+                      }}
+                      disabled={deletePending}
+                      className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-500 transition hover:border-red-400 hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex flex-shrink-0 flex-wrap items-center gap-1.5">
+                    {deleteError && (
+                      <p className="w-full text-right text-xs text-red-600">
+                        {deleteError}
+                      </p>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setConfirmDeleteId(null);
+                        setDeleteError(null);
+                      }}
+                      disabled={deletePending}
+                      className="rounded-lg px-2.5 py-1.5 text-xs text-black/40 transition hover:text-black disabled:opacity-50"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(cat.id)}
+                      disabled={deletePending}
+                      className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-red-700 disabled:opacity-50"
+                    >
+                      {deletePending ? "Deleting…" : "Confirm delete"}
+                    </button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
 

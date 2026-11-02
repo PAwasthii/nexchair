@@ -7,6 +7,14 @@ import ProductRangeCTA from "@/components/product-range/ProductRangeCTA";
 import ProductRangeHeader from "@/components/product-range/ProductRangeHeader";
 import type { Product } from "@/types/product";
 
+function normalisedPrice(raw: string): string {
+  const trimmed = raw.trim();
+  if (!trimmed || trimmed.includes("[") || trimmed === "Price on request") {
+    return "Price on request";
+  }
+  return trimmed;
+}
+
 export default async function ProductRange() {
   const dbProducts = await prisma.product.findMany({
     where: {
@@ -49,7 +57,7 @@ export default async function ProductRange() {
       slug: product.slug,
       code: product.code,
       category: product.category.name,
-      price: product.price,
+      price: normalisedPrice(product.price),
       description:
         product.description ??
         "A practical chair designed for comfortable everyday use.",

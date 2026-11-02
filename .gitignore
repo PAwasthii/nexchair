@@ -48,3 +48,10 @@ next-env.d.ts
 /.claude/
 /.cursor/
 /.devin/
+
+# NexChair archive import (3rd-party images, not to be committed)
+_archive_inspect/
+NexChair_Product_Archive.zip
+
+# Client-supplied source data (binary, not for version control)
+chair specifications.xlsx

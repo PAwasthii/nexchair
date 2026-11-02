@@ -2,10 +2,19 @@ import ProductCard from "@/components/ProductCard";
 import { prisma } from "@/lib/prisma";
 import type { Product } from "@/types/product";
 
+function normalisedPrice(raw: string): string {
+  const trimmed = raw.trim();
+  if (!trimmed || trimmed.includes("[") || trimmed === "Price on request") {
+    return "Price on request";
+  }
+  return trimmed;
+}
+
 export default async function Bestsellers() {
   const dbProducts = await prisma.product.findMany({
     where: {
       isActive: true,
+      isBestseller: true,
     },
     include: {
       category: true,
@@ -19,15 +28,10 @@ export default async function Bestsellers() {
         take: 1,
       },
     },
-    orderBy: [
-      {
-        isBestseller: "desc",
-      },
-      {
-        createdAt: "desc",
-      },
-    ],
-    take: 3,
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 6,
   });
 
   const products: Product[] = dbProducts.map((product) => {
@@ -45,7 +49,7 @@ export default async function Bestsellers() {
       slug: product.slug,
       code: product.code,
       category: product.category.name,
-      price: product.price,
+      price: normalisedPrice(product.price),
       description:
         product.description ??
         "A practical chair designed for comfortable everyday use.",
@@ -69,6 +73,8 @@ export default async function Bestsellers() {
       },
     };
   });
+
+  if (products.length === 0) return null;
 
   return (
     <section className="px-6 py-20">
