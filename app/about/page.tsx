@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { whatsappHref } from "@/lib/site";
 
 export default function About() {
@@ -23,11 +24,15 @@ export default function About() {
                 where it started, and who it builds seating for.]
               </p>
 
-              {/* Showroom / factory image placeholder */}
-              <div className="mt-8 flex min-h-[220px] items-end justify-center rounded-3xl bg-[#e9e3d8] p-4">
-                <p className="text-xs text-black/40">
-                  Showroom / factory photo / client supplies
-                </p>
+              <div className="relative mt-8 overflow-hidden rounded-3xl">
+                <Image
+                  src="/images/factory-image.png"
+                  alt="NexChair factory outlet"
+                  width={800}
+                  height={500}
+                  className="h-auto w-full object-cover"
+                  priority
+                />
               </div>
             </div>
           </div>

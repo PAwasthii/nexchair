@@ -5,7 +5,7 @@ export default function AnnouncementBar() {
       <span className="mx-3 text-white/25">|</span>
       <span>GST invoicing for businesses</span>
       <span className="mx-3 text-white/25">|</span>
-      <span>10+ year warranty on every chair</span>
+      <span>1 year warranty on every chair</span>
     </div>
   );
 }
