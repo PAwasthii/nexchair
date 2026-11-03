@@ -26,7 +26,7 @@ export default function Footer() {
             </Link>
 
             <p className="mt-3 text-sm leading-6 text-gray-400">
-              Office seating with the full specification sheet up front — for
+              Office seating with the full specification sheet up front - for
               teams, offices and home setups.
             </p>
           </div>

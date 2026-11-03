@@ -19,8 +19,8 @@ export default function Hero() {
             </h1>
 
             <p className="mt-6 max-w-xl text-base leading-7 text-black/60">
-              Every NexChair ships with its full specification sheet —
-              dimensions, mechanism, load rating and warranty — so you choose
+              Every NexChair ships with its full specification sheet -
+              dimensions, mechanism, load rating and warranty - so you choose
               on facts, not adjectives.
             </p>
 
