@@ -22,7 +22,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/10 bg-[#f5f1ea]">
+    <header className="sticky top-0 z-50 border-b border-black/[0.08] bg-[#f5f1ea] shadow-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/" onClick={closeMenu}>
@@ -42,7 +42,7 @@ export default function Navbar() {
             <Link
               key={item.label}
               href={item.href}
-              className="transition hover:opacity-60"
+              className="font-medium transition hover:text-[#0E3159]"
             >
               {item.label}
             </Link>
@@ -60,7 +60,7 @@ export default function Navbar() {
 
           <Link
             href="/contact"
-            className="rounded-full bg-[#c44e18] px-4 py-2 text-sm text-white"
+            className="rounded-full bg-[#F26919] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#d95e15]"
           >
             Request a quote
           </Link>

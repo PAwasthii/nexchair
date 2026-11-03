@@ -221,7 +221,7 @@ export default function ProductFilters({
                 onClick={() => setSelectedCategory(category)}
                 className={`shrink-0 rounded-full border px-4 py-2 text-xs font-medium transition ${
                   active
-                    ? "border-black bg-black text-white"
+                    ? "border-[#0E3159] bg-[#0E3159] text-white"
                     : "border-black/10 bg-white text-black hover:border-black/30"
                 }`}
               >
@@ -240,7 +240,7 @@ export default function ProductFilters({
               <button
                 type="button"
                 onClick={clearFilters}
-                className="text-xs text-[#c44e18]"
+                className="text-xs text-[#F26919]"
               >
                 Clear all
               </button>
@@ -390,7 +390,7 @@ function RadioFilterGroup({
               <span
                 className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition ${
                   isSelected
-                    ? "border-black bg-black"
+                    ? "border-[#0E3159] bg-[#0E3159]"
                     : "border-black/30 bg-white"
                 }`}
               >

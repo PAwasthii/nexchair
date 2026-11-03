@@ -2,7 +2,7 @@ import QuoteForm from "@/components/home/QuoteForm";
 
 export default function QuoteSection() {
   return (
-    <section className="bg-[#c44e18] px-6 py-20 text-white">
+    <section className="bg-[#0E3159] px-6 py-20 text-white">
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.8fr] lg:items-center">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">

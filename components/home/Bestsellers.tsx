@@ -81,7 +81,7 @@ export default async function Bestsellers() {
       <div className="mx-auto max-w-7xl">
         <div className="flex items-end justify-between gap-6">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
               Bestsellers
             </p>
 

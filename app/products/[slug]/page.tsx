@@ -82,7 +82,7 @@ export default async function ProductPage({
                 </span>
 
                 {product.isBestseller && (
-                  <span className="rounded-full bg-[#f5dfd4] px-3 py-1 text-xs text-[#c44e18]">
+                  <span className="rounded-full bg-[#fde8d4] px-3 py-1 text-xs text-[#F26919]">
                     Bestseller
                   </span>
                 )}
@@ -128,7 +128,7 @@ export default async function ProductPage({
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   href={`/products/${product.slug}/order`}
-                  className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white"
+                  className="rounded-full bg-[#0E3159] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0a2647]"
                 >
                   Enquire
                 </Link>
@@ -175,7 +175,7 @@ export default async function ProductPage({
                   "Bulk pricing",
                 ].map((item) => (
                   <p key={item} className="flex items-center gap-2 text-xs text-black/60">
-                    <svg className="h-3.5 w-3.5 shrink-0 text-[#c44e18]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <svg className="h-3.5 w-3.5 shrink-0 text-[#F26919]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                       <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
                     </svg>
                     {item}
@@ -422,7 +422,7 @@ export default async function ProductPage({
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
                 Warranty & care
               </p>
 

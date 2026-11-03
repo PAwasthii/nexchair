@@ -12,7 +12,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const productLink = `/products/${product.slug}`;
 
   return (
-    <article className="overflow-hidden rounded-3xl bg-white">
+    <article className="overflow-hidden rounded-3xl bg-white shadow-sm transition-shadow hover:shadow-md">
       <Link href={productLink} className="block">
         {/* Image area — fixed aspect ratio, object-contain so full chair is visible */}
         <div className="relative aspect-[4/3] overflow-hidden bg-[#f5f1ea]">
@@ -37,7 +37,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
 
           {product.isBestseller && (
-            <div className="absolute right-3 top-3 rounded-full bg-[#f5dfd4] px-2.5 py-1 text-xs font-medium text-[#c44e18]">
+            <div className="absolute right-3 top-3 rounded-full bg-[#fde8d4] px-2.5 py-1 text-xs font-medium text-[#F26919]">
               Bestseller
             </div>
           )}
@@ -47,7 +47,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#c44e18]">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#F26919]">
               {product.code}
             </p>
             <h3 className="mt-1 text-lg font-semibold leading-snug">
@@ -88,7 +88,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </Link>
           <Link
             href={`${productLink}/order`}
-            className="rounded-full bg-black px-4 py-2 text-sm font-semibold text-white"
+            className="rounded-full bg-[#0E3159] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0a2647]"
           >
             Enquire
           </Link>

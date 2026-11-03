@@ -22,7 +22,7 @@ export default function ProductComparison({
     <section className="px-6 py-16">
       <div className="mx-auto max-w-7xl">
         <div id="compare" className="scroll-mt-20">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
             Compare
           </p>
 

@@ -15,7 +15,7 @@ export default function ProductShowcase({ products }: { products: Product[] }) {
     <>
       <div className="flex items-end justify-between gap-6">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
             Our range
           </p>
           <h2 className="mt-4 text-4xl font-bold tracking-tight md:text-5xl">
@@ -38,7 +38,7 @@ export default function ProductShowcase({ products }: { products: Product[] }) {
             onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
             disabled={page === totalPages - 1}
             aria-label="Next page"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white transition hover:bg-black/80 disabled:opacity-30"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0E3159] text-white transition hover:bg-[#0a2647] disabled:opacity-30"
           >
             →
           </button>
@@ -60,7 +60,7 @@ export default function ProductShowcase({ products }: { products: Product[] }) {
               onClick={() => setPage(i)}
               aria-label={`Page ${i + 1}`}
               className={`h-1.5 rounded-full transition-all ${
-                i === page ? "w-6 bg-black" : "w-1.5 bg-black/20"
+                i === page ? "w-6 bg-[#0E3159]" : "w-1.5 bg-black/20"
               }`}
             />
           ))}

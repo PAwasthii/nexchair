@@ -30,7 +30,7 @@ export default function WhyNexChair() {
     <section className="bg-[#f5f1ea] px-6 py-20">
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
             Why NexChair
           </p>
 
@@ -43,9 +43,9 @@ export default function WhyNexChair() {
           {points.map((point) => (
             <article
               key={point.title}
-              className="rounded-3xl bg-white p-6"
+              className="rounded-3xl bg-white p-6 shadow-sm"
             >
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#c44e18]">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#F26919]">
                 {point.label}
               </p>
 

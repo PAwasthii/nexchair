@@ -31,7 +31,7 @@ export default function ProductGallery({
               type="button"
               className={`flex h-16 min-w-16 items-center justify-center rounded-xl border text-xs sm:h-20 sm:min-w-0 ${
                 item === "Front"
-                  ? "border-[#c44e18] bg-white"
+                  ? "border-[#F26919] bg-white"
                   : "border-black/10 bg-white text-black/50"
               }`}
             >
@@ -59,7 +59,7 @@ export default function ProductGallery({
             aria-label={`View ${productName} image ${index + 1}`}
             className={`h-16 min-w-16 overflow-hidden rounded-xl bg-white sm:h-20 sm:min-w-0 ${
               selectedIndex === index
-                ? "border-2 border-[#c44e18]"
+                ? "border-2 border-[#F26919]"
                 : "border border-black/10"
             }`}
           >

@@ -67,7 +67,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
               aria-current={n === safePage ? "page" : undefined}
               className={`flex h-9 w-9 items-center justify-center rounded-lg text-xs ${
                 n === safePage
-                  ? "bg-black text-white"
+                  ? "bg-[#0E3159] text-white"
                   : "border border-black/10 bg-white hover:border-black/30"
               }`}
             >

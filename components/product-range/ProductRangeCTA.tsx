@@ -6,7 +6,7 @@ export default function ProductRangeCTA() {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col gap-6 rounded-3xl bg-[#f5f1ea] p-8 md:flex-row md:items-center md:justify-between md:p-12">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
               Not sure where to start?
             </p>
 
@@ -22,7 +22,7 @@ export default function ProductRangeCTA() {
 
           <Link
             href="/contact"
-            className="w-fit shrink-0 rounded-full bg-[#c44e18] px-6 py-3 text-sm font-semibold text-white"
+            className="w-fit shrink-0 rounded-full bg-[#F26919] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#d95e15]"
           >
             Get a shortlist →
           </Link>

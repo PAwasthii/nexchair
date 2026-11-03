@@ -2,8 +2,11 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --accent: #c44e18;
+  --foreground: #1c1c1e;
+  --color-navy: #0E3159;
+  --color-orange: #F26919;
+  --color-beige: #f5f1ea;
+  --color-beige-deep: #e9e3d8;
 }
 
 * {
@@ -18,6 +21,8 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

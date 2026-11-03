@@ -119,7 +119,7 @@ export default function QuoteForm() {
         <select
           value={neededBy}
           onChange={(event) => setNeededBy(event.target.value)}
-          className="rounded-xl border border-white/20 bg-[#c44e18] px-4 py-3 text-sm text-white outline-none focus:border-white"
+          className="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/60"
         >
           <option>Within 2 weeks</option>
           <option>Within 1 month</option>
@@ -131,7 +131,7 @@ export default function QuoteForm() {
           onChange={(event) =>
             setPreferredContact(event.target.value)
           }
-          className="rounded-xl border border-white/20 bg-[#c44e18] px-4 py-3 text-sm text-white outline-none focus:border-white"
+          className="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/60"
         >
           <option>WhatsApp</option>
           <option>Phone</option>
@@ -163,7 +163,7 @@ export default function QuoteForm() {
       <button
         type="submit"
         disabled={isPending}
-        className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+        className="rounded-full bg-[#F26919] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#d95e15] disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isPending ? "Submitting..." : "Request a quote"}
       </button>

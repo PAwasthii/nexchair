@@ -16,13 +16,13 @@ const company = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#171717] px-6 py-14 text-white">
+    <footer className="bg-[#0E3159] px-6 py-14 text-white">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div>
             <Link href="/" className="text-xl font-bold">
-              Nex<span className="text-[#c44e18]">Chair</span>
+              Nex<span className="text-[#F26919]">Chair</span>
             </Link>
 
             <p className="mt-3 text-sm leading-6 text-gray-400">

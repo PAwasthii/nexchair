@@ -6,7 +6,7 @@ export default function About() {
       {/* Hero */}
       <section className="px-6 py-14 md:py-20">
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
             About NexChair
           </p>
 
@@ -57,7 +57,7 @@ export default function About() {
       {/* How we work */}
       <section className="px-6 py-14">
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
             How we work
           </p>
 
@@ -84,7 +84,7 @@ export default function About() {
                 key={step.title}
                 className="rounded-3xl bg-white p-8"
               >
-                <p className="text-5xl font-bold leading-none text-[#c44e18]">
+                <p className="text-5xl font-bold leading-none text-[#F26919]">
                   &ldquo;
                 </p>
 
@@ -102,7 +102,7 @@ export default function About() {
       </section>
 
       {/* Bulk order CTA */}
-      <section className="bg-[#171717] px-6 py-16 text-white">
+      <section className="bg-[#0E3159] px-6 py-16 text-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="max-w-xl text-4xl font-bold tracking-tight md:text-5xl">
@@ -116,7 +116,7 @@ export default function About() {
 
           <a
             href={whatsappHref}
-            className="w-fit shrink-0 rounded-full bg-[#c44e18] px-6 py-3 text-sm font-semibold text-white"
+            className="w-fit shrink-0 rounded-full bg-[#F26919] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#d95e15]"
           >
             Talk to the project desk
           </a>

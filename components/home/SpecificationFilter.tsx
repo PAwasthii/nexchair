@@ -33,8 +33,8 @@ export default function SpecificationFilter() {
 
   return (
     <section className="px-4 py-3 md:px-6 md:py-4">
-      <div className="mx-auto max-w-7xl rounded-3xl bg-[#171717] p-8 text-white md:p-14">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
+      <div className="mx-auto max-w-7xl rounded-3xl bg-[#0E3159] p-8 text-white md:p-14">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
           Choose by specification
         </p>
 
@@ -79,7 +79,7 @@ export default function SpecificationFilter() {
           <button
             type="button"
             onClick={handleShowChairs}
-            className="rounded-full bg-[#c44e18] px-6 py-3 text-sm font-semibold text-white"
+            className="rounded-full bg-[#F26919] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#d95e15]"
           >
             Show matching chairs
           </button>

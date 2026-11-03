@@ -8,7 +8,7 @@ export default function Hero() {
         <div className="grid items-center gap-10 md:grid-cols-2">
           {/* Left */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c44e18]">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
               Ergonomic seating · Made for long hours
             </p>
 
@@ -27,14 +27,14 @@ export default function Hero() {
             <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href="/product-range"
-                className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white"
+                className="rounded-full bg-[#0E3159] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0a2647]"
               >
                 Explore the range
               </a>
 
               <a
                 href={whatsappHref}
-                className="flex items-center gap-2 rounded-full border border-black px-6 py-3 text-sm font-semibold"
+                className="flex items-center gap-2 rounded-full border border-black/70 px-6 py-3 text-sm font-semibold transition hover:border-black"
               >
                 <svg
                   className="h-4 w-4"
@@ -67,14 +67,14 @@ export default function Hero() {
           </div>
 
           {/* Right — hero image */}
-          <div className="relative min-h-[300px] overflow-hidden rounded-2xl bg-white/60 md:min-h-[420px]">
+          <div className="relative min-h-[300px] overflow-hidden rounded-2xl md:min-h-[420px]">
             <Image
               src="/images/hero-image.png"
               alt="NexChair office chair"
               fill
               priority
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-contain p-4 md:p-6"
+              className="object-contain"
             />
           </div>
         </div>

@@ -1,7 +1,7 @@
 export default function AnnouncementBar() {
   return (
-    <div className="bg-[#171717] px-6 py-2.5 text-center text-xs font-medium text-white/75">
-      <span>Corporate &amp; bulk orders — dedicated project desk</span>
+    <div className="bg-[#0E3159] px-6 py-2.5 text-center text-xs font-medium text-white/80">
+      <span>Corporate &amp; bulk orders - dedicated project desk</span>
       <span className="mx-3 text-white/25">|</span>
       <span>GST invoicing for businesses</span>
       <span className="mx-3 text-white/25">|</span>
