@@ -32,8 +32,8 @@ export default function Contact() {
               Request a quote
             </h1>
 
-            <p className="max-w-sm text-sm leading-6 text-black/55">
-              Tell us what you need — we reply with a shortlist, spec sheets
+            <p className="max-w-sm text-sm leading-6 font-semibold text-black/55">
+              Tell us what you need - we reply with a shortlist, spec sheets
               and a GST quote.
             </p>
           </div>
@@ -129,7 +129,7 @@ export default function Contact() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#20b957]"
+                className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-[#1aad4b] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#158a3c]"
               >
                 <svg
                   className="h-4 w-4"
