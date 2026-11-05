@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { whatsappHref } from "@/lib/site";
 
 export default function Hero() {
@@ -67,15 +66,15 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right — hero image */}
+          {/* Right — hero video */}
           <div className="relative min-h-[300px] overflow-hidden rounded-2xl md:min-h-[420px]">
-            <Image
-              src="/images/hero-image.png"
-              alt="NexChair office chair"
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-contain"
+            <video
+              src="/home-page-vid.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="h-full w-full object-cover"
             />
           </div>
         </div>
