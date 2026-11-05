@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Hero from "@/components/home/Hero";
 import CategorySection from "@/components/home/CategorySection";
 import SpecificationFilter from "@/components/home/SpecificationFilter";
