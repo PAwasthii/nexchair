@@ -11,7 +11,7 @@ export default function CompanyStats() {
       {stats.map(({ value, label }) => (
         <div
           key={label}
-          className="rounded-3xl border border-black/10 bg-white p-6 md:p-8"
+          className="rounded-2xl border border-black/10 bg-white p-5 md:p-6"
         >
           <p className="text-3xl font-bold text-[#0E3159] sm:text-4xl">
             {value}

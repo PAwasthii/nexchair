@@ -19,7 +19,7 @@ export default function Contact() {
   return (
     <main>
       {/* Page header */}
-      <section className="border-b border-black/10 px-6 py-12">
+      <section className="border-b border-black/10 px-6 py-8">
         <div className="mx-auto max-w-7xl">
           <p className="text-xs text-black/40">
             <Link href="/" className="hover:text-black/70">Home</Link>
@@ -28,7 +28,7 @@ export default function Contact() {
           </p>
 
           <div className="mt-6 grid gap-6 md:grid-cols-2 md:items-end">
-            <h1 className="text-4xl font-bold leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
+            <h1 className="text-4xl font-bold leading-snug tracking-tight sm:text-5xl sm:leading-tight md:text-6xl md:leading-[1.1]">
               Request a quote
             </h1>
 
@@ -41,7 +41,7 @@ export default function Contact() {
       </section>
 
       {/* Form + sidebar */}
-      <section className="px-6 py-12">
+      <section className="px-6 py-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_0.65fr]">
           {/* Left: form */}
           <div>
@@ -50,7 +50,7 @@ export default function Contact() {
 
           {/* Right: Prefer to talk? */}
           <div>
-            <div className="rounded-3xl border border-black/10 bg-white p-8">
+            <div className="rounded-2xl border border-black/10 bg-white p-6">
               <h2 className="text-xl font-semibold">Prefer to talk?</h2>
 
               <div className="mt-6 space-y-5 text-sm">
@@ -129,7 +129,7 @@ export default function Contact() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-[#1f7650] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#185f40]"
+                className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#20b957]"
               >
                 <svg
                   className="h-4 w-4"

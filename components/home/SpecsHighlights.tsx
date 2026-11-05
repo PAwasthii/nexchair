@@ -61,7 +61,7 @@ export default async function SpecsHighlights() {
 
   return (
     <section className="px-4 py-3 md:px-6 md:py-4">
-      <div className="mx-auto max-w-7xl rounded-3xl bg-[#f5f1ea] p-8 md:p-14">
+      <div className="mx-auto max-w-7xl rounded-3xl bg-[#f5f1ea] p-8 md:p-10">
         <ProductShowcase products={products} />
       </div>
     </section>

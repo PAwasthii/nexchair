@@ -135,7 +135,9 @@ export default async function ProductPage({
 
                 <a
                   href={whatsappHref}
-                  className="flex items-center gap-2 rounded-full bg-[#1f7650] px-6 py-3 text-sm font-semibold text-white"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#20b957]"
                 >
                   <svg
                     className="h-4 w-4"
@@ -192,7 +194,7 @@ export default async function ProductPage({
         <div className="mx-auto flex max-w-7xl gap-8 overflow-x-auto px-6">
           <a
             href="#specifications"
-            className="shrink-0 border-b-2 border-[#c44e18] py-5 text-sm font-semibold"
+            className="shrink-0 border-b-2 border-[#F26919] py-5 text-sm font-semibold"
           >
             Specifications
           </a>
@@ -230,7 +232,7 @@ export default async function ProductPage({
       {/* Specifications */}
       <section
         id="specifications"
-        className="scroll-mt-20 px-6 py-16"
+        className="scroll-mt-20 px-6 py-10"
       >
         <div className="mx-auto max-w-7xl">
           <h2 className="text-4xl font-bold">Specifications</h2>
@@ -318,7 +320,7 @@ export default async function ProductPage({
       {/* Dimensions */}
       <section
         id="dimensions"
-        className="scroll-mt-20 border-t border-black/10 px-6 py-16"
+        className="scroll-mt-20 border-t border-black/10 px-6 py-10"
       >
         <div className="mx-auto max-w-7xl">
           <h2 className="text-4xl font-bold">Dimensions</h2>
@@ -361,7 +363,7 @@ export default async function ProductPage({
       {/* Mechanism */}
       <section
         id="mechanism"
-        className="scroll-mt-20 border-t border-black/10 px-6 py-16"
+        className="scroll-mt-20 border-t border-black/10 px-6 py-10"
       >
         <div className="mx-auto max-w-7xl">
           <h2 className="text-4xl font-bold">Mechanism</h2>
@@ -417,7 +419,7 @@ export default async function ProductPage({
       {/* Warranty & Care */}
       <section
         id="warranty"
-        className="scroll-mt-20 bg-[#171717] px-6 py-16 text-white"
+        className="scroll-mt-20 bg-[#171717] px-6 py-10 text-white"
       >
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">

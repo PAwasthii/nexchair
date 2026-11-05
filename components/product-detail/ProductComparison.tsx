@@ -19,7 +19,7 @@ export default function ProductComparison({
   products,
 }: ProductComparisonProps) {
   return (
-    <section className="px-6 py-16">
+    <section className="px-6 py-10">
       <div className="mx-auto max-w-7xl">
         <div id="compare" className="scroll-mt-20">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">

@@ -209,7 +209,7 @@ export default function ProductFilters({
   }
 
   return (
-    <section className="px-6 py-8">
+    <section className="px-6 py-6">
       <div className="mx-auto max-w-7xl">
         {/* Categories */}
         <div className="flex gap-2 overflow-x-auto pb-2">

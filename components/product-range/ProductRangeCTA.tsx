@@ -2,9 +2,9 @@ import Link from "next/link";
 
 export default function ProductRangeCTA() {
   return (
-    <section className="border-t border-black/10 px-6 py-16">
+    <section className="border-t border-black/10 px-6 py-10">
       <div className="mx-auto max-w-7xl">
-        <div className="flex flex-col gap-6 rounded-3xl bg-[#f5f1ea] p-8 md:flex-row md:items-center md:justify-between md:p-12">
+        <div className="flex flex-col gap-6 rounded-3xl bg-[#f5f1ea] p-8 md:flex-row md:items-center md:justify-between md:p-10">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
               Not sure where to start?
@@ -14,7 +14,7 @@ export default function ProductRangeCTA() {
               Not sure which model fits your team?
             </h2>
 
-            <p className="mt-3 max-w-md text-sm leading-6 text-black/55">
+            <p className="mt-3 max-w-md text-sm leading-6 text-black/65">
               Share your team size and budget — we shortlist three options for
               you.
             </p>

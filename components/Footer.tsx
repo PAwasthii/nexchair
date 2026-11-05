@@ -26,7 +26,7 @@ const company = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0E3159] px-6 py-14 text-white">
+    <footer className="bg-[#0E3159] px-6 py-10 text-white">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
@@ -172,7 +172,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs font-semibold text-gray-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-5 text-xs font-semibold text-gray-500 sm:flex-row sm:items-center sm:justify-between">
           <span>© 2026 NexChair</span>
 
           <div className="flex gap-4">

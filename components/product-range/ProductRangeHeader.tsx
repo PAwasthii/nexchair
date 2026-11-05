@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function ProductRangeHeader() {
   return (
-    <section className="border-b border-black/10 px-6 py-12">
+    <section className="border-b border-black/10 px-6 py-8">
       <div className="mx-auto max-w-7xl">
         <p className="text-xs text-black/40">
           <Link href="/" className="hover:text-black/70">Home</Link>
@@ -17,7 +17,7 @@ export default function ProductRangeHeader() {
             </h1>
           </div>
 
-          <p className="max-w-md text-sm leading-6 text-black/55">
+          <p className="max-w-md text-sm leading-6 text-black/65">
             Filter by category or by the numbers that matter — load rating,
             adjustability, back type and budget.
           </p>

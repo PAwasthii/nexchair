@@ -33,7 +33,9 @@ export default function Hero() {
 
               <a
                 href={whatsappHref}
-                className="flex items-center gap-2 rounded-full border border-black/70 px-6 py-3 text-sm font-semibold transition hover:border-black"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#20b957]"
               >
                 <svg
                   className="h-4 w-4"

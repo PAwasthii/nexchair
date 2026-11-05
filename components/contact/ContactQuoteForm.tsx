@@ -133,7 +133,7 @@ export default function ContactQuoteForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-full bg-[#c44e18] px-6 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-full bg-[#F26919] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#d95e15] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {isPending ? "Sending..." : "Send enquiry"}
         </button>
