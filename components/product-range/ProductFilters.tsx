@@ -56,7 +56,10 @@ export default function ProductFilters({
     const value = searchParams.get("back");
     return value && backTypes.includes(value) ? value : null;
   });
-  const [selectedArmrest, setSelectedArmrest] = useState<string | null>(null);
+  const [selectedArmrest, setSelectedArmrest] = useState<string | null>(() => {
+    const value = searchParams.get("armrests");
+    return value && armrestOptions.includes(value) ? value : null;
+  });
   const [selectedWeight, setSelectedWeight] = useState<string | null>(() => {
     const value = searchParams.get("weight");
     return value && weightOptions.includes(value) ? value : null;

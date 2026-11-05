@@ -2,6 +2,60 @@ import Image from "next/image";
 import { whatsappHref } from "@/lib/site";
 import CompanyStats from "@/components/CompanyStats";
 
+const principles = [
+  {
+    icon: (
+      <svg className="h-7 w-7 text-[#F26919]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+        <path d="M12 11h4"/><path d="M12 16h4"/>
+        <path d="M8 11h.01"/><path d="M8 16h.01"/>
+      </svg>
+    ),
+    title: "Specs before sales talk.",
+    body: "Every product page shows the numbers that matter: load rating, adjustability, back and seat material, and warranty.",
+    note: null,
+  },
+  {
+    icon: (
+      <svg className="h-7 w-7 text-[#F26919]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    ),
+    title: "Fit for the person, not just the room.",
+    body: "We help you match a chair to body weight, hours seated and budget, not just looks.",
+    note: null,
+  },
+  {
+    icon: (
+      <svg className="h-7 w-7 text-[#F26919]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    ),
+    title: "Built for teams.",
+    body: "For offices and bulk orders, share your seat count and budget. Our project desk will shortlist three options with spec sheets, with GST invoicing included.",
+    note: null,
+  },
+  {
+    icon: (
+      <svg className="h-7 w-7 text-[#F26919]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
+        <path d="M15 18H9"/>
+        <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>
+        <circle cx="17" cy="18" r="2"/>
+        <circle cx="7" cy="18" r="2"/>
+      </svg>
+    ),
+    title: "Support after delivery.",
+    body: "Every chair is backed by a manufacturer warranty and our [delivery & service coverage] across [cities/regions].",
+    note: "Coverage details pending — awaiting confirmation from client.",
+  },
+];
+
 export default function About() {
   return (
     <main>
@@ -19,7 +73,7 @@ export default function About() {
                 Chairs you can choose on facts.
               </h1>
 
-              <p className="mt-5 text-sm leading-7 text-black/70 sm:text-[0.9375rem]">
+              <p className="mt-5 text-sm leading-7 text-black sm:text-[0.9375rem]">
                 NexChair started from a simple frustration: buying a chair meant
                 reading words like &ldquo;premium,&rdquo; &ldquo;ergonomic&rdquo; and
                 &ldquo;ultra-comfortable&rdquo; with almost nothing behind them. We work
@@ -64,7 +118,7 @@ export default function About() {
               Every seat in a modern workspace.
             </h2>
 
-            <p className="text-sm leading-7 text-black/70 md:text-[0.9375rem]">
+            <p className="text-sm leading-7 text-black md:text-[0.9375rem]">
               From high-back ergonomic mesh chairs and executive leather seating
               to staff, visitor, lounge and canteen chairs, our range covers
               every seat in a modern workspace. Each model is built for long
@@ -87,38 +141,11 @@ export default function About() {
           </h2>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
-            {[
-              {
-                n: "1",
-                title: "Specs before sales talk.",
-                body: "Every product page shows the numbers that matter: load rating, adjustability, back and seat material, and warranty.",
-                note: null,
-              },
-              {
-                n: "2",
-                title: "Fit for the person, not just the room.",
-                body: "We help you match a chair to body weight, hours seated and budget, not just looks.",
-                note: null,
-              },
-              {
-                n: "3",
-                title: "Built for teams.",
-                body: "For offices and bulk orders, share your seat count and budget. Our project desk will shortlist three options with spec sheets, with GST invoicing included.",
-                note: null,
-              },
-              {
-                n: "4",
-                title: "Support after delivery.",
-                body: "Every chair is backed by a manufacturer warranty and our [delivery & service coverage] across [cities/regions].",
-                note: "Coverage details pending — awaiting confirmation from client.",
-              },
-            ].map((p) => (
-              <div key={p.n} className="rounded-2xl bg-white p-6 shadow-sm">
-                <p className="text-3xl font-bold leading-none text-[#F26919]">
-                  {p.n}
-                </p>
+            {principles.map((p) => (
+              <div key={p.title} className="rounded-2xl bg-white p-6 shadow-sm">
+                {p.icon}
                 <h3 className="mt-4 text-lg font-semibold">{p.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-black/65">{p.body}</p>
+                <p className="mt-2 text-sm leading-6 text-black/80">{p.body}</p>
                 {p.note && (
                   <p className="mt-3 text-xs italic text-black/35">{p.note}</p>
                 )}

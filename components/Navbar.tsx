@@ -29,9 +29,9 @@ export default function Navbar() {
           <Image
             src="/images/site/nexchair-logo.png"
             alt="NexChair"
-            width={110}
-            height={28}
-            style={{ height: "28px", width: "auto" }}
+            width={140}
+            height={36}
+            style={{ height: "36px", width: "auto" }}
             priority
           />
         </Link>
@@ -65,7 +65,7 @@ export default function Navbar() {
 
           <Link
             href="/contact"
-            className="rounded-full bg-[#F26919] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#d95e15]"
+            className="rounded-full bg-[#0E3159] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0a2647]"
           >
             Request a quote
           </Link>

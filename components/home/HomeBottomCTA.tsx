@@ -17,7 +17,7 @@ export default function HomeBottomCTA() {
 
           <Link
             href="/contact"
-            className="w-fit shrink-0 rounded-full bg-[#F26919] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#d95e15]"
+            className="w-fit shrink-0 rounded-full bg-[#0E3159] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0a2647]"
           >
             Request a quote
           </Link>

@@ -9,11 +9,14 @@ const budgetRanges: Record<string, [number, number]> = {
   "₹20,000+": [20000, Infinity],
 };
 
+const armrestOptions = ["Fixed", "2D / 3D", "4D", "Armless"];
+
 export default function SpecificationFilter() {
   const router = useRouter();
   const [budget, setBudget] = useState("");
   const [weight, setWeight] = useState("");
   const [back, setBack] = useState("");
+  const [armrests, setArmrests] = useState("");
 
   function handleShowChairs() {
     const params = new URLSearchParams();
@@ -26,6 +29,7 @@ export default function SpecificationFilter() {
 
     if (weight) params.set("weight", weight);
     if (back) params.set("back", back);
+    if (armrests) params.set("armrests", armrests);
 
     const search = params.toString();
     router.push(search ? `/product-range?${search}` : "/product-range");
@@ -34,7 +38,7 @@ export default function SpecificationFilter() {
   return (
     <section className="px-4 py-3 md:px-6 md:py-4">
       <div className="mx-auto max-w-7xl rounded-3xl bg-[#0E3159] p-8 text-white md:p-10">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
+        <p className="text-sm font-bold uppercase tracking-[0.15em] text-[#F26919]">
           Choose by specification
         </p>
 
@@ -59,7 +63,7 @@ export default function SpecificationFilter() {
             onChange={(e) => setWeight(e.target.value)}
             className="w-full rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50 sm:w-auto"
           >
-            <option value="">Any rating</option>
+            <option value="">Any user weight</option>
             <option>Up to 100 kg</option>
             <option>101–120 kg</option>
             <option>121 kg and above</option>
@@ -74,6 +78,17 @@ export default function SpecificationFilter() {
             <option>Mesh</option>
             <option>Fabric</option>
             <option>Leatherette</option>
+          </select>
+
+          <select
+            value={armrests}
+            onChange={(e) => setArmrests(e.target.value)}
+            className="w-full rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50 sm:w-auto"
+          >
+            <option value="">Any armrests</option>
+            {armrestOptions.map((o) => (
+              <option key={o}>{o}</option>
+            ))}
           </select>
 
           <button

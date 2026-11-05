@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import {
@@ -31,11 +32,17 @@ export default function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div>
-            <Link href="/" className="text-xl font-bold">
-              Nex<span className="text-[#F26919]">Chair</span>
+            <Link href="/">
+              <Image
+                src="/images/site/nexchair-logo.png"
+                alt="NexChair"
+                width={130}
+                height={33}
+                style={{ height: "33px", width: "auto", filter: "brightness(0) invert(1)" }}
+              />
             </Link>
 
-            <p className="mt-3 text-sm font-semibold leading-6 text-gray-400">
+            <p className="mt-3 text-sm font-semibold leading-6 text-white/60">
               Office seating with the full specification sheet up front — for
               teams, offices and home setups.
             </p>
@@ -43,7 +50,7 @@ export default function Footer() {
 
           {/* Shop */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white">
               Shop
             </p>
 
@@ -52,7 +59,7 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-semibold text-gray-400 transition hover:text-white"
+                  className="text-sm font-semibold text-white/70 transition hover:text-white"
                 >
                   {link.label}
                 </Link>
@@ -62,7 +69,7 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white">
               Company
             </p>
 
@@ -71,7 +78,7 @@ export default function Footer() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="text-sm font-semibold text-gray-400 transition hover:text-white"
+                  className="text-sm font-semibold text-white/70 transition hover:text-white"
                 >
                   {link.label}
                 </Link>
@@ -81,7 +88,7 @@ export default function Footer() {
 
           {/* Get in touch */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white">
               Get in touch
             </p>
 
@@ -89,10 +96,10 @@ export default function Footer() {
               {/* Phone */}
               <a
                 href={contactPhoneHref}
-                className="flex items-start gap-2.5 font-semibold text-gray-400 transition hover:text-white"
+                className="flex items-start gap-3 font-semibold text-white/70 transition hover:text-white"
               >
                 <svg
-                  className="mt-0.5 h-4 w-4 shrink-0 text-[#F26919]"
+                  className="mt-0.5 h-5 w-5 shrink-0 text-[#F26919]"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -109,10 +116,10 @@ export default function Footer() {
               {/* Email */}
               <a
                 href={contactEmailHref}
-                className="flex items-start gap-2.5 break-all font-semibold text-gray-400 transition hover:text-white"
+                className="flex items-start gap-3 break-all font-semibold text-white/70 transition hover:text-white"
               >
                 <svg
-                  className="mt-0.5 h-4 w-4 shrink-0 text-[#F26919]"
+                  className="mt-0.5 h-5 w-5 shrink-0 text-[#F26919]"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -132,10 +139,10 @@ export default function Footer() {
                 href={contactAddressHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-start gap-2.5 font-semibold text-gray-400 transition hover:text-white"
+                className="flex items-start gap-3 font-semibold text-white/70 transition hover:text-white"
               >
                 <svg
-                  className="mt-0.5 h-4 w-4 shrink-0 text-[#F26919]"
+                  className="mt-0.5 h-5 w-5 shrink-0 text-[#F26919]"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -156,10 +163,10 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Chat with us on WhatsApp"
-                className="flex items-start gap-2.5 font-semibold text-gray-400 transition hover:text-white"
+                className="flex items-start gap-3 font-semibold text-white/70 transition hover:text-white"
               >
                 <svg
-                  className="mt-0.5 h-4 w-4 shrink-0 text-[#F26919]"
+                  className="mt-0.5 h-5 w-5 shrink-0 text-[#F26919]"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   aria-hidden="true"
@@ -172,7 +179,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-5 text-xs font-semibold text-gray-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-5 text-xs font-semibold text-white/40 sm:flex-row sm:items-center sm:justify-between">
           <span>© 2026 NexChair</span>
 
           <div className="flex gap-4">
