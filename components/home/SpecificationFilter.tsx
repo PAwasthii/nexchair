@@ -38,15 +38,15 @@ export default function SpecificationFilter() {
           Choose by specification
         </p>
 
-        <h2 className="mt-4 max-w-2xl text-4xl font-bold tracking-tight md:text-5xl">
+        <h2 className="mt-4 max-w-2xl text-3xl font-bold tracking-tight md:text-5xl">
           Find the right chair by the numbers that matter.
         </h2>
 
-        <div className="mt-10 flex flex-wrap items-center gap-3">
+        <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
           <select
             value={budget}
             onChange={(e) => setBudget(e.target.value)}
-            className="rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50"
+            className="w-full rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50 sm:w-auto"
           >
             <option value="">Any budget</option>
             <option>Under ₹10,000</option>
@@ -57,7 +57,7 @@ export default function SpecificationFilter() {
           <select
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
-            className="rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50"
+            className="w-full rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50 sm:w-auto"
           >
             <option value="">Any rating</option>
             <option>Up to 100 kg</option>
@@ -68,9 +68,9 @@ export default function SpecificationFilter() {
           <select
             value={back}
             onChange={(e) => setBack(e.target.value)}
-            className="rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50"
+            className="w-full rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50 sm:w-auto"
           >
-            <option value="">Mesh, foam or leat…</option>
+            <option value="">Any back type</option>
             <option>Mesh</option>
             <option>Fabric</option>
             <option>Leatherette</option>
@@ -79,7 +79,7 @@ export default function SpecificationFilter() {
           <button
             type="button"
             onClick={handleShowChairs}
-            className="rounded-full bg-[#F26919] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#d95e15]"
+            className="w-full rounded-full bg-[#F26919] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#d95e15] sm:w-auto"
           >
             Show matching chairs
           </button>

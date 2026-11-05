@@ -88,7 +88,7 @@ export default async function ProductPage({
                 )}
               </div>
 
-              <h1 className="mt-5 text-5xl font-bold tracking-tight">
+              <h1 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
                 {product.name}
               </h1>
 
@@ -170,9 +170,9 @@ export default async function ProductPage({
               {/* Trust indicators */}
               <div className="mt-6 space-y-1.5">
                 {[
-                  "[Certification] tested",
+                  "Manufacturer warranty included",
                   "Delivery & assembly",
-                  "Bulk pricing",
+                  "Bulk pricing available",
                 ].map((item) => (
                   <p key={item} className="flex items-center gap-2 text-xs text-black/60">
                     <svg className="h-3.5 w-3.5 shrink-0 text-[#F26919]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

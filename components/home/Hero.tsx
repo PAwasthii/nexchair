@@ -12,15 +12,14 @@ export default function Hero() {
               Ergonomic seating · Made for long hours
             </p>
 
-            <h1 className="mt-5 text-5xl font-bold leading-[0.95] tracking-tight md:text-7xl">
-              <span className="md:block">Seating </span>
-              <span className="md:block">engineered </span>
-              <span>for the long day.</span>
+            <h1 className="mt-5 text-4xl font-bold leading-[0.95] tracking-tight sm:text-5xl md:text-7xl">
+              <span className="block">Built for the long day.</span>
+              <span>Sold on facts.</span>
             </h1>
 
             <p className="mt-6 max-w-xl text-base leading-7 text-black/60">
-              Every NexChair ships with its full specification sheet -
-              dimensions, mechanism, load rating and warranty - so you choose
+              Every NexChair ships with its full specification sheet —
+              dimensions, mechanism, load rating and warranty — so you choose
               on facts, not adjectives.
             </p>
 
@@ -50,18 +49,18 @@ export default function Hero() {
 
             <div className="mt-10 grid grid-cols-3 gap-4 border-t border-black/10 pt-6">
               <div>
-                <p className="text-lg font-bold">[X] yrs</p>
+                <p className="text-lg font-bold">1 year</p>
                 <p className="mt-1 text-xs text-black/50">Warranty</p>
               </div>
 
               <div>
-                <p className="text-lg font-bold">[Certification]</p>
-                <p className="mt-1 text-xs text-black/50">Tested standard</p>
+                <p className="text-lg font-bold">13+</p>
+                <p className="mt-1 text-xs text-black/50">Years in seating</p>
               </div>
 
               <div>
-                <p className="text-lg font-bold">[Coverage]</p>
-                <p className="mt-1 text-xs text-black/50">Delivery & service</p>
+                <p className="text-lg font-bold">Pan-India</p>
+                <p className="mt-1 text-xs text-black/50">Delivery</p>
               </div>
             </div>
           </div>

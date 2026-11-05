@@ -1,6 +1,19 @@
 import Link from "next/link";
 import ContactQuoteForm from "@/components/contact/ContactQuoteForm";
-import { whatsappHref } from "@/lib/site";
+import {
+  whatsappHref,
+  contactPhone,
+  contactPhoneHref,
+  contactEmail,
+  contactEmailHref,
+  contactAddress1Label,
+  contactAddress1,
+  contactAddress1Href,
+  contactAddress2Label,
+  contactAddress2,
+  contactAddress2Href,
+  businessHours,
+} from "@/lib/site";
 
 export default function Contact() {
   return (
@@ -15,7 +28,7 @@ export default function Contact() {
           </p>
 
           <div className="mt-6 grid gap-6 md:grid-cols-2 md:items-end">
-            <h1 className="text-5xl font-bold leading-[0.95] tracking-tight md:text-6xl">
+            <h1 className="text-4xl font-bold leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
               Request a quote
             </h1>
 
@@ -40,40 +53,83 @@ export default function Contact() {
             <div className="rounded-3xl border border-black/10 bg-white p-8">
               <h2 className="text-xl font-semibold">Prefer to talk?</h2>
 
-              <div className="mt-6 space-y-4 text-sm">
+              <div className="mt-6 space-y-5 text-sm">
+                {/* Phone */}
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/40">
-                    Phone
-                  </p>
-                  <p className="mt-1 text-black/70">[Phone number]</p>
+                  <div className="flex items-center gap-2">
+                    <svg className="h-4 w-4 shrink-0 text-[#F26919]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.56a16 16 0 0 0 5.63 5.63l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/40">Phone</p>
+                  </div>
+                  <a href={contactPhoneHref} className="mt-1 block text-black/70 transition hover:text-black">
+                    {contactPhone}
+                  </a>
                 </div>
 
+                {/* Email */}
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/40">
-                    Email
-                  </p>
-                  <p className="mt-1 text-black/70">[Email address]</p>
+                  <div className="flex items-center gap-2">
+                    <svg className="h-4 w-4 shrink-0 text-[#F26919]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <rect width="20" height="16" x="2" y="4" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/40">Email</p>
+                  </div>
+                  <a href={contactEmailHref} className="mt-1 block break-all text-black/70 transition hover:text-black">
+                    {contactEmail}
+                  </a>
                 </div>
 
+                {/* Addresses */}
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/40">
-                    Location
-                  </p>
-                  <p className="mt-1 text-black/70">[Address line]</p>
-                  <p className="text-black/70">[City, State]</p>
+                  <div className="flex items-center gap-2">
+                    <svg className="h-4 w-4 shrink-0 text-[#F26919]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/40">Locations</p>
+                  </div>
+                  <div className="mt-2 space-y-3">
+                    <div>
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#F26919]">{contactAddress1Label}</p>
+                      <a href={contactAddress1Href} target="_blank" rel="noopener noreferrer" className="mt-0.5 block leading-5 text-black/70 transition hover:text-black">
+                        {contactAddress1}
+                      </a>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#F26919]">{contactAddress2Label}</p>
+                      <a href={contactAddress2Href} target="_blank" rel="noopener noreferrer" className="mt-0.5 block leading-5 text-black/70 transition hover:text-black">
+                        {contactAddress2}
+                      </a>
+                    </div>
+                  </div>
                 </div>
 
+                {/* Hours */}
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/40">
-                    Hours
-                  </p>
-                  <p className="mt-1 text-black/70">[Mon–Sat, 10:00–19:00]</p>
+                  <div className="flex items-center gap-2">
+                    <svg className="h-4 w-4 shrink-0 text-[#F26919]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/40">Hours</p>
+                  </div>
+                  <div className="mt-1 space-y-0.5">
+                    {businessHours.map((h) => (
+                      <p key={h.days} className="text-black/70">
+                        <span className="font-medium text-black/80">{h.days}:</span> {h.time}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               <a
                 href={whatsappHref}
-                className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-[#1f7650] px-6 py-3 text-sm font-semibold text-white"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-[#1f7650] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#185f40]"
               >
                 <svg
                   className="h-4 w-4"

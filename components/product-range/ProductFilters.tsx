@@ -45,6 +45,8 @@ export default function ProductFilters({
 }: ProductFiltersProps) {
   const searchParams = useSearchParams();
 
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
   const [selectedCategory, setSelectedCategory] = useState(() => {
     const slug = searchParams.get("category");
     if (!slug) return "All";
@@ -231,9 +233,39 @@ export default function ProductFilters({
           })}
         </div>
 
+        {/* Mobile: filter toggle + sort */}
+        <div className="mt-4 flex items-center justify-between gap-3 lg:hidden">
+          <button
+            type="button"
+            onClick={() => setFiltersOpen((o) => !o)}
+            className={`rounded-full border px-4 py-2 text-xs font-medium transition ${
+              filtersOpen
+                ? "border-[#0E3159] bg-[#0E3159] text-white"
+                : "border-black/20 bg-white"
+            }`}
+          >
+            {filtersOpen ? "Hide filters" : "Show filters"}
+          </button>
+
+          <select
+            value={sortBy}
+            onChange={(event) => setSortBy(event.target.value)}
+            className="rounded-lg border border-black/10 bg-white px-3 py-2 text-xs"
+          >
+            <option>Recommended</option>
+            <option>Price: Low to high</option>
+            <option>Price: High to low</option>
+            <option>Newest</option>
+          </select>
+        </div>
+
         <div className="mt-8 grid gap-8 lg:grid-cols-[260px_1fr]">
           {/* Sidebar */}
-          <aside className="h-fit rounded-2xl border border-black/10 bg-white p-5">
+          <aside
+            className={`h-fit rounded-2xl border border-black/10 bg-white p-5 lg:block ${
+              filtersOpen ? "block" : "hidden"
+            }`}
+          >
             <div className="flex items-center justify-between">
               <h2 className="font-semibold">Filters</h2>
 
@@ -338,7 +370,7 @@ export default function ProductFilters({
               <select
                 value={sortBy}
                 onChange={(event) => setSortBy(event.target.value)}
-                className="rounded-lg border border-black/10 bg-white px-3 py-2 text-xs"
+                className="hidden rounded-lg border border-black/10 bg-white px-3 py-2 text-xs lg:block"
               >
                 <option>Recommended</option>
                 <option>Price: Low to high</option>
