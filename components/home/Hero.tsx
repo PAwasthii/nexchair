@@ -12,14 +12,14 @@ export default function Hero() {
               Ergonomic seating · Made for long hours
             </p>
 
-            <h1 className="mt-5 text-4xl font-bold leading-[0.95] tracking-tight sm:text-5xl md:text-7xl">
+            <h1 className="mt-5 text-4xl font-bold leading-snug tracking-tight sm:text-5xl sm:leading-tight md:text-7xl md:leading-[1.1]">
               <span className="block">Built for the long day.</span>
               <span>Sold on facts.</span>
             </h1>
 
             <p className="mt-6 max-w-xl text-base leading-7 text-black/60">
-              Every NexChair ships with its full specification sheet —
-              dimensions, mechanism, load rating and warranty — so you choose
+              Every NexChair ships with its full specification sheet -
+              dimensions, mechanism, load rating and warranty - so you choose
               on facts, not adjectives.
             </p>
 
