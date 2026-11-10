@@ -67,14 +67,14 @@ export default function Hero() {
           </div>
 
           {/* Right — hero video */}
-          <div className="relative min-h-[300px] overflow-hidden rounded-2xl md:min-h-[420px]">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-2xl md:aspect-auto md:min-h-[420px]">
             <video
               src="/home-page-vid2.mp4"
               autoPlay
               loop
               muted
               playsInline
-              className="h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
         </div>
