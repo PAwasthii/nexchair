@@ -73,9 +73,9 @@ async function main() {
   const categoryDefs = [
     { name: "Executive Chair", sortOrder: 1 },
     { name: "Ergonomic Chair", sortOrder: 2 },
-    { name: "Lounge Chair",    sortOrder: 3 },
-    { name: "Canteen Chair",   sortOrder: 4 },
-    { name: "Visitor Chair",   sortOrder: 5 },
+    { name: "Visitor Chair",   sortOrder: 3 },
+    { name: "Lounge Chair",    sortOrder: 4 },
+    { name: "Canteen Chair",   sortOrder: 5 },
     { name: "Staff Chair",     sortOrder: 6 },
   ];
 

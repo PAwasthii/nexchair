@@ -69,7 +69,7 @@ export default function Hero() {
           {/* Right — hero video */}
           <div className="relative min-h-[300px] overflow-hidden rounded-2xl md:min-h-[420px]">
             <video
-              src="/home-page-vid.mp4"
+              src="/home-page-vid2.mp4"
               autoPlay
               loop
               muted
