@@ -5,13 +5,14 @@ import { useSearchParams } from "next/navigation";
 import ProductGrid from "@/components/product-range/ProductGrid";
 import type { Product } from "@/types/product";
 
-const backTypes = ["Mesh", "Fabric", "Leatherette"];
+const backTypes = ["Mesh", "Fabric", "Leatherette", "Leather"];
 
 const armrestOptions = [
   "Fixed",
-  "2D / 3D",
-  "4D",
-  "Armless",
+  "Adjustable",
+  "2D Adjustable",
+  "4D Adjustable",
+  "No armrests",
 ];
 
 const weightOptions = [
@@ -88,28 +89,39 @@ export default function ProductFilters({
       );
     }
 
-    // Back type
+    // Back type — normalise composite values e.g. "High Back Mesh" → matches "Mesh"
     if (selectedBackType !== null) {
-      result = result.filter(
-        (product) =>
-          product.specs.back.toLowerCase() === selectedBackType.toLowerCase(),
-      );
+      result = result.filter((product) => {
+        const back = product.specs.back.toLowerCase();
+        if (selectedBackType === "Leather") return back === "leather";
+        return back.includes(selectedBackType.toLowerCase());
+      });
     }
 
-    // Armrests
+    // Armrests — normalise variants e.g. "Fixed chrome", "2D Adjustable", "5D adjustable"
     if (selectedArmrest !== null) {
       result = result.filter((product) => {
-        const value = product.armrests.toLowerCase();
-
-        if (selectedArmrest === "2D / 3D") {
-          return value.includes("2d") || value.includes("3d");
+        const v = product.armrests.toLowerCase();
+        switch (selectedArmrest) {
+          case "Fixed":
+            return v.includes("fixed");
+          case "Adjustable":
+            return (
+              v.includes("adjustable") &&
+              !v.includes("2d") &&
+              !v.includes("3d") &&
+              !v.includes("4d") &&
+              !v.includes("5d")
+            );
+          case "2D Adjustable":
+            return v.includes("2d");
+          case "4D Adjustable":
+            return v.includes("4d") || v.includes("5d");
+          case "No armrests":
+            return v === "-" || v.includes("armless");
+          default:
+            return false;
         }
-
-        if (selectedArmrest === "4D") {
-          return value.includes("4d");
-        }
-
-        return value.includes(selectedArmrest.toLowerCase());
       });
     }
 

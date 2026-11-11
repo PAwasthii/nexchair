@@ -4,17 +4,51 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const budgetRanges: Record<string, [number, number]> = {
-  "Under ₹10,000": [0, 10000],
-  "₹10,000–₹20,000": [10000, 20000],
-  "₹20,000+": [20000, Infinity],
+  "Under ₹3,000":     [0,     3000],
+  "₹3,000–₹5,000":   [3000,  5000],
+  "₹5,000–₹8,000":   [5000,  8000],
+  "₹8,000–₹12,000":  [8000,  12000],
+  "Above ₹12,000":   [12000, Infinity],
 };
 
-const armrestOptions = ["Fixed", "2D / 3D", "4D", "Armless"];
+const backOptions = ["Mesh", "Fabric", "Leatherette", "Leather"];
+
+const armrestOptions = [
+  "Fixed",
+  "Adjustable",
+  "2D Adjustable",
+  "4D Adjustable",
+  "No armrests",
+];
+
+const chevron = (
+  <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+    <svg
+      className="h-4 w-4 text-white/60"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M19 9l-7 7-7-7"
+      />
+    </svg>
+  </div>
+);
+
+const selectBase =
+  "w-full appearance-none rounded-full border border-white/20 bg-white/10 pl-4 pr-8 py-3 text-sm text-white outline-none focus:border-white/50";
+
+const selectDisabled =
+  "w-full appearance-none rounded-full border border-white/10 bg-white/5 pl-4 pr-8 py-3 text-sm text-white/40 outline-none cursor-not-allowed";
 
 export default function SpecificationFilter() {
   const router = useRouter();
   const [budget, setBudget] = useState("");
-  const [weight, setWeight] = useState("");
   const [back, setBack] = useState("");
   const [armrests, setArmrests] = useState("");
 
@@ -27,7 +61,6 @@ export default function SpecificationFilter() {
       if (hi < Infinity) params.set("maxPrice", String(hi));
     }
 
-    if (weight) params.set("weight", weight);
     if (back) params.set("back", back);
     if (armrests) params.set("armrests", armrests);
 
@@ -47,49 +80,58 @@ export default function SpecificationFilter() {
         </h2>
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-          <select
-            value={budget}
-            onChange={(e) => setBudget(e.target.value)}
-            className="w-full rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50 sm:w-auto"
-          >
-            <option value="">Any budget</option>
-            <option>Under ₹10,000</option>
-            <option>₹10,000–₹20,000</option>
-            <option>₹20,000+</option>
-          </select>
+          {/* Price range */}
+          <div className="relative w-full sm:w-auto">
+            <select
+              value={budget}
+              onChange={(e) => setBudget(e.target.value)}
+              className={selectBase}
+            >
+              <option value="" className="text-[#0E3159]">Any price range</option>
+              {Object.keys(budgetRanges).map((label) => (
+                <option key={label} className="text-[#0E3159]">{label}</option>
+              ))}
+            </select>
+            {chevron}
+          </div>
 
-          <select
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-            className="w-full rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50 sm:w-auto"
-          >
-            <option value="">Any user weight</option>
-            <option>Up to 100 kg</option>
-            <option>101–120 kg</option>
-            <option>121 kg and above</option>
-          </select>
+          {/* User weight — disabled: weight data not available in catalogue */}
+          <div className="relative w-full sm:w-auto">
+            <select disabled className={selectDisabled}>
+              <option className="text-[#0E3159]">Any user weight</option>
+            </select>
+            {chevron}
+          </div>
 
-          <select
-            value={back}
-            onChange={(e) => setBack(e.target.value)}
-            className="w-full rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50 sm:w-auto"
-          >
-            <option value="">Any back type</option>
-            <option>Mesh</option>
-            <option>Fabric</option>
-            <option>Leatherette</option>
-          </select>
+          {/* Back type — functional */}
+          <div className="relative w-full sm:w-auto">
+            <select
+              value={back}
+              onChange={(e) => setBack(e.target.value)}
+              className={selectBase}
+            >
+              <option value="" className="text-[#0E3159]">Any back type</option>
+              {backOptions.map((o) => (
+                <option key={o} className="text-[#0E3159]">{o}</option>
+              ))}
+            </select>
+            {chevron}
+          </div>
 
-          <select
-            value={armrests}
-            onChange={(e) => setArmrests(e.target.value)}
-            className="w-full rounded-full border border-white/20 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-white/50 sm:w-auto"
-          >
-            <option value="">Any armrests</option>
-            {armrestOptions.map((o) => (
-              <option key={o}>{o}</option>
-            ))}
-          </select>
+          {/* Armrests — functional */}
+          <div className="relative w-full sm:w-auto">
+            <select
+              value={armrests}
+              onChange={(e) => setArmrests(e.target.value)}
+              className={selectBase}
+            >
+              <option value="" className="text-[#0E3159]">Any armrests</option>
+              {armrestOptions.map((o) => (
+                <option key={o} className="text-[#0E3159]">{o}</option>
+              ))}
+            </select>
+            {chevron}
+          </div>
 
           <button
             type="button"
