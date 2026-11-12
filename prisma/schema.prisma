@@ -1,0 +1,160 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum EnquiryType {
+  CONTACT
+  QUOTE
+  ORDER
+}
+
+enum EnquiryStatus {
+  NEW
+  CONTACTED
+  CLOSED
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id              String    @id @default(cuid())
+  name            String
+  slug            String    @unique
+  description     String?
+  imageKey        String?
+  imagePublicId   String?
+  sortOrder       Int       @default(0)
+  isActive        Boolean   @default(true)
+
+  products    Product[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id            String         @id @default(cuid())
+  name          String
+  slug          String         @unique
+  code          String         @unique
+  description   String?
+
+  price         String
+
+  categoryId    String
+  category      Category       @relation(fields: [categoryId], references: [id])
+
+  colour        String?
+  seatWeight    String?
+  maxUserWeight String?
+  armrests      String?
+  warranty      String?
+
+  specs         Json?
+  dimensions    Json?
+
+  specSheetKey  String?
+
+  isBestseller  Boolean        @default(false)
+  isActive      Boolean        @default(true)
+  features      Json?
+
+  images        ProductImage[]
+  enquiryItems  EnquiryItem[]
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([categoryId])
+  @@index([isActive])
+  @@index([isBestseller])
+}
+
+model ProductImage {
+  id         String   @id @default(cuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  storageKey String
+  publicId   String?
+  altText    String?
+  sortOrder  Int      @default(0)
+  isPrimary  Boolean  @default(false)
+
+  createdAt  DateTime @default(now())
+
+  @@index([productId])
+}
+
+model Catalogue {
+  id         String   @id @default(cuid())
+  name       String
+  storageKey String
+  version    String?
+  isActive   Boolean  @default(true)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Enquiry {
+  id               String          @id @default(cuid())
+  type             EnquiryType
+  status           EnquiryStatus   @default(NEW)
+
+  name             String
+  email            String?
+  phone            String?
+  whatsapp         String?
+
+  company          String?
+  gstin            String?
+  city             String?
+  pincode          String?
+
+  orderType        String?
+  preferredContact String?
+  neededBy         String?
+
+  message          String?
+  adminNotes       String?
+
+  items            EnquiryItem[]
+
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@index([type])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model EnquiryItem {
+  id        String   @id @default(cuid())
+
+  enquiryId String
+  enquiry   Enquiry  @relation(fields: [enquiryId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+
+  colour    String?
+  quantity  Int      @default(1)
+
+  createdAt DateTime @default(now())
+
+  @@index([enquiryId])
+  @@index([productId])
+}
