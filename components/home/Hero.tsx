@@ -1,6 +1,62 @@
+"use client";
+
+import { useRef, useState } from "react";
 import { whatsappHref } from "@/lib/site";
 
+function VolumeOffIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <line x1="23" y1="9" x2="17" y2="15" />
+      <line x1="17" y1="9" x2="23" y2="15" />
+    </svg>
+  );
+}
+
+function VolumeOnIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+    </svg>
+  );
+}
+
 export default function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      const nextMuted = !videoRef.current.muted;
+      videoRef.current.muted = nextMuted;
+      setIsMuted(nextMuted);
+    }
+  };
+
   return (
     <section className="px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4">
       <div className="mx-auto max-w-7xl rounded-3xl bg-[#f5f1ea] p-8 md:p-14">
@@ -69,6 +125,7 @@ export default function Hero() {
           {/* Right — hero video */}
           <div className="relative aspect-[16/9] overflow-hidden rounded-2xl md:aspect-auto md:min-h-[420px]">
             <video
+              ref={videoRef}
               src="/home-page-vid2.mp4"
               autoPlay
               loop
@@ -76,6 +133,14 @@ export default function Hero() {
               playsInline
               className="absolute inset-0 h-full w-full object-cover"
             />
+            <button
+              type="button"
+              onClick={toggleMute}
+              aria-label={isMuted ? "Unmute video" : "Mute video"}
+              className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+            >
+              {isMuted ? <VolumeOffIcon /> : <VolumeOnIcon />}
+            </button>
           </div>
         </div>
       </div>
