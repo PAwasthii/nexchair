@@ -16,7 +16,7 @@ export default function ProductShowcase({ products }: { products: Product[] }) {
       <div className="flex items-end justify-between gap-6">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
-            Our range
+            Our range &nbsp;—&nbsp; Bestsellers
           </p>
           <h2 className="mt-4 text-4xl font-bold tracking-tight md:text-5xl">
             Specs up front, every card.
