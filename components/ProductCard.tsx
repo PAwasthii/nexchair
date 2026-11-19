@@ -32,15 +32,9 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
 
-          <div className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium">
+          <div className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium">
             {product.category}
           </div>
-
-          {product.isBestseller && (
-            <div className="absolute right-3 top-3 rounded-full bg-[#fde8d4] px-2.5 py-1 text-xs font-medium text-[#F26919]">
-              Bestseller
-            </div>
-          )}
         </div>
       </Link>
 
