@@ -8,8 +8,8 @@ export const whatsappHref = `https://wa.me/${digits}`;
 export const contactPhone = "+91 77982 03669";
 export const contactPhoneHref = "tel:+917798203669";
 
-export const contactEmail = "sales.officemantra@gmail.com";
-export const contactEmailHref = "mailto:sales.officemantra@gmail.com";
+export const contactEmail = "nexchairsales@gmail.com";
+export const contactEmailHref = "mailto:nexchairsales@gmail.com";
 
 // ── Footer – short address ────────────────────────────────────────────────────
 
