@@ -13,11 +13,12 @@ const modelOptions = [
   "Work-from-home",
 ];
 
-const seatOptions = ["1–5", "6–20", "21–50", "50+"];
+const seatOptions = ["1–5", "6–20", "21–50", "Custom"];
 
 export default function ContactQuoteForm() {
   const [model, setModel] = useState("Not sure yet");
   const [seats, setSeats] = useState("1–5");
+  const [customSeats, setCustomSeats] = useState("");
   const [status, setStatus] = useState("");
   const [isPending, startTransition] = useTransition();
 
@@ -45,9 +46,11 @@ export default function ContactQuoteForm() {
 
     setStatus("");
 
+    const seatsValue = seats === "Custom" ? (customSeats.trim() || "Custom") : seats;
+
     const message = [
       `Model of interest: ${model}`,
-      `Number of seats: ${seats}`,
+      `Number of seats: ${seatsValue}`,
       anything ? `Additional info: ${anything}` : "",
     ]
       .filter(Boolean)
@@ -71,6 +74,7 @@ export default function ContactQuoteForm() {
         form.reset();
         setModel("Not sure yet");
         setSeats("1–5");
+        setCustomSeats("");
       }
     });
   }
@@ -106,13 +110,23 @@ export default function ContactQuoteForm() {
           <select
             id="seats"
             value={seats}
-            onChange={(e) => setSeats(e.target.value)}
+            onChange={(e) => { setSeats(e.target.value); setCustomSeats(""); }}
             className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-black"
           >
             {seatOptions.map((o) => (
               <option key={o}>{o}</option>
             ))}
           </select>
+          {seats === "Custom" && (
+            <input
+              type="number"
+              min={1}
+              value={customSeats}
+              onChange={(e) => setCustomSeats(e.target.value)}
+              placeholder="Enter exact number"
+              className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 text-sm outline-none focus:border-black"
+            />
+          )}
         </div>
       </div>
 
