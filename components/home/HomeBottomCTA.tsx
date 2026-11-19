@@ -10,7 +10,7 @@ export default function HomeBottomCTA() {
               Kitting out a whole office?
             </h2>
 
-            <p className="mt-3 max-w-md text-sm leading-6 text-black/50">
+            <p className="mt-3 max-w-md text-sm font-bold leading-6 text-black">
               Share seat count and budget - we shortlist three options with spec sheets.
             </p>
           </div>
