@@ -10,6 +10,7 @@
     "test": "vitest run",
     "create-admin": "tsx --tsconfig tsconfig.json scripts/create-admin.ts",
     "import-archive": "tsx --tsconfig tsconfig.json scripts/import-archive.ts",
+    "update-images": "tsx --tsconfig tsconfig.json scripts/update-images.ts",
     "postinstall": "prisma skills sync || exit 0"
   },
   "dependencies": {
