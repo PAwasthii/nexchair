@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { sendEnquiryEmails } from "@/lib/email";
+import { appendEnquiryToSheet } from "@/lib/sheets";
 import { checkEnquiryRateLimit } from "@/lib/ratelimit";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -148,26 +149,43 @@ export async function createEnquiry(input: CreateEnquiryInput) {
       },
     });
 
-    // DB write succeeded — attempt email notifications. Any failure is caught
-    // inside sendEnquiryEmails and logged; it will not affect the return value.
-    await sendEnquiryEmails({
-      enquiryId: enquiry.id,
-      type: enquiry.type,
-      name: enquiry.name,
-      email: enquiry.email,
-      phone: enquiry.phone,
-      whatsapp: enquiry.whatsapp,
-      company: enquiry.company,
-      city: enquiry.city,
-      message: enquiry.message,
-      createdAt: enquiry.createdAt,
-      items: enquiry.items.map((item) => ({
-        productName: item.product.name,
-        productCode: item.product.code,
-        colour: item.colour,
-        quantity: item.quantity,
-      })),
-    });
+    // DB write succeeded. Fire email and Sheets concurrently and independently.
+    // Failures in either are caught inside each function and logged; neither
+    // affects the return value or the other integration.
+    const sharedItems = enquiry.items.map((item) => ({
+      productName: item.product.name,
+      productCode: item.product.code,
+      colour: item.colour,
+      quantity: item.quantity,
+    }));
+
+    await Promise.allSettled([
+      sendEnquiryEmails({
+        enquiryId: enquiry.id,
+        type: enquiry.type,
+        name: enquiry.name,
+        email: enquiry.email,
+        phone: enquiry.phone,
+        whatsapp: enquiry.whatsapp,
+        company: enquiry.company,
+        city: enquiry.city,
+        message: enquiry.message,
+        createdAt: enquiry.createdAt,
+        items: sharedItems,
+      }),
+      appendEnquiryToSheet({
+        enquiryId: enquiry.id,
+        type: enquiry.type,
+        name: enquiry.name,
+        email: enquiry.email,
+        phone: enquiry.phone,
+        whatsapp: enquiry.whatsapp,
+        company: enquiry.company,
+        message: enquiry.message,
+        createdAt: enquiry.createdAt,
+        items: sharedItems,
+      }),
+    ]);
 
     return {
       success: true,
