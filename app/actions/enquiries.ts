@@ -159,7 +159,7 @@ export async function createEnquiry(input: CreateEnquiryInput) {
       quantity: item.quantity,
     }));
 
-    await Promise.allSettled([
+    const [, sheetsResult] = await Promise.allSettled([
       sendEnquiryEmails({
         enquiryId: enquiry.id,
         type: enquiry.type,
@@ -186,6 +186,15 @@ export async function createEnquiry(input: CreateEnquiryInput) {
         items: sharedItems,
       }),
     ]);
+
+    // appendEnquiryToSheet never rejects, but check the boolean it returns so
+    // that a failed sync is visible in server logs without affecting the user.
+    if (sheetsResult.status === "fulfilled" && !sheetsResult.value) {
+      console.warn(
+        `[enquiry] Google Sheets row not written for enquiry ${enquiry.id}. ` +
+          "Check [sheets] log entries above for the reason.",
+      );
+    }
 
     return {
       success: true,

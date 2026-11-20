@@ -25,6 +25,10 @@ vi.mock("@/lib/email", () => ({
   sendEnquiryEmails: mockSendEnquiryEmails,
 }));
 
+vi.mock("@/lib/sheets", () => ({
+  appendEnquiryToSheet: vi.fn().mockResolvedValue(true),
+}));
+
 vi.mock("@/lib/ratelimit", () => ({
   checkEnquiryRateLimit: mockCheckEnquiryRateLimit,
 }));
@@ -263,5 +267,53 @@ describe("createEnquiry — email delivery does not affect enquiry success", () 
   it("always calls sendEnquiryEmails after a successful DB write", async () => {
     await createEnquiry(VALID_CONTACT);
     expect(mockSendEnquiryEmails).toHaveBeenCalledTimes(1);
+  });
+});
+
+// ─── Rate limit is per-IP — different IPs are independent ────────────────────
+
+describe("createEnquiry — rate limit per IP (IP isolation)", () => {
+  it("allows a first submission when the rate limiter reports allowed", async () => {
+    mockCheckEnquiryRateLimit.mockResolvedValue({ allowed: true });
+    mockEnquiryCreate.mockResolvedValue(MOCK_ENQUIRY);
+    mockSendEnquiryEmails.mockResolvedValue(undefined);
+
+    const result = await createEnquiry(VALID_CONTACT);
+    expect(result.success).toBe(true);
+  });
+
+  it("blocks when rate limit is exceeded and includes retry seconds in the message", async () => {
+    mockCheckEnquiryRateLimit.mockResolvedValue({ allowed: false, retryAfterSeconds: 42 });
+
+    const result = await createEnquiry(VALID_CONTACT);
+    expect(result.success).toBe(false);
+    expect(result.message).toContain("42");
+  });
+
+  it("allows a submission from IP-B even when IP-A is rate-limited", async () => {
+    // The action itself doesn't inspect IPs — that's the rate-limiter's job.
+    // We simulate two sequential calls: first returns blocked, second returns allowed.
+    mockCheckEnquiryRateLimit
+      .mockResolvedValueOnce({ allowed: false, retryAfterSeconds: 60 }) // IP-A blocked
+      .mockResolvedValueOnce({ allowed: true });                          // IP-B allowed
+
+    mockEnquiryCreate.mockResolvedValue(MOCK_ENQUIRY);
+    mockSendEnquiryEmails.mockResolvedValue(undefined);
+
+    const ipAResult = await createEnquiry(VALID_CONTACT);
+    const ipBResult = await createEnquiry(VALID_CONTACT);
+
+    expect(ipAResult.success).toBe(false);
+    expect(ipBResult.success).toBe(true);
+  });
+
+  it("does not propagate the rate-limit error message as 'Too many submissions' when allowed: true", async () => {
+    mockCheckEnquiryRateLimit.mockResolvedValue({ allowed: true });
+    mockEnquiryCreate.mockResolvedValue(MOCK_ENQUIRY);
+    mockSendEnquiryEmails.mockResolvedValue(undefined);
+
+    const result = await createEnquiry(VALID_CONTACT);
+    expect(result.success).toBe(true);
+    expect(result.message).not.toContain("Too many");
   });
 });

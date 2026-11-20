@@ -36,10 +36,20 @@ export async function getClientIp(): Promise<string> {
 
 // ─── Core limiter ─────────────────────────────────────────────────────────────
 
+// "open"   – fail-open when Upstash is not configured: allow the request and
+//            emit a CRITICAL log so operators know to fix the env vars. Right
+//            for public-facing forms where availability matters more than
+//            blocking a brief window of unchecked traffic during misconfiguration.
+// "closed" – fail-closed: block the request. Right for security-critical paths
+//            (e.g. admin login) where the risk of an unprotected endpoint
+//            outweighs a temporary denial of service to the operator.
+type OnMisconfigured = "open" | "closed";
+
 async function applyLimit(
   identifier: string,
   max: number,
   window: string,
+  onMisconfigured: OnMisconfigured = "open",
 ): Promise<RateLimitResult> {
   if (!isRatelimitConfigured()) {
     if (process.env.NODE_ENV !== "production") {
@@ -50,11 +60,21 @@ async function applyLimit(
       );
       return { allowed: true };
     }
+    if (onMisconfigured === "closed") {
+      console.error(
+        "[ratelimit] CRITICAL: Upstash credentials missing in production. " +
+          "Blocking request as a fail-safe.",
+      );
+      return { allowed: false };
+    }
+    // fail-open: do not punish legitimate users with a misleading rate-limit
+    // error when the real problem is missing env vars.
     console.error(
       "[ratelimit] CRITICAL: Upstash credentials missing in production. " +
-        "Blocking request as a fail-safe.",
+        "Allowing request — rate limiting is NOT active. " +
+        "Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN in Vercel.",
     );
-    return { allowed: false };
+    return { allowed: true };
   }
 
   try {
@@ -93,12 +113,14 @@ async function applyLimit(
  * 5 attempts per 15-minute sliding window, keyed on IP + email.
  * Rationale: brute force needs thousands of attempts; 5/15 min stops that
  * while giving a legitimate admin enough retries before a short cooldown.
+ * Fails closed when Upstash is not configured: an unprotected login endpoint
+ * is more dangerous than a temporarily locked-out admin.
  */
 export async function checkLoginRateLimit(
   email: string,
 ): Promise<RateLimitResult> {
   const ip = await getClientIp();
-  return applyLimit(`login:${ip}:${email.toLowerCase()}`, 5, "15 m");
+  return applyLimit(`login:${ip}:${email.toLowerCase()}`, 5, "15 m", "closed");
 }
 
 /**
@@ -106,8 +128,11 @@ export async function checkLoginRateLimit(
  * 5 submissions per 10-minute sliding window, keyed on IP.
  * Rationale: real users rarely send more than 1–2 enquiries per session;
  * 5/10 min accommodates retries without enabling inbox flooding.
+ * Fails open when Upstash is not configured: a misconfigured rate limiter
+ * must not silently block every legitimate enquiry with a misleading
+ * "Too many submissions" error.
  */
 export async function checkEnquiryRateLimit(): Promise<RateLimitResult> {
   const ip = await getClientIp();
-  return applyLimit(`enquiry:${ip}`, 5, "10 m");
+  return applyLimit(`enquiry:${ip}`, 5, "10 m", "open");
 }

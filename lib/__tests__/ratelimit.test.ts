@@ -286,6 +286,8 @@ describe("checkEnquiryRateLimit — no config, development", () => {
 });
 
 // ─── checkEnquiryRateLimit — no config, production ───────────────────────────
+// The enquiry check uses fail-OPEN: a misconfigured rate limiter must not
+// silently block legitimate users with a misleading "Too many submissions" error.
 
 describe("checkEnquiryRateLimit — no config, production", () => {
   const originalNodeEnv = process.env.NODE_ENV;
@@ -300,15 +302,22 @@ describe("checkEnquiryRateLimit — no config, production", () => {
     (process.env as Record<string, string>).NODE_ENV = originalNodeEnv ?? "test";
   });
 
-  it("returns { allowed: false } in production with no credentials", async () => {
+  it("returns { allowed: true } in production with no credentials (fail-open)", async () => {
     const result = await checkEnquiryRateLimit();
-    expect(result.allowed).toBe(false);
+    expect(result.allowed).toBe(true);
   });
 
-  it("emits console.error with 'CRITICAL' in production with no credentials", async () => {
+  it("emits console.error with 'CRITICAL' when credentials missing in production", async () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     await checkEnquiryRateLimit();
     expect(spy).toHaveBeenCalledWith(expect.stringContaining("CRITICAL"));
+    spy.mockRestore();
+  });
+
+  it("includes Vercel env var names in the CRITICAL error message", async () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    await checkEnquiryRateLimit();
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining("UPSTASH_REDIS_REST_URL"));
     spy.mockRestore();
   });
 });
@@ -373,5 +382,178 @@ describe("checkEnquiryRateLimit — Upstash throws", () => {
     await checkEnquiryRateLimit();
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
+  });
+});
+
+// ─── getClientIp — malformed / edge-case headers ─────────────────────────────
+
+describe("getClientIp — malformed and edge-case headers", () => {
+  afterEach(() => mockHeaderGet.mockReset());
+
+  it("returns 'unknown' when x-forwarded-for is an empty string (falsy)", async () => {
+    mockHeaderGet.mockImplementation((name: string) =>
+      name === "x-forwarded-for" ? "" : null,
+    );
+    expect(await getClientIp()).toBe("unknown");
+  });
+
+  it("extracts IPv6 address from x-forwarded-for", async () => {
+    mockHeaderGet.mockImplementation((name: string) =>
+      name === "x-forwarded-for" ? "::1, 10.0.0.1" : null,
+    );
+    expect(await getClientIp()).toBe("::1");
+  });
+
+  it("extracts IPv6 address from x-real-ip", async () => {
+    mockHeaderGet.mockImplementation((name: string) =>
+      name === "x-real-ip" ? "2001:db8::1" : null,
+    );
+    expect(await getClientIp()).toBe("2001:db8::1");
+  });
+
+  it("handles x-forwarded-for with many proxies, returning only the first", async () => {
+    mockHeaderGet.mockImplementation((name: string) =>
+      name === "x-forwarded-for" ? "1.2.3.4, 10.0.0.1, 172.16.0.5, 192.168.1.1" : null,
+    );
+    expect(await getClientIp()).toBe("1.2.3.4");
+  });
+});
+
+// ─── checkEnquiryRateLimit — repeated submissions, same IP ───────────────────
+
+describe("checkEnquiryRateLimit — repeated submissions, same IP", () => {
+  beforeEach(() => {
+    setUpstashEnv(FULL_UPSTASH);
+    mockHeaderGet.mockImplementation((name: string) =>
+      name === "x-real-ip" ? "5.5.5.5" : null,
+    );
+  });
+  afterEach(() => {
+    setUpstashEnv({});
+    mockLimit.mockReset();
+  });
+
+  it("allows the first submission and blocks the next within the window", async () => {
+    mockLimit
+      .mockResolvedValueOnce({ success: true, limit: 5, remaining: 4, reset: futureResetMs() })
+      .mockResolvedValueOnce({ success: false, limit: 5, remaining: 0, reset: futureResetMs() });
+
+    const first = await checkEnquiryRateLimit();
+    const second = await checkEnquiryRateLimit();
+
+    expect(first.allowed).toBe(true);
+    expect(second.allowed).toBe(false);
+    expect(second.retryAfterSeconds).toBeGreaterThan(0);
+  });
+
+  it("uses the same identifier for both calls (same IP → same bucket)", async () => {
+    mockLimit.mockResolvedValue({ success: true, limit: 5, remaining: 4, reset: futureResetMs() });
+
+    await checkEnquiryRateLimit();
+    await checkEnquiryRateLimit();
+
+    const [id1] = mockLimit.mock.calls[0];
+    const [id2] = mockLimit.mock.calls[1];
+    expect(id1).toBe(id2);
+  });
+});
+
+// ─── checkEnquiryRateLimit — different IPs are isolated ──────────────────────
+
+describe("checkEnquiryRateLimit — different client IPs produce isolated identifiers", () => {
+  beforeEach(() => setUpstashEnv(FULL_UPSTASH));
+  afterEach(() => {
+    setUpstashEnv({});
+    mockLimit.mockReset();
+  });
+
+  it("produces different identifiers for different x-real-ip values", async () => {
+    mockLimit.mockResolvedValue({ success: true, limit: 5, remaining: 4, reset: futureResetMs() });
+
+    mockHeaderGet.mockImplementation((name: string) =>
+      name === "x-real-ip" ? "11.22.33.44" : null,
+    );
+    await checkEnquiryRateLimit();
+
+    mockHeaderGet.mockImplementation((name: string) =>
+      name === "x-real-ip" ? "55.66.77.88" : null,
+    );
+    await checkEnquiryRateLimit();
+
+    const [id1] = mockLimit.mock.calls[0];
+    const [id2] = mockLimit.mock.calls[1];
+
+    expect(id1).not.toBe(id2);
+    expect(id1).toContain("11.22.33.44");
+    expect(id2).toContain("55.66.77.88");
+  });
+
+  it("allows both IPs independently when only one is at the limit", async () => {
+    // First IP is at the limit; second IP has capacity.
+    mockLimit
+      .mockResolvedValueOnce({ success: false, limit: 5, remaining: 0, reset: futureResetMs() })
+      .mockResolvedValueOnce({ success: true, limit: 5, remaining: 4, reset: futureResetMs() });
+
+    mockHeaderGet.mockImplementation((name: string) =>
+      name === "x-real-ip" ? "1.1.1.1" : null,
+    );
+    const blockedResult = await checkEnquiryRateLimit();
+
+    mockHeaderGet.mockImplementation((name: string) =>
+      name === "x-real-ip" ? "2.2.2.2" : null,
+    );
+    const allowedResult = await checkEnquiryRateLimit();
+
+    expect(blockedResult.allowed).toBe(false);
+    expect(allowedResult.allowed).toBe(true);
+  });
+});
+
+// ─── checkEnquiryRateLimit — production proxy (Vercel x-real-ip) ─────────────
+
+describe("checkEnquiryRateLimit — production proxy behaviour (Vercel x-real-ip)", () => {
+  beforeEach(() => setUpstashEnv(FULL_UPSTASH));
+  afterEach(() => {
+    setUpstashEnv({});
+    mockLimit.mockReset();
+  });
+
+  it("uses x-real-ip (Vercel-injected) as the identifier, not x-forwarded-for", async () => {
+    // Vercel sets x-real-ip to the actual client IP; x-forwarded-for may contain
+    // intermediate proxy addresses. The rate limiter must key on x-real-ip.
+    mockLimit.mockResolvedValue({ success: true, limit: 5, remaining: 4, reset: futureResetMs() });
+    mockHeaderGet.mockImplementation((name: string) => {
+      if (name === "x-real-ip") return "203.0.113.42";
+      if (name === "x-forwarded-for") return "10.0.0.1, 172.16.0.2";
+      return null;
+    });
+
+    await checkEnquiryRateLimit();
+    const [identifier] = mockLimit.mock.calls[0];
+
+    expect(identifier).toContain("203.0.113.42");
+    expect(identifier).not.toContain("10.0.0.1");
+  });
+
+  it("falls back to first x-forwarded-for segment when x-real-ip is absent", async () => {
+    mockLimit.mockResolvedValue({ success: true, limit: 5, remaining: 4, reset: futureResetMs() });
+    mockHeaderGet.mockImplementation((name: string) =>
+      name === "x-forwarded-for" ? "198.51.100.7, 10.0.0.3" : null,
+    );
+
+    await checkEnquiryRateLimit();
+    const [identifier] = mockLimit.mock.calls[0];
+
+    expect(identifier).toContain("198.51.100.7");
+  });
+
+  it("uses 'unknown' as identifier when no IP headers are present", async () => {
+    mockLimit.mockResolvedValue({ success: true, limit: 5, remaining: 4, reset: futureResetMs() });
+    mockHeaderGet.mockReturnValue(null);
+
+    await checkEnquiryRateLimit();
+    const [identifier] = mockLimit.mock.calls[0];
+
+    expect(identifier).toContain("unknown");
   });
 });

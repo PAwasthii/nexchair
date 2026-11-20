@@ -257,10 +257,10 @@ describe("appendEnquiryToSheet — config missing", () => {
   beforeEach(() => setEnv({}));
   afterEach(() => setEnv({}));
 
-  it("returns without throwing when config is absent", async () => {
+  it("returns false when config is absent", async () => {
     await expect(
       appendEnquiryToSheet(CONTACT_ENQUIRY),
-    ).resolves.toBeUndefined();
+    ).resolves.toBe(false);
   });
 
   it("logs a warning when config is absent", async () => {
@@ -285,7 +285,7 @@ describe("appendEnquiryToSheet — auth failure", () => {
   beforeEach(() => setEnv(FULL_CONFIG));
   afterEach(() => { setEnv({}); vi.unstubAllGlobals(); });
 
-  it("does not throw when token exchange fails", async () => {
+  it("returns false when token exchange fails", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
       ok: false,
       status: 401,
@@ -293,7 +293,7 @@ describe("appendEnquiryToSheet — auth failure", () => {
     }));
     await expect(
       appendEnquiryToSheet(CONTACT_ENQUIRY),
-    ).resolves.toBeUndefined();
+    ).resolves.toBe(false);
   });
 
   it("logs an error when token exchange fails", async () => {
@@ -331,10 +331,11 @@ describe("appendEnquiryToSheet — duplicate prevention", () => {
       });
 
     vi.stubGlobal("fetch", mockFetch);
-    await appendEnquiryToSheet(CONTACT_ENQUIRY);
+    const result = await appendEnquiryToSheet(CONTACT_ENQUIRY);
 
     // append (3rd fetch call) must NOT happen
     expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(result).toBe(false);
   });
 
   it("logs a warning when duplicate is detected", async () => {
@@ -397,11 +398,11 @@ describe("appendEnquiryToSheet — successful append", () => {
     expect(body.values[0][3]).toBe(CONTACT_ENQUIRY.name);       // Name in col 4
   });
 
-  it("does not throw on success", async () => {
+  it("returns true on success", async () => {
     vi.stubGlobal("fetch", mockFetchSuccess());
     await expect(
       appendEnquiryToSheet(CONTACT_ENQUIRY),
-    ).resolves.toBeUndefined();
+    ).resolves.toBe(true);
   });
 });
 
@@ -411,7 +412,7 @@ describe("appendEnquiryToSheet — Sheets API failure", () => {
   beforeEach(() => setEnv(FULL_CONFIG));
   afterEach(() => { setEnv({}); vi.unstubAllGlobals(); });
 
-  it("does not throw when the append request fails", async () => {
+  it("returns false when the append request fails", async () => {
     vi.stubGlobal("fetch", vi.fn()
       .mockResolvedValueOnce({
         ok: true,
@@ -431,7 +432,7 @@ describe("appendEnquiryToSheet — Sheets API failure", () => {
 
     await expect(
       appendEnquiryToSheet(CONTACT_ENQUIRY),
-    ).resolves.toBeUndefined();
+    ).resolves.toBe(false);
   });
 
   it("logs an error when the append request fails", async () => {
@@ -468,5 +469,62 @@ describe("appendEnquiryToSheet — Sheets API failure", () => {
     expect(logged).not.toMatch(/PRIVATE\s*KEY/i);
     spy.mockRestore();
     mockSign.mockResolvedValue("mock.jwt.token");
+  });
+});
+
+// ─── appendEnquiryToSheet — ORDER type ───────────────────────────────────────
+
+describe("appendEnquiryToSheet — ORDER type returns true on success", () => {
+  beforeEach(() => setEnv(FULL_CONFIG));
+  afterEach(() => { setEnv({}); vi.unstubAllGlobals(); });
+
+  it("returns true for a successful ORDER enquiry append", async () => {
+    vi.stubGlobal("fetch", mockFetchSuccess());
+    await expect(
+      appendEnquiryToSheet(ORDER_ENQUIRY),
+    ).resolves.toBe(true);
+  });
+});
+
+// ─── buildSheetRow — QUOTE type (free-text message) ──────────────────────────
+
+describe("buildSheetRow — QUOTE type (free-text message, no structured prefix)", () => {
+  const QUOTE_ENQUIRY = {
+    enquiryId: "cltest2222222222",
+    type: "QUOTE",
+    name: "Quote Customer",
+    email: "quote@example.com",
+    phone: "+91 77777 88888",
+    whatsapp: null,
+    company: "Quote Corp",
+    // Free-text message with no "Model of interest:" prefix
+    message: "Looking for 20 ergonomic chairs for our new office in Pune",
+    createdAt: new Date("2024-01-16T05:00:00.000Z"),
+    items: [],
+  } as const;
+
+  it("maps all 11 columns", () => {
+    const row = buildSheetRow(QUOTE_ENQUIRY);
+    expect(row).toHaveLength(11);
+  });
+
+  it("puts the free-text message in column 10 (Additional Requirements)", () => {
+    const row = buildSheetRow(QUOTE_ENQUIRY);
+    expect(row[9]).toContain("Looking for 20 ergonomic chairs");
+  });
+
+  it("leaves Model of Interest empty when no structured prefix is present", () => {
+    const row = buildSheetRow(QUOTE_ENQUIRY);
+    expect(row[7]).toBe("");
+  });
+
+  it("leaves Number of Seats empty when no structured prefix is present", () => {
+    const row = buildSheetRow(QUOTE_ENQUIRY);
+    expect(row[8]).toBe("");
+  });
+
+  it("puts enquiry type QUOTE in column 3", () => {
+    const row = buildSheetRow(QUOTE_ENQUIRY);
+    expect(row[2]).toBe("QUOTE");
   });
 });

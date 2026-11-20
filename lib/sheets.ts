@@ -150,10 +150,11 @@ async function getAccessToken(
   const pem = rawPrivateKey.replace(/\\n/g, "\n");
   const privateKey = await importPKCS8(pem, "RS256");
 
+  // Google's OAuth2 token endpoint requires typ:"JWT" in the header per spec.
   const jwt = await new SignJWT({
     scope: "https://www.googleapis.com/auth/spreadsheets",
   })
-    .setProtectedHeader({ alg: "RS256" })
+    .setProtectedHeader({ alg: "RS256", typ: "JWT" })
     .setIssuer(clientEmail)
     .setSubject(clientEmail)
     .setAudience("https://oauth2.googleapis.com/token")
@@ -238,6 +239,8 @@ async function appendRow(
 /**
  * Append one row to the configured Google Sheet after a successful enquiry
  * DB write. Never throws — failures are logged and the enquiry is preserved.
+ * Returns true when the row was written, false in all other cases (not
+ * configured, auth failure, duplicate skipped, API error).
  *
  * Required env vars:
  *   GOOGLE_SHEETS_SPREADSHEET_ID  — spreadsheet ID from the URL
@@ -245,13 +248,12 @@ async function appendRow(
  *   GOOGLE_SERVICE_ACCOUNT_EMAIL  — service account email
  *   GOOGLE_PRIVATE_KEY            — RSA private key (\\n may be escaped)
  *
- * Limitation: in the basic implementation both email and Sheets run
- * concurrently before the server action returns. A queue-based approach
- * would fully decouple Sheets latency from the form response time.
+ * Sheet columns A–K must match the HEADERS constant in this file.
+ * Run scripts/fix-sheet-headers.ts once to stamp the correct header row.
  */
 export async function appendEnquiryToSheet(
   data: EnquirySheetData,
-): Promise<void> {
+): Promise<boolean> {
   const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
   const sheetName     = process.env.GOOGLE_SHEETS_SHEET_NAME;
   const clientEmail   = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
@@ -262,7 +264,7 @@ export async function appendEnquiryToSheet(
       "[sheets] Skipped — GOOGLE_SHEETS_SPREADSHEET_ID, GOOGLE_SHEETS_SHEET_NAME, " +
         "GOOGLE_SERVICE_ACCOUNT_EMAIL, or GOOGLE_PRIVATE_KEY not configured.",
     );
-    return;
+    return false;
   }
 
   try {
@@ -278,7 +280,7 @@ export async function appendEnquiryToSheet(
       console.warn(
         `[sheets] Skipped duplicate — enquiry ${data.enquiryId} already in sheet.`,
       );
-      return;
+      return false;
     }
 
     const row = buildSheetRow(data);
@@ -286,6 +288,7 @@ export async function appendEnquiryToSheet(
     console.log(
       `[sheets] Appended enquiry ${data.enquiryId} to "${sheetName}".`,
     );
+    return true;
   } catch (err) {
     const msg  = err instanceof Error ? err.message : String(err);
     // Never echo private-key content in logs.
@@ -295,5 +298,6 @@ export async function appendEnquiryToSheet(
     console.error(
       `[sheets] Failed to append enquiry ${data.enquiryId}: ${safe}`,
     );
+    return false;
   }
 }
