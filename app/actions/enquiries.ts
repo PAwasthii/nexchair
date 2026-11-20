@@ -156,9 +156,11 @@ export async function createEnquiry(input: CreateEnquiryInput) {
       name: enquiry.name,
       email: enquiry.email,
       phone: enquiry.phone,
+      whatsapp: enquiry.whatsapp,
       company: enquiry.company,
       city: enquiry.city,
       message: enquiry.message,
+      createdAt: enquiry.createdAt,
       items: enquiry.items.map((item) => ({
         productName: item.product.name,
         productCode: item.product.code,

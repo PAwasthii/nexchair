@@ -34,9 +34,11 @@ const MINIMAL_ENQUIRY = {
   name: "Test User",
   email: "customer@example.com",
   phone: null,
+  whatsapp: null,
   company: null,
   city: null,
   message: "Hello",
+  createdAt: new Date("2024-01-15T10:30:00.000Z"),
   items: [],
 } as const;
 
@@ -48,6 +50,7 @@ const SMTP_KEYS = [
   "SMTP_PASSWORD",
   "EMAIL_FROM",
   "ADMIN_EMAIL",
+  "SALES_NOTIFICATION_EMAIL",
   "APP_URL",
 ];
 
@@ -97,9 +100,14 @@ describe("isEmailConfigured", () => {
     expect(isEmailConfigured()).toBe(false);
   });
 
-  it("returns false when ADMIN_EMAIL is missing", () => {
+  it("returns false when neither ADMIN_EMAIL nor SALES_NOTIFICATION_EMAIL is set", () => {
     setEnv(without(FULL_CONFIG, "ADMIN_EMAIL"));
     expect(isEmailConfigured()).toBe(false);
+  });
+
+  it("returns true when SALES_NOTIFICATION_EMAIL is set and ADMIN_EMAIL is absent", () => {
+    setEnv({ ...without(FULL_CONFIG, "ADMIN_EMAIL"), SALES_NOTIFICATION_EMAIL: "sales@nexchair.com" });
+    expect(isEmailConfigured()).toBe(true);
   });
 });
 
@@ -177,13 +185,21 @@ describe("sendEnquiryEmails — successful send", () => {
   });
   afterEach(() => setEnv({}));
 
-  it("sends internal notification to ADMIN_EMAIL", async () => {
+  it("sends sales notification to ADMIN_EMAIL when SALES_NOTIFICATION_EMAIL is absent", async () => {
     await sendEnquiryEmails(MINIMAL_ENQUIRY);
     const calls = mockSendMail.mock.calls.map((c) => c[0]);
     const internal = calls.find((c) => c.to === FULL_CONFIG.ADMIN_EMAIL);
     expect(internal).toBeDefined();
     expect(internal.subject).toContain("NexChair");
     expect(internal.subject).toContain(MINIMAL_ENQUIRY.name);
+  });
+
+  it("prefers SALES_NOTIFICATION_EMAIL over ADMIN_EMAIL as notification recipient", async () => {
+    setEnv({ ...FULL_CONFIG, SALES_NOTIFICATION_EMAIL: "nexchairsales@gmail.com" });
+    await sendEnquiryEmails(MINIMAL_ENQUIRY);
+    const calls = mockSendMail.mock.calls.map((c) => c[0]);
+    const internal = calls.find((c) => c.to === "nexchairsales@gmail.com");
+    expect(internal).toBeDefined();
   });
 
   it("sends customer acknowledgement when customer email is present", async () => {
