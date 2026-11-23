@@ -1,12 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #1c1c1e;
-  --color-navy: #0E3159;
-  --color-orange: #F26919;
-  --color-beige: #f5f1ea;
-  --color-beige-deep: #e9e3d8;
+  --background: #F5EBDD;
+  --foreground: #352C27;
+
+  /* Navy · Orange · Cream palette */
+  --color-navy:         #0E3159;
+  --color-navy-deep:    #102B43;
+  --color-orange:       #F26919;
+  --color-orange-dark:  #d95e15;
+  --color-cream:        #F5EBDD;
+  --color-cream-deep:   #E9D8C0;
+  --color-gold:         #D9BD91;
+  --color-gold-muted:   #B58A50;
+  --color-charcoal:     #352C27;
+  --color-warm-brown:   #5C4A3C;
+  --color-cream-text:   #F5EBDD;
+  --color-muted-text:   #C4BAB0;
 }
 
 * {
@@ -21,8 +31,51 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Serif display utility ───────────────────────────────────── */
+.font-display {
+  font-family: var(--font-cormorant), "Georgia", "Times New Roman", serif;
+}
+
+/* ── Fade-up entrance animation ──────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.65s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.65s ease-out both;
+}
+
+.anim-delay-1 { animation-delay: 0.10s; }
+.anim-delay-2 { animation-delay: 0.20s; }
+.anim-delay-3 { animation-delay: 0.32s; }
+.anim-delay-4 { animation-delay: 0.46s; }
+.anim-delay-5 { animation-delay: 0.60s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in {
+    animation: none;
+  }
 }

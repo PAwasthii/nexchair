@@ -23,12 +23,11 @@ export default function ProductGrid({ products }: ProductGridProps) {
 
   if (products.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-black/20 p-12 text-center">
-        <p className="text-sm text-black/50">
+      <div className="rounded-[22px] border border-white/10 p-14 text-center" style={{ background: "linear-gradient(145deg, #073B38 0%, #092F30 55%, #073B38 100%)" }}>
+        <p className="text-[15px] font-semibold text-white/70">
           No chairs found for this selection.
         </p>
-
-        <p className="mt-2 text-xs text-black/40">
+        <p className="mt-2 text-[13px] text-white/40">
           Try removing some filters.
         </p>
       </div>
@@ -37,12 +36,14 @@ export default function ProductGrid({ products }: ProductGridProps) {
 
   return (
     <div>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      {/* Vertical list of horizontal cards */}
+      <div className="flex flex-col gap-[14px] lg:gap-[16px]">
         {visible.map((product) => (
           <ProductCard key={product.code} product={product} />
         ))}
       </div>
 
+      {/* Pagination */}
       {totalPages > 1 && (
         <nav
           className="mt-10 flex items-center justify-center gap-2"
@@ -53,7 +54,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={safePage === 1}
             aria-label="Previous page"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-black/10 bg-white text-xs disabled:opacity-40"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E7D4C0] bg-[#FFF9F1] text-[14px] font-bold text-[#103B39] transition hover:border-[#D85B13]/40 disabled:opacity-30"
           >
             ←
           </button>
@@ -65,10 +66,10 @@ export default function ProductGrid({ products }: ProductGridProps) {
               onClick={() => setPage(n)}
               aria-label={`Page ${n}`}
               aria-current={n === safePage ? "page" : undefined}
-              className={`flex h-9 w-9 items-center justify-center rounded-lg text-xs ${
+              className={`flex h-11 w-11 items-center justify-center rounded-full text-[14px] font-bold transition ${
                 n === safePage
-                  ? "bg-[#0E3159] text-white"
-                  : "border border-black/10 bg-white hover:border-black/30"
+                  ? "bg-[#D85B13] text-white shadow-[0_4px_12px_rgba(216,91,19,0.35)]"
+                  : "border border-[#E7D4C0] bg-[#FFF9F1] text-[#103B39] hover:border-[#D85B13]/40"
               }`}
             >
               {n}
@@ -80,7 +81,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={safePage === totalPages}
             aria-label="Next page"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-black/10 bg-white text-xs disabled:opacity-40"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-[#D85B13] text-[14px] font-bold text-white transition hover:bg-[#c0500f] disabled:opacity-30"
           >
             →
           </button>

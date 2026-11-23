@@ -53,14 +53,14 @@ export default async function ProductPage({
   return (
     <main>
       {/* Product header */}
-      <section className="border-b border-black/10 px-6 py-10">
+      <section className="border-b border-white/10 px-6 py-10" style={{ background: "linear-gradient(145deg, #073B38 0%, #092F30 55%, #073B38 100%)" }}>
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs text-black/40">
-            <Link href="/" className="hover:text-black/70">Home</Link>
+          <p className="text-xs text-[#F5EBDD]/40">
+            <Link href="/" className="hover:text-[#F5EBDD]/70">Home</Link>
             {" / "}
-            <Link href="/product-range" className="hover:text-black/70">Product Range</Link>
+            <Link href="/product-range" className="hover:text-[#F5EBDD]/70">Product Range</Link>
             {" / "}
-            {product.name}
+            <span className="text-[#F5EBDD]/70">{product.name}</span>
           </p>
 
           <div className="mt-8 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
@@ -77,48 +77,48 @@ export default async function ProductPage({
             {/* Product information */}
             <div className="flex flex-col justify-center">
               <div className="flex flex-wrap gap-2">
-                <span className="rounded-full border border-black/10 bg-white px-3 py-1 text-xs">
+                <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-[#F5EBDD]">
                   {product.category.name}
                 </span>
 
                 {product.isBestseller && (
-                  <span className="rounded-full bg-[#fde8d4] px-3 py-1 text-xs text-[#F26919]">
+                  <span className="rounded-full bg-[#F26919]/20 px-3 py-1 text-xs text-[#F26919]">
                     Bestseller
                   </span>
                 )}
               </div>
 
-              <h1 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+              <h1 className="font-display mt-5 text-3xl font-medium tracking-tight text-[#F5EBDD] sm:text-4xl md:text-5xl">
                 {product.name}
               </h1>
 
-              <p className="mt-4 text-3xl font-bold">
+              <p className="mt-4 text-3xl font-semibold text-[#F5EBDD]">
                 {normalisedProductPrice(product.price)}
               </p>
 
-              <p className="mt-1 text-xs text-black/40">
+              <p className="mt-1 text-xs text-[#F5EBDD]/40">
                 incl. GST · GST invoice available for businesses
               </p>
 
               {/* Inline spec tags */}
               <div className="mt-6 flex flex-wrap gap-2">
                 {product.maxUserWeight && product.maxUserWeight !== "-" && (
-                  <span className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs">
+                  <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs text-[#F5EBDD]">
                     Max user weight: {product.maxUserWeight}
                   </span>
                 )}
                 {product.armrests && product.armrests !== "-" && (
-                  <span className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs">
+                  <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs text-[#F5EBDD]">
                     {product.armrests}
                   </span>
                 )}
                 {getSpec(product.specs, "back") !== "-" && (
-                  <span className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs">
+                  <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs text-[#F5EBDD]">
                     {getSpec(product.specs, "back")}
                   </span>
                 )}
                 {product.warranty && product.warranty !== "-" && (
-                  <span className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs">
+                  <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs text-[#F5EBDD]">
                     {product.warranty} warranty
                   </span>
                 )}
@@ -128,7 +128,7 @@ export default async function ProductPage({
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   href={`/products/${product.slug}/order`}
-                  className="rounded-full bg-[#0E3159] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0a2647]"
+                  className="rounded-full bg-[#F26919] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#d95e15]"
                 >
                   Enquire
                 </Link>
@@ -158,12 +158,12 @@ export default async function ProductPage({
                     href={product.specSheetKey}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm font-semibold underline underline-offset-4"
+                    className="text-sm font-semibold text-[#F5EBDD] underline underline-offset-4 hover:text-[#D9BD91]"
                   >
                     Download spec sheet (PDF)
                   </a>
                 ) : (
-                  <span className="cursor-not-allowed text-sm text-black/30">
+                  <span className="cursor-not-allowed text-sm text-[#F5EBDD]/30">
                     Download spec sheet (PDF)
                   </span>
                 )}
@@ -176,7 +176,7 @@ export default async function ProductPage({
                   "Delivery & assembly",
                   "Bulk pricing available",
                 ].map((item) => (
-                  <p key={item} className="flex items-center gap-2 text-xs text-black/60">
+                  <p key={item} className="flex items-center gap-2 text-xs text-[#F5EBDD]/60">
                     <svg className="h-3.5 w-3.5 shrink-0 text-[#F26919]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                       <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
                     </svg>
@@ -190,32 +190,32 @@ export default async function ProductPage({
       </section>
 
       {/* Product tabs */}
-      <section className="sticky top-0 z-10 border-b border-black/10 bg-white">
+      <section className="sticky top-0 z-10 border-b border-[#E9D8C0] bg-[#F5EBDD]">
         <div className="mx-auto flex max-w-7xl gap-8 overflow-x-auto px-6">
           <a
             href="#specifications"
-            className="shrink-0 border-b-2 border-[#F26919] py-5 text-sm font-semibold"
+            className="shrink-0 border-b-2 border-[#F26919] py-5 text-sm font-semibold text-[#352C27]"
           >
             Specifications
           </a>
 
           <a
             href="#mechanism"
-            className="shrink-0 py-5 text-sm text-black/50 transition hover:text-black/80"
+            className="shrink-0 py-5 text-sm text-[#5C4A3C]/60 transition hover:text-[#352C27]"
           >
             Mechanism
           </a>
 
           <a
             href="#warranty"
-            className="shrink-0 py-5 text-sm text-black/50 transition hover:text-black/80"
+            className="shrink-0 py-5 text-sm text-[#5C4A3C]/60 transition hover:text-[#352C27]"
           >
             Warranty & care
           </a>
 
           <a
             href="#compare"
-            className="shrink-0 py-5 text-sm text-black/50 transition hover:text-black/80"
+            className="shrink-0 py-5 text-sm text-[#5C4A3C]/60 transition hover:text-[#352C27]"
           >
             Compare
           </a>
@@ -225,14 +225,14 @@ export default async function ProductPage({
       {/* Specifications */}
       <section
         id="specifications"
-        className="scroll-mt-20 px-6 py-10"
+        className="scroll-mt-20 bg-[#F5EBDD] px-6 py-10"
       >
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-4xl font-bold">Specifications</h2>
+          <h2 className="font-display text-4xl font-medium text-[#352C27]">Specifications</h2>
 
           <div className="mt-10 grid gap-10 lg:grid-cols-2">
             {/* Spec table */}
-            <div className="divide-y divide-black/10 border-y border-black/10">
+            <div className="divide-y divide-[#E9D8C0] border-y border-[#E9D8C0]">
               {(
                 [
                   ["Model code", product.code],
@@ -252,17 +252,17 @@ export default async function ProductPage({
                     key={label}
                     className="grid grid-cols-2 gap-4 py-3 text-sm"
                   >
-                    <span className="text-black/50">{label}</span>
-                    <span>{value}</span>
+                    <span className="text-[#5C4A3C]">{label}</span>
+                    <span className="text-[#352C27]">{value}</span>
                   </div>
                 ))}
             </div>
 
             {/* Mechanism & adjustments */}
             <div>
-              <h3 className="text-xl font-semibold">Mechanism &amp; adjustments</h3>
+              <h3 className="text-xl font-semibold text-[#352C27]">Mechanism &amp; adjustments</h3>
 
-              <div className="mt-6 divide-y divide-black/10 border-y border-black/10">
+              <div className="mt-6 divide-y divide-[#E9D8C0] border-y border-[#E9D8C0]">
                 {(
                   [
                     ["Tilt mechanism", getDim(product.dimensions, "tiltMechanism")],
@@ -278,15 +278,15 @@ export default async function ProductPage({
                       key={label}
                       className="grid grid-cols-2 gap-4 py-3 text-sm"
                     >
-                      <span className="text-black/50">{label}</span>
-                      <span>{value}</span>
+                      <span className="text-[#5C4A3C]">{label}</span>
+                      <span className="text-[#352C27]">{value}</span>
                     </div>
                   ))}
               </div>
 
-              <h3 className="mt-8 text-xl font-semibold">Warranty &amp; care</h3>
+              <h3 className="mt-8 text-xl font-semibold text-[#352C27]">Warranty &amp; care</h3>
 
-              <div className="mt-6 divide-y divide-black/10 border-y border-black/10">
+              <div className="mt-6 divide-y divide-[#E9D8C0] border-y border-[#E9D8C0]">
                 {(
                   [
                     ["Frame & mechanism", getDim(product.dimensions, "warrantyFrame")],
@@ -300,8 +300,8 @@ export default async function ProductPage({
                       key={label}
                       className="grid grid-cols-2 gap-4 py-3 text-sm"
                     >
-                      <span className="text-black/50">{label}</span>
-                      <span>{value}</span>
+                      <span className="text-[#5C4A3C]">{label}</span>
+                      <span className="text-[#352C27]">{value}</span>
                     </div>
                   ))}
               </div>
@@ -313,17 +313,17 @@ export default async function ProductPage({
       {/* Mechanism */}
       <section
         id="mechanism"
-        className="scroll-mt-20 border-t border-black/10 px-6 py-10"
+        className="scroll-mt-20 border-t border-[#E9D8C0] bg-[#F5EBDD] px-6 py-10"
       >
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-4xl font-bold">Mechanism</h2>
+          <h2 className="font-display text-4xl font-medium text-[#352C27]">Mechanism</h2>
 
           <div className="mt-10 grid gap-6 lg:grid-cols-2">
             <div className="rounded-3xl bg-white p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/40">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5C4A3C]/50">
                 Tilt mechanism
               </p>
-              <p className="mt-3 text-sm text-black/70">
+              <p className="mt-3 text-sm text-[#352C27]">
                 {getDim(product.dimensions, "tiltMechanism") !== "-"
                   ? getDim(product.dimensions, "tiltMechanism")
                   : "[Synchro / knee-tilt]"}
@@ -331,10 +331,10 @@ export default async function ProductPage({
             </div>
 
             <div className="rounded-3xl bg-white p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/40">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5C4A3C]/50">
                 Recline range
               </p>
-              <p className="mt-3 text-sm text-black/70">
+              <p className="mt-3 text-sm text-[#352C27]">
                 {getDim(product.dimensions, "reclineRange") !== "-"
                   ? getDim(product.dimensions, "reclineRange")
                   : "[–]° – [–]°"}
@@ -342,10 +342,10 @@ export default async function ProductPage({
             </div>
 
             <div className="rounded-3xl bg-white p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/40">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5C4A3C]/50">
                 Seat slider
               </p>
-              <p className="mt-3 text-sm text-black/70">
+              <p className="mt-3 text-sm text-[#352C27]">
                 {getDim(product.dimensions, "seatSlider") !== "-"
                   ? getDim(product.dimensions, "seatSlider")
                   : "[–] mm travel"}
@@ -353,10 +353,10 @@ export default async function ProductPage({
             </div>
 
             <div className="rounded-3xl bg-white p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/40">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5C4A3C]/50">
                 Headrest
               </p>
-              <p className="mt-3 text-sm text-black/70">
+              <p className="mt-3 text-sm text-[#352C27]">
                 {getDim(product.dimensions, "headrest") !== "-"
                   ? getDim(product.dimensions, "headrest")
                   : "[Height / angle]"}
@@ -369,20 +369,20 @@ export default async function ProductPage({
       {/* Warranty & Care */}
       <section
         id="warranty"
-        className="scroll-mt-20 bg-[#171717] px-6 py-10 text-white"
+        className="scroll-mt-20 bg-[#102B43] px-6 py-10 text-[#F5EBDD]"
       >
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F26919]">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#D9BD91]">
                 Warranty & care
               </p>
 
-              <h2 className="mt-4 max-w-md text-4xl font-bold tracking-tight md:text-5xl">
+              <h2 className="font-display mt-4 max-w-md text-4xl font-medium tracking-tight text-[#F5EBDD] md:text-5xl">
                 Clear coverage. Simple care.
               </h2>
 
-              <p className="mt-5 max-w-md text-sm leading-6 text-white/55">
+              <p className="mt-5 max-w-md text-sm leading-6 text-[#F5EBDD]/55">
                 Your product information should be as straightforward after
                 purchase as it is before it.
               </p>
@@ -390,7 +390,7 @@ export default async function ProductPage({
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-3xl bg-white/5 p-6">
-                <p className="text-xs uppercase tracking-widest text-white/40">
+                <p className="text-xs uppercase tracking-widest text-[#F5EBDD]/40">
                   Warranty
                 </p>
 
@@ -398,14 +398,14 @@ export default async function ProductPage({
                   {product.warranty ?? "-"}
                 </p>
 
-                <p className="mt-3 text-sm leading-6 text-white/50">
+                <p className="mt-3 text-sm leading-6 text-[#F5EBDD]/50">
                   Warranty coverage applies according to the product warranty
                   terms supplied at the time of purchase.
                 </p>
               </div>
 
               <div className="rounded-3xl bg-white/5 p-6">
-                <p className="text-xs uppercase tracking-widest text-white/40">
+                <p className="text-xs uppercase tracking-widest text-[#F5EBDD]/40">
                   Everyday care
                 </p>
 
@@ -413,14 +413,14 @@ export default async function ProductPage({
                   Keep it simple
                 </p>
 
-                <p className="mt-3 text-sm leading-6 text-white/50">
+                <p className="mt-3 text-sm leading-6 text-[#F5EBDD]/50">
                   Keep surfaces clean, avoid harsh chemicals and follow the
                   care instructions supplied with your chair.
                 </p>
               </div>
 
               <div className="rounded-3xl bg-white/5 p-6">
-                <p className="text-xs uppercase tracking-widest text-white/40">
+                <p className="text-xs uppercase tracking-widest text-[#F5EBDD]/40">
                   Support
                 </p>
 
@@ -428,21 +428,21 @@ export default async function ProductPage({
                   Need help?
                 </p>
 
-                <p className="mt-3 text-sm leading-6 text-white/50">
+                <p className="mt-3 text-sm leading-6 text-[#F5EBDD]/50">
                   Contact the NexChair team for warranty, product or service
                   questions.
                 </p>
 
                 <a
                   href="/contact"
-                  className="mt-5 inline-block text-sm font-semibold underline underline-offset-4"
+                  className="mt-5 inline-block text-sm font-semibold text-[#F5EBDD] underline underline-offset-4 hover:text-[#D9BD91]"
                 >
                   Contact us →
                 </a>
               </div>
 
               <div className="rounded-3xl bg-white/5 p-6">
-                <p className="text-xs uppercase tracking-widest text-white/40">
+                <p className="text-xs uppercase tracking-widest text-[#F5EBDD]/40">
                   Product information
                 </p>
 
@@ -450,7 +450,7 @@ export default async function ProductPage({
                   Keep your details
                 </p>
 
-                <p className="mt-3 text-sm leading-6 text-white/50">
+                <p className="mt-3 text-sm leading-6 text-[#F5EBDD]/50">
                   Keep your invoice, product code and specification sheet for
                   future reference.
                 </p>

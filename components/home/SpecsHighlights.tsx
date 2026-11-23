@@ -11,18 +11,28 @@ function normalisedPrice(raw: string): string {
 }
 
 export default async function SpecsHighlights() {
-  const dbProducts = await prisma.product.findMany({
-    where: { isActive: true },
-    include: {
-      category: true,
-      images: {
-        where: { isPrimary: true },
-        orderBy: { sortOrder: "asc" },
-        take: 1,
+  let dbProducts: Awaited<ReturnType<typeof prisma.product.findMany<{
+    where: { isActive: boolean };
+    include: { category: true; images: { where: { isPrimary: boolean }; orderBy: { sortOrder: "asc" }; take: 1 } };
+    orderBy: [{ isBestseller: "desc" }, { name: "asc" }];
+  }>>>;
+
+  try {
+    dbProducts = await prisma.product.findMany({
+      where: { isActive: true },
+      include: {
+        category: true,
+        images: {
+          where: { isPrimary: true },
+          orderBy: { sortOrder: "asc" },
+          take: 1,
+        },
       },
-    },
-    orderBy: [{ isBestseller: "desc" }, { name: "asc" }],
-  });
+      orderBy: [{ isBestseller: "desc" }, { name: "asc" }],
+    });
+  } catch {
+    return null;
+  }
 
   const products: Product[] = dbProducts.map((product) => {
     const specs =
@@ -60,8 +70,8 @@ export default async function SpecsHighlights() {
   if (products.length === 0) return null;
 
   return (
-    <section className="px-4 py-3 md:px-6 md:py-4">
-      <div className="mx-auto max-w-7xl rounded-3xl bg-[#f5f1ea] p-8 md:p-10">
+    <section className="bg-[#F8F2E9] px-5 py-10 sm:px-9 lg:py-16">
+      <div className="mx-auto max-w-[1360px]">
         <ProductShowcase products={products} />
       </div>
     </section>

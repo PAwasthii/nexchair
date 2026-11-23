@@ -18,32 +18,39 @@ function normalisedPrice(raw: string): string {
 }
 
 export default async function ProductRange() {
-  const dbProducts = await prisma.product.findMany({
-    where: {
-      isActive: true,
-    },
+  let dbProducts: Awaited<ReturnType<typeof prisma.product.findMany<{
+    where: { isActive: boolean };
     include: {
-      category: true,
-      images: {
-        where: {
-          isPrimary: true,
-        },
-        orderBy: {
-          sortOrder: "asc",
-        },
-        take: 1,
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+      category: true;
+      images: { where: { isPrimary: boolean }; orderBy: { sortOrder: "asc" }; take: 1 };
+    };
+    orderBy: { createdAt: "desc" };
+  }>>> = [];
+  let dbCategories: { name: string; slug: string }[] = [];
 
-  const dbCategories = await prisma.category.findMany({
-    where: { isActive: true },
-    orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
-    select: { name: true, slug: true },
-  });
+  try {
+    [dbProducts, dbCategories] = await Promise.all([
+      prisma.product.findMany({
+        where: { isActive: true },
+        include: {
+          category: true,
+          images: {
+            where: { isPrimary: true },
+            orderBy: { sortOrder: "asc" },
+            take: 1,
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.category.findMany({
+        where: { isActive: true },
+        orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+        select: { name: true, slug: true },
+      }),
+    ]);
+  } catch {
+    // DB unreachable — render page with empty state
+  }
 
   const products: Product[] = dbProducts.map((product) => {
     const specs =
