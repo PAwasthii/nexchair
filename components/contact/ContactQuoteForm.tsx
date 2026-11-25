@@ -7,7 +7,7 @@ const modelOptions = [
   "Not sure yet",
   "Ergonomic task",
   "Executive",
-  "Gaming & streaming",
+  "Lounge",
   "Visitor & training",
   "Drafting stools",
   "Work-from-home",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import ImageMagnifier from "@/components/product-detail/ImageMagnifier";
 
 type GalleryImage = {
   id: string;
@@ -24,7 +24,10 @@ export default function SpecGallery({
     return (
       <div
         className="flex h-[280px] items-center justify-center rounded-[28px] border border-white/10 sm:h-[360px] lg:h-[440px]"
-        style={{ background: "linear-gradient(145deg, #073B38 0%, #092F30 55%, #073B38 100%)" }}
+        style={{
+          background:
+            "linear-gradient(145deg, #073B38 0%, #092F30 55%, #073B38 100%)",
+        }}
       >
         <span className="text-[11px] font-semibold uppercase tracking-widest text-white/20">
           NC
@@ -43,20 +46,17 @@ export default function SpecGallery({
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Main image container */}
-      <div
-        className="group relative h-[280px] overflow-hidden rounded-[28px] border border-white/10 sm:h-[360px] lg:h-[440px]"
-        style={{ background: "linear-gradient(145deg, #073B38 0%, #092F30 55%, #073B38 100%)" }}
+      {/* Main image with magnifier */}
+      <ImageMagnifier
+        src={selected.storageKey}
+        alt={selected.altText ?? productName}
+        containerClassName="group relative h-[280px] overflow-hidden rounded-[28px] border border-white/10 sm:h-[360px] lg:h-[440px]"
+        containerStyle={{
+          background:
+            "linear-gradient(145deg, #073B38 0%, #092F30 55%, #073B38 100%)",
+        }}
+        imageClassName="h-full w-full object-contain p-3"
       >
-        <Image
-          src={selected.storageKey}
-          alt={selected.altText ?? productName}
-          fill
-          className="object-contain p-3 transition-transform duration-300 ease-out motion-safe:group-hover:scale-[1.02]"
-          sizes="(max-width: 1023px) calc(100vw - 40px), 48vw"
-          priority
-        />
-
         {/* Prev / next arrows — only when multiple images */}
         {hasMultiple && (
           <>
@@ -100,7 +100,7 @@ export default function SpecGallery({
             </button>
           </>
         )}
-      </div>
+      </ImageMagnifier>
 
       {/* Thumbnails — only when multiple images */}
       {hasMultiple && (
@@ -111,19 +111,20 @@ export default function SpecGallery({
               type="button"
               onClick={() => setSelectedIndex(idx)}
               aria-label={`View ${productName} image ${idx + 1}`}
-              style={{ background: "linear-gradient(145deg, #073B38 0%, #092F30 55%, #073B38 100%)" }}
+              style={{
+                background:
+                  "linear-gradient(145deg, #073B38 0%, #092F30 55%, #073B38 100%)",
+              }}
               className={`relative h-[72px] w-[72px] flex-shrink-0 overflow-hidden rounded-[12px] border-2 transition duration-200 ${
                 idx === selectedIndex
                   ? "border-[#D85B13] shadow-[0_0_0_2px_rgba(216,91,19,0.20)]"
                   : "border-white/15 hover:border-[#D85B13]/60"
               }`}
             >
-              <Image
+              <img
                 src={img.storageKey}
                 alt={img.altText ?? `${productName} thumbnail ${idx + 1}`}
-                fill
-                className="object-contain p-1.5"
-                sizes="72px"
+                className="h-full w-full object-contain p-1.5"
               />
             </button>
           ))}

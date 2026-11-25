@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import ImageMagnifier from "./ImageMagnifier";
 
 type ProductImage = {
   id: string;
@@ -45,19 +46,14 @@ export default function ProductGallery({
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Main image */}
-      <div
-        className="group relative h-[280px] overflow-hidden rounded-[24px] border border-white/10 sm:h-[360px] lg:h-[440px]"
-        style={{ background: DARK_GREEN }}
+      {/* Main image with magnifier */}
+      <ImageMagnifier
+        src={selectedImage!.storageKey}
+        alt={selectedImage!.altText ?? `${productName} product image`}
+        containerClassName="group relative h-[280px] overflow-hidden rounded-[24px] border border-white/10 sm:h-[360px] lg:h-[440px]"
+        containerStyle={{ background: DARK_GREEN }}
+        imageClassName="h-full w-full object-contain p-3"
       >
-        {selectedImage && (
-          <img
-            src={selectedImage.storageKey}
-            alt={selectedImage.altText ?? `${productName} product image`}
-            className="h-full w-full object-contain p-3 transition-transform duration-300 ease-out motion-safe:group-hover:scale-[1.02]"
-          />
-        )}
-
         {/* Prev / next arrows */}
         {hasMultiple && (
           <>
@@ -101,7 +97,7 @@ export default function ProductGallery({
             </button>
           </>
         )}
-      </div>
+      </ImageMagnifier>
 
       {/* Thumbnails */}
       {hasMultiple && (
