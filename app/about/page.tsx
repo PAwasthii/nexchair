@@ -165,14 +165,8 @@ export default function About() {
             </div>
 
             {/* Right — factory image, curved left boundary */}
-            <div className="relative mx-5 h-[200px] flex-1 self-center sm:h-[260px] lg:mx-0 lg:h-[420px] lg:self-center">
-              {/* Gold border along the curve (outside the clip) */}
-              <div
-                className="pointer-events-none absolute inset-0 z-10 rounded-tl-[60px] rounded-bl-[60px] border-b-2 border-l-2 border-t-2 border-[#E8AD4D]/55 lg:rounded-tl-[88px] lg:rounded-bl-[88px]"
-                aria-hidden="true"
-              />
-              {/* Clipped image */}
-              <div className="h-full overflow-hidden rounded-tl-[60px] rounded-bl-[60px] lg:rounded-tl-[88px] lg:rounded-bl-[88px]">
+            <div className="mx-5 h-[200px] flex-1 self-center sm:h-[260px] lg:mx-0 lg:h-[420px] lg:self-center">
+              <div className="relative h-full overflow-hidden rounded-[60px] border-2 border-[#E8AD4D]/60 lg:rounded-[88px]">
                 <Image
                   src="/images/factory-image.png"
                   alt="NexChair factory outlet"
