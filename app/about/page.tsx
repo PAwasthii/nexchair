@@ -34,7 +34,7 @@ const stats = [
     ),
   },
   {
-    value: "Pan-India",
+    value: <>Pan<span style={{ fontFamily: "var(--font-sans, ui-sans-serif, system-ui, sans-serif)" }}>-</span>India</>,
     label: "Delivery & service coverage",
     icon: (
       <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

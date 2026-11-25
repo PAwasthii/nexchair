@@ -394,10 +394,10 @@ export default async function SpecificationsPage({
                   <p className="text-[13px] font-bold uppercase tracking-[2px] text-[#F0A52E]">
                     Not sure where to start?
                   </p>
-                  <h2 className="font-display mt-3 max-w-lg text-[32px] font-bold leading-[1.1] text-white/75 sm:text-[40px] lg:text-[44px]">
+                  <h2 className="font-display mt-3 max-w-lg text-[32px] font-bold leading-[1.1] text-white sm:text-[40px] lg:text-[44px]">
                     Get expert advice for your workspace.
                   </h2>
-                  <p className="mt-3 max-w-md text-[15px] leading-[1.6] text-white/70">
+                  <p className="mt-3 max-w-md text-[15px] leading-[1.6] text-white">
                     Our team is here to help you find the perfect chair.
                   </p>
                 </div>
