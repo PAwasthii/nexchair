@@ -12,12 +12,10 @@ import {
 } from "@/lib/site";
 
 const shop = [
-  { label: "Executive Chair", href: "/product-range?category=executive-chair" },
   { label: "Ergonomic Chair", href: "/product-range?category=ergonomic-chair" },
-  { label: "Staff Chair",     href: "/product-range?category=staff-chair" },
-  { label: "Visitor Chair",   href: "/product-range?category=visitor-chair" },
+  { label: "Executive Chair", href: "/product-range?category=executive-chair" },
   { label: "Lounge Chair",    href: "/product-range?category=lounge-chair" },
-  { label: "Canteen Chair",   href: "/product-range?category=canteen-chair" },
+  { label: "Visitor Chair",   href: "/product-range?category=visitor-chair" },
 ];
 
 const company = [
@@ -181,8 +179,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-white/10 pt-6 text-xs font-medium text-[#F5EBDD]/30">
+        <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs font-medium text-[#F5EBDD]/30 sm:flex-row sm:items-center sm:justify-between">
           <span>© 2026 NexChair</span>
+          <div className="flex gap-4">
+            <span className="cursor-default">Privacy</span>
+            <span className="cursor-default">Terms &amp; Conditions</span>
+          </div>
         </div>
       </div>
     </footer>
