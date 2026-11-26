@@ -1,7 +1,22 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import OrderEnquiryForm from "@/components/order/OrderEnquiryForm";
 import { prisma } from "@/lib/prisma";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await prisma.product.findUnique({
+    where: { slug, isActive: true },
+    select: { name: true },
+  });
+  if (!product) return { title: "Order Enquiry | NexChair" };
+  return { title: `Order ${product.name} | NexChair` };
+}
 
 export default async function OrderEnquiryPage({
   params,

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { whatsappHref } from "@/lib/site";
 
@@ -23,9 +24,26 @@ function WhatsAppIcon({ className }: { className?: string }) {
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
-  function closeMenu() {
-    setMenuOpen(false);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+
+  // Close on Escape key
+  useEffect(() => {
+    if (!menuOpen) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") closeMenu();
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen, closeMenu]);
+
+  // Close when route changes
+  useEffect(() => { closeMenu(); }, [pathname, closeMenu]);
+
+  function isActive(href: string) {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
   }
 
   return (
@@ -43,21 +61,29 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* Desktop navigation */}
-        <nav className="hidden items-center gap-8 md:flex">
-          {navigation.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="text-[16px] font-semibold text-[#0E3159] transition-colors duration-200 hover:text-[#D85B13]"
-            >
-              {item.label}
-            </Link>
-          ))}
+        {/* Desktop navigation — hidden below 1024 px to prevent crowding at 768 px */}
+        <nav className="hidden items-center gap-8 lg:flex">
+          {navigation.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={`text-[16px] font-semibold transition-colors duration-200 ${
+                  active
+                    ? "text-[#D85B13]"
+                    : "text-[#0E3159] hover:text-[#D85B13]"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Desktop actions */}
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-3 lg:flex">
           <a
             href={whatsappHref}
             target="_blank"
@@ -77,33 +103,46 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile menu button */}
+        {/* Mobile/tablet menu button */}
         <button
           type="button"
           onClick={() => setMenuOpen((open) => !open)}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#D9CDBF] text-[#0E3159] md:hidden"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#D9CDBF] text-[#0E3159] lg:hidden"
         >
-          <span className="text-lg leading-none">
+          <span className="text-lg leading-none" aria-hidden="true">
             {menuOpen ? "×" : "☰"}
           </span>
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile/tablet menu */}
       {menuOpen && (
-        <div className="border-t border-[#D9CDBF]/60 bg-[#F8F2E9] px-6 py-5 md:hidden">
+        <div
+          id="mobile-nav"
+          className="border-t border-[#D9CDBF]/60 bg-[#F8F2E9] px-6 py-5 lg:hidden"
+        >
           <nav className="flex flex-col gap-1">
-            {navigation.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={closeMenu}
-                className="rounded-full px-3 py-3 text-sm font-semibold text-[#0E3159] transition hover:bg-[#E8AD4D]/10 hover:text-[#D85B13]"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={closeMenu}
+                  aria-current={active ? "page" : undefined}
+                  className={`rounded-full px-3 py-3 text-sm font-semibold transition ${
+                    active
+                      ? "text-[#D85B13]"
+                      : "text-[#0E3159] hover:bg-[#E8AD4D]/10 hover:text-[#D85B13]"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="mt-4 flex flex-col gap-2 border-t border-[#D9CDBF]/60 pt-4">

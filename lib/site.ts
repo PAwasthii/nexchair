@@ -13,17 +13,17 @@ export const contactEmailHref = "mailto:nexchairsales@gmail.com";
 
 // ── Footer – short address ────────────────────────────────────────────────────
 
-export const contactAddress = "Chakan Talegoan Road, Chakan, Pune, Maharashtra – 410501";
+export const contactAddress = "Chakan Talegaon Road, Chakan, Pune, Maharashtra – 410501";
 export const contactAddressHref =
-  "https://maps.google.com/?q=Chakan+Talegoan+Road,+Chakan,+Pune,+Maharashtra+410501";
+  "https://maps.google.com/?q=Chakan+Talegaon+Road,+Chakan,+Pune,+Maharashtra+410501";
 
 // ── Contact page – two branch locations ──────────────────────────────────────
 
 export const contactAddress1Label = "Chakan";
 export const contactAddress1 =
-  "Chakan Talegoan Road, Opp HDFC Bank, Near Mahalunge Kaman/Gate, Mahalunge Ingle, Chakan, Pune, Maharashtra – 410501";
+  "Chakan Talegaon Road, Opp HDFC Bank, Near Mahalunge Kaman/Gate, Mahalunge Ingle, Chakan, Pune, Maharashtra – 410501";
 export const contactAddress1Href =
-  "https://maps.google.com/?q=Chakan+Talegoan+Road+Opp+HDFC+Bank+Mahalunge+Ingle+Chakan+Pune+Maharashtra+410501";
+  "https://maps.google.com/?q=Chakan+Talegaon+Road+Opp+HDFC+Bank+Mahalunge+Ingle+Chakan+Pune+Maharashtra+410501";
 
 export const contactAddress2Label = "Balewadi";
 export const contactAddress2 =

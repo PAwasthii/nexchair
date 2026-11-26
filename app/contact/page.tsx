@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import ContactQuoteForm from "@/components/contact/ContactQuoteForm";
+
+export const metadata: Metadata = {
+  title: "Contact Us | NexChair",
+  description: "Request a quote for office chairs. Get a GST invoice, spec sheets and bulk pricing from the NexChair team.",
+};
 import {
   whatsappHref,
   contactPhone,

@@ -5,12 +5,12 @@ import { createEnquiry } from "@/app/actions/enquiries";
 
 const modelOptions = [
   "Not sure yet",
-  "Ergonomic task",
-  "Executive",
-  "Lounge",
-  "Visitor & training",
-  "Drafting stools",
-  "Work-from-home",
+  "Executive Chair",
+  "Ergonomic Chair",
+  "Staff Chair",
+  "Visitor Chair",
+  "Lounge Chair",
+  "Canteen Chair",
 ];
 
 const seatOptions = ["1–5", "6–20", "21–50", "Custom"];
@@ -99,10 +99,10 @@ export default function ContactQuoteForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field name="name" label="Name *" />
-        <Field name="company" label="Company" />
-        <Field name="phone" label="Phone / WhatsApp *" type="tel" />
-        <Field name="email" label="Email" type="email" />
+        <Field name="name" label="Name *" autoComplete="name" />
+        <Field name="company" label="Company" autoComplete="organization" />
+        <Field name="phone" label="Phone / WhatsApp *" type="tel" autoComplete="tel" />
+        <Field name="email" label="Email" type="email" autoComplete="email" />
 
         {/* Model of interest */}
         <div>
@@ -206,10 +206,12 @@ function Field({
   name,
   label,
   type = "text",
+  autoComplete,
 }: {
   name: string;
   label: string;
   type?: string;
+  autoComplete?: string;
 }) {
   return (
     <div>
@@ -220,6 +222,7 @@ function Field({
         id={name}
         name={name}
         type={type}
+        autoComplete={autoComplete}
         className={inputCls}
       />
     </div>

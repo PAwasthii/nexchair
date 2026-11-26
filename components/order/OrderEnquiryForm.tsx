@@ -367,14 +367,15 @@ export default function OrderEnquiryForm({
           <h2 className="text-lg font-semibold">Your details</h2>
 
           <div className="mt-5 grid gap-5 sm:grid-cols-2">
-            <Input name="name" label="Full name" />
-            <Input name="phone" label="Mobile / WhatsApp" />
-            <Input name="email" label="Email" type="email" />
-            <Input name="city" label="City / pincode" />
-            <Input name="company" label="Company name" />
-            <Input name="gstin" label="GSTIN (optional)" />
+            <Input name="name" label="Full name" autoComplete="name" />
+            <Input name="phone" label="Mobile / WhatsApp" autoComplete="tel" />
+            <Input name="email" label="Email" type="email" autoComplete="email" />
+            <Input name="city" label="City / pincode" autoComplete="address-level2" />
+            <Input name="company" label="Company name" autoComplete="organization" />
+            <Input name="gstin" label="GSTIN (optional)" autoComplete="off" />
 
             <Select
+              id="needed-by"
               label="Needed by"
               value={neededBy}
               onChange={setNeededBy}
@@ -386,6 +387,7 @@ export default function OrderEnquiryForm({
             />
 
             <Select
+              id="preferred-contact"
               label="Preferred contact"
               value={preferredContact}
               onChange={setPreferredContact}
@@ -482,10 +484,12 @@ function Input({
   name,
   label,
   type = "text",
+  autoComplete,
 }: {
   name: string;
   label: string;
   type?: string;
+  autoComplete?: string;
 }) {
   return (
     <div>
@@ -497,6 +501,7 @@ function Input({
         id={name}
         name={name}
         type={type}
+        autoComplete={autoComplete}
         className="mt-2 w-full rounded-xl border border-black/10 px-4 py-3 text-sm outline-none focus:border-black"
       />
     </div>
@@ -504,11 +509,13 @@ function Input({
 }
 
 function Select({
+  id,
   label,
   value,
   onChange,
   options,
 }: {
+  id: string;
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -516,9 +523,10 @@ function Select({
 }) {
   return (
     <div>
-      <label className="text-sm font-medium">{label}</label>
+      <label htmlFor={id} className="text-sm font-medium">{label}</label>
 
       <select
+        id={id}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none"

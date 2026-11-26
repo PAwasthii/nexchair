@@ -292,9 +292,9 @@ export default function ProductFilters({
       <div className="relative mx-auto max-w-[1360px]">
 
         {/* ── Category pills + sort row ─────────────────────── */}
-        <div className="flex flex-wrap items-center gap-3">
-          {/* Category pills */}
-          <div className="flex flex-1 flex-wrap gap-2">
+        <div className="flex items-center gap-3">
+          {/* Category pills — single scrollable row on mobile */}
+          <div className="flex flex-1 gap-2 overflow-x-auto pb-1 scrollbar-none">
             {["All", ...categories.map((c) => c.name)].map((category) => {
               const active = selectedCategory === category;
               return (
@@ -314,7 +314,7 @@ export default function ProductFilters({
             })}
           </div>
 
-          {/* Sort control */}
+          {/* Sort control — Newest only (price sorts removed: all prices are on request) */}
           <div className="relative shrink-0">
             <select
               value={sortBy}
@@ -322,8 +322,6 @@ export default function ProductFilters({
               className="appearance-none rounded-full border border-[#D9C6B1] bg-[#FFF9F1] py-[11px] pl-4 pr-9 text-[14px] font-semibold text-[#103B39] outline-none transition hover:border-[#D85B13]/40 focus:ring-2 focus:ring-[#D85B13]/30"
             >
               <option>Recommended</option>
-              <option>Price: Low to high</option>
-              <option>Price: High to low</option>
               <option>Newest</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">

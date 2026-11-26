@@ -1,8 +1,14 @@
 export const dynamic = "force-dynamic";
 
+import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { prisma } from "@/lib/prisma";
+
+export const metadata: Metadata = {
+  title: "Product Range | NexChair",
+  description: "Browse NexChair's full range of ergonomic, executive and staff chairs. Filter by category, back type and armrests.",
+};
 
 import ProductFilters from "@/components/product-range/ProductFilters";
 import ProductRangeCTA from "@/components/product-range/ProductRangeCTA";

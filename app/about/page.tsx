@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { whatsappHref } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "About NexChair | Ergonomic Office Seating",
+  description: "Learn about NexChair – quality ergonomic office seating with full specifications, delivery and assembly across India.",
+};
 
 /* ─────────────────────────── data ──────────────────────────── */
 

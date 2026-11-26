@@ -1,11 +1,17 @@
 export const dynamic = "force-dynamic";
 
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
 import { whatsappHref } from "@/lib/site";
 import SpecGallery from "@/components/specifications/SpecGallery";
+
+export const metadata: Metadata = {
+  title: "Specifications | NexChair",
+  description: "Detailed specifications for NexChair's ergonomic and executive office chairs — dimensions, weight capacity, materials and warranty.",
+};
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -91,8 +97,10 @@ export default async function SpecificationsPage({
     const badges: string[] = [];
     if (product.armrests && product.armrests !== "-") badges.push(product.armrests);
     if (back !== "-") badges.push(`${back} back`);
-    if (product.warranty && product.warranty !== "-")
-      badges.push(`${product.warranty} warranty`);
+    if (product.warranty && product.warranty !== "-") {
+      const w = product.warranty.trim();
+      badges.push(w.toLowerCase().endsWith("warranty") ? w : `${w} warranty`);
+    }
     if (product.maxUserWeight && product.maxUserWeight !== "-")
       badges.push(`Max ${product.maxUserWeight}`);
 
@@ -567,6 +575,8 @@ export default async function SpecificationsPage({
                         <img
                           src={primaryImage.storageKey}
                           alt={primaryImage.altText ?? product.name}
+                          loading="lazy"
+                          decoding="async"
                           className="h-full w-full object-contain p-4 transition-transform duration-300 motion-safe:group-hover:scale-[1.03]"
                         />
                       ) : (

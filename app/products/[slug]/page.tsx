@@ -1,8 +1,26 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
 import { whatsappHref } from "@/lib/site";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await prisma.product.findUnique({
+    where: { slug, isActive: true },
+    select: { name: true, description: true },
+  });
+  if (!product) return { title: "Product not found | NexChair" };
+  return {
+    title: `${product.name} | NexChair`,
+    description: product.description ?? undefined,
+  };
+}
 
 import ProductComparison from "@/components/product-detail/ProductComparison";
 import ProductGallery from "@/components/product-detail/ProductGallery";
@@ -119,7 +137,7 @@ export default async function ProductPage({
                 )}
                 {product.warranty && product.warranty !== "-" && (
                   <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs text-[#F5EBDD]">
-                    {product.warranty} warranty
+                    {warrantyLabel(product.warranty)}
                   </span>
                 )}
               </div>
@@ -151,9 +169,9 @@ export default async function ProductPage({
                 </a>
               </div>
 
-              {/* Spec sheet link */}
-              <div className="mt-4">
-                {product.specSheetKey ? (
+              {/* Spec sheet link — only shown when a PDF is available */}
+              {product.specSheetKey && (
+                <div className="mt-4">
                   <a
                     href={product.specSheetKey}
                     target="_blank"
@@ -162,12 +180,8 @@ export default async function ProductPage({
                   >
                     Download spec sheet (PDF)
                   </a>
-                ) : (
-                  <span className="cursor-not-allowed text-sm text-[#F5EBDD]/30">
-                    Download spec sheet (PDF)
-                  </span>
-                )}
-              </div>
+                </div>
+              )}
 
               {/* Trust indicators */}
               <div className="mt-6 space-y-1.5">
@@ -310,61 +324,68 @@ export default async function ProductPage({
         </div>
       </section>
 
-      {/* Mechanism */}
-      <section
-        id="mechanism"
-        className="scroll-mt-20 border-t border-[#E9D8C0] bg-[#F5EBDD] px-6 py-10"
-      >
-        <div className="mx-auto max-w-7xl">
-          <h2 className="font-display text-4xl font-medium text-[#352C27]">Mechanism</h2>
+      {/* Mechanism — only rendered when at least one field has real data */}
+      {(
+        getDim(product.dimensions, "tiltMechanism") !== "-" ||
+        getDim(product.dimensions, "reclineRange")  !== "-" ||
+        getDim(product.dimensions, "seatSlider")    !== "-" ||
+        getDim(product.dimensions, "headrest")      !== "-"
+      ) && (
+        <section
+          id="mechanism"
+          className="scroll-mt-20 border-t border-[#E9D8C0] bg-[#F5EBDD] px-6 py-10"
+        >
+          <div className="mx-auto max-w-7xl">
+            <h2 className="font-display text-4xl font-medium text-[#352C27]">Mechanism</h2>
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-2">
-            <div className="rounded-3xl bg-white p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5C4A3C]/50">
-                Tilt mechanism
-              </p>
-              <p className="mt-3 text-sm text-[#352C27]">
-                {getDim(product.dimensions, "tiltMechanism") !== "-"
-                  ? getDim(product.dimensions, "tiltMechanism")
-                  : "[Synchro / knee-tilt]"}
-              </p>
-            </div>
+            <div className="mt-10 grid gap-6 lg:grid-cols-2">
+              {getDim(product.dimensions, "tiltMechanism") !== "-" && (
+                <div className="rounded-3xl bg-white p-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5C4A3C]/50">
+                    Tilt mechanism
+                  </p>
+                  <p className="mt-3 text-sm text-[#352C27]">
+                    {getDim(product.dimensions, "tiltMechanism")}
+                  </p>
+                </div>
+              )}
 
-            <div className="rounded-3xl bg-white p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5C4A3C]/50">
-                Recline range
-              </p>
-              <p className="mt-3 text-sm text-[#352C27]">
-                {getDim(product.dimensions, "reclineRange") !== "-"
-                  ? getDim(product.dimensions, "reclineRange")
-                  : "[–]° – [–]°"}
-              </p>
-            </div>
+              {getDim(product.dimensions, "reclineRange") !== "-" && (
+                <div className="rounded-3xl bg-white p-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5C4A3C]/50">
+                    Recline range
+                  </p>
+                  <p className="mt-3 text-sm text-[#352C27]">
+                    {getDim(product.dimensions, "reclineRange")}
+                  </p>
+                </div>
+              )}
 
-            <div className="rounded-3xl bg-white p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5C4A3C]/50">
-                Seat slider
-              </p>
-              <p className="mt-3 text-sm text-[#352C27]">
-                {getDim(product.dimensions, "seatSlider") !== "-"
-                  ? getDim(product.dimensions, "seatSlider")
-                  : "[–] mm travel"}
-              </p>
-            </div>
+              {getDim(product.dimensions, "seatSlider") !== "-" && (
+                <div className="rounded-3xl bg-white p-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5C4A3C]/50">
+                    Seat slider
+                  </p>
+                  <p className="mt-3 text-sm text-[#352C27]">
+                    {getDim(product.dimensions, "seatSlider")}
+                  </p>
+                </div>
+              )}
 
-            <div className="rounded-3xl bg-white p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5C4A3C]/50">
-                Headrest
-              </p>
-              <p className="mt-3 text-sm text-[#352C27]">
-                {getDim(product.dimensions, "headrest") !== "-"
-                  ? getDim(product.dimensions, "headrest")
-                  : "[Height / angle]"}
-              </p>
+              {getDim(product.dimensions, "headrest") !== "-" && (
+                <div className="rounded-3xl bg-white p-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5C4A3C]/50">
+                    Headrest
+                  </p>
+                  <p className="mt-3 text-sm text-[#352C27]">
+                    {getDim(product.dimensions, "headrest")}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Warranty & Care */}
       <section
@@ -505,4 +526,9 @@ function getSpec(specs: unknown, key: string): string {
 
 function getDim(dimensions: unknown, key: string): string {
   return getSpec(dimensions, key);
+}
+
+function warrantyLabel(value: string): string {
+  const lower = value.trim().toLowerCase();
+  return lower.endsWith("warranty") ? value.trim() : `${value.trim()} warranty`;
 }

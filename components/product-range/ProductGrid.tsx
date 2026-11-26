@@ -14,6 +14,11 @@ type ProductGridProps = {
 export default function ProductGrid({ products }: ProductGridProps) {
   const [page, setPage] = useState(1);
 
+  function goToPage(n: number) {
+    setPage(n);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   const totalPages = Math.max(1, Math.ceil(products.length / PER_PAGE));
   const safePage = Math.min(page, totalPages);
   const visible = products.slice(
@@ -51,7 +56,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
         >
           <button
             type="button"
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            onClick={() => goToPage(Math.max(1, safePage - 1))}
             disabled={safePage === 1}
             aria-label="Previous page"
             className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E7D4C0] bg-[#FFF9F1] text-[14px] font-bold text-[#103B39] transition hover:border-[#D85B13]/40 disabled:opacity-30"
@@ -63,7 +68,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
             <button
               key={n}
               type="button"
-              onClick={() => setPage(n)}
+              onClick={() => goToPage(n)}
               aria-label={`Page ${n}`}
               aria-current={n === safePage ? "page" : undefined}
               className={`flex h-11 w-11 items-center justify-center rounded-full text-[14px] font-bold transition ${
@@ -78,7 +83,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
 
           <button
             type="button"
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            onClick={() => goToPage(Math.min(totalPages, safePage + 1))}
             disabled={safePage === totalPages}
             aria-label="Next page"
             className="flex h-11 w-11 items-center justify-center rounded-full bg-[#D85B13] text-[14px] font-bold text-white transition hover:bg-[#c0500f] disabled:opacity-30"
